@@ -560,6 +560,27 @@
       </tags>
   </entry>
   <entry>
+    <title>写一个简单的死锁</title>
+    <url>/2019/01/17/%E5%86%99%E4%B8%80%E4%B8%AA%E7%AE%80%E5%8D%95%E7%9A%84%E6%AD%BB%E9%94%81/</url>
+    <content><![CDATA[<p>用Java写一个简单的死锁。</p>
+<a id="more"></a>
+
+<h3 id="死锁"><a href="#死锁" class="headerlink" title="死锁"></a>死锁</h3><blockquote>
+<p>死锁（英语：Deadlock），又译为死结，计算机科学名词。当两个以上的运算单元，双方都在等待对方停止运行，以获取系统资源，但是没有一方提前退出时，就称为死锁。–wikipedia</p>
+</blockquote>
+<h3 id="Java实现"><a href="#Java实现" class="headerlink" title="Java实现"></a>Java实现</h3><figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Test</span> </span>&#123;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> </span>&#123;</span><br><span class="line">        Object a = <span class="keyword">new</span> Object();</span><br><span class="line">        Object b = <span class="keyword">new</span> Object();</span><br><span class="line"></span><br><span class="line">        <span class="keyword">new</span> Thread(() -&gt; &#123;</span><br><span class="line">            <span class="keyword">while</span> (<span class="keyword">true</span>) &#123;</span><br><span class="line">                <span class="keyword">synchronized</span> (a) &#123;</span><br><span class="line">                    <span class="keyword">synchronized</span> (b) &#123;</span><br><span class="line">                        System.out.println(Thread.currentThread());</span><br><span class="line">                    &#125;</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;).start();</span><br><span class="line">        <span class="keyword">new</span> Thread(() -&gt; &#123;</span><br><span class="line">            <span class="keyword">while</span> (<span class="keyword">true</span>) &#123;</span><br><span class="line">                <span class="keyword">synchronized</span> (b) &#123;</span><br><span class="line">                    <span class="keyword">synchronized</span> (a) &#123;</span><br><span class="line">                        System.out.println(Thread.currentThread());</span><br><span class="line">                    &#125;</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;).start();</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>两个线程分先后顺序锁住两个对象，当一个线程锁住a对象，另一个线程锁住b对象时，两个线程都会因为无法得到另一个对象的锁而无限等待，产生死锁。</p>
+]]></content>
+      <categories>
+        <category>Java</category>
+      </categories>
+      <tags>
+        <tag>Java</tag>
+        <tag>锁</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>修改Ubuntu解锁界面的背景图片</title>
     <url>/2019/01/17/%E4%BF%AE%E6%94%B9Ubuntu%E8%A7%A3%E9%94%81%E7%95%8C%E9%9D%A2%E7%9A%84%E8%83%8C%E6%99%AF%E5%9B%BE%E7%89%87/</url>
     <content><![CDATA[<p>因为学习Linux已经在Vmware装上Ubuntu有一段时间了，因为我装的是桌面版Ubuntu，所以是有GUI界面的，前几天逛知乎看到一篇修改Ubuntu解锁界面背景图片的文章，照着文章做了下，效果不错，所以在这里记录下来并分享给大家。</p>
@@ -597,27 +618,6 @@
       <tags>
         <tag>Linux</tag>
         <tag>Ubuntu</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>写一个简单的死锁</title>
-    <url>/2019/01/17/%E5%86%99%E4%B8%80%E4%B8%AA%E7%AE%80%E5%8D%95%E7%9A%84%E6%AD%BB%E9%94%81/</url>
-    <content><![CDATA[<p>用Java写一个简单的死锁。</p>
-<a id="more"></a>
-
-<h3 id="死锁"><a href="#死锁" class="headerlink" title="死锁"></a>死锁</h3><blockquote>
-<p>死锁（英语：Deadlock），又译为死结，计算机科学名词。当两个以上的运算单元，双方都在等待对方停止运行，以获取系统资源，但是没有一方提前退出时，就称为死锁。–wikipedia</p>
-</blockquote>
-<h3 id="Java实现"><a href="#Java实现" class="headerlink" title="Java实现"></a>Java实现</h3><figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Test</span> </span>&#123;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> </span>&#123;</span><br><span class="line">        Object a = <span class="keyword">new</span> Object();</span><br><span class="line">        Object b = <span class="keyword">new</span> Object();</span><br><span class="line"></span><br><span class="line">        <span class="keyword">new</span> Thread(() -&gt; &#123;</span><br><span class="line">            <span class="keyword">while</span> (<span class="keyword">true</span>) &#123;</span><br><span class="line">                <span class="keyword">synchronized</span> (a) &#123;</span><br><span class="line">                    <span class="keyword">synchronized</span> (b) &#123;</span><br><span class="line">                        System.out.println(Thread.currentThread());</span><br><span class="line">                    &#125;</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;).start();</span><br><span class="line">        <span class="keyword">new</span> Thread(() -&gt; &#123;</span><br><span class="line">            <span class="keyword">while</span> (<span class="keyword">true</span>) &#123;</span><br><span class="line">                <span class="keyword">synchronized</span> (b) &#123;</span><br><span class="line">                    <span class="keyword">synchronized</span> (a) &#123;</span><br><span class="line">                        System.out.println(Thread.currentThread());</span><br><span class="line">                    &#125;</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;).start();</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<p>两个线程分先后顺序锁住两个对象，当一个线程锁住a对象，另一个线程锁住b对象时，两个线程都会因为无法得到另一个对象的锁而无限等待，产生死锁。</p>
-]]></content>
-      <categories>
-        <category>Java</category>
-      </categories>
-      <tags>
-        <tag>Java</tag>
-        <tag>锁</tag>
       </tags>
   </entry>
   <entry>
