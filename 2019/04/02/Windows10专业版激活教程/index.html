@@ -1,52 +1,12 @@
 <!DOCTYPE html>
-<html lang="zh-CN">
+<html lang=zh>
 <head>
-  <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
-<meta name="theme-color" content="#222">
-<meta name="generator" content="Hexo 4.2.0">
-  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
-  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-16x16-next.jpg">
-  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.jpg">
-  <link rel="mask-icon" href="/images/logo.svg" color="#222">
-
-<link rel="stylesheet" href="/css/main.css">
-
-
-<link rel="stylesheet" href="/lib/font-awesome/css/font-awesome.min.css">
-
-
-<script id="hexo-configurations">
-  var NexT = window.NexT || {};
-  var CONFIG = {
-    hostname: new URL('https://zalmon.cn').hostname,
-    root: '/',
-    scheme: 'Mist',
-    version: '7.7.0',
-    exturl: false,
-    sidebar: {"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},
-    copycode: {"enable":false,"show_result":false,"style":null},
-    back2top: {"enable":true,"sidebar":false,"scrollpercent":false},
-    bookmark: {"enable":false,"color":"#222","save":"auto"},
-    fancybox: false,
-    mediumzoom: false,
-    lazyload: false,
-    pangu: false,
-    comments: {"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},
-    algolia: {
-      appID: '',
-      apiKey: '',
-      indexName: '',
-      hits: {"per_page":10},
-      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
-    },
-    localsearch: {"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},
-    path: 'search.xml',
-    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}
-  };
-</script>
-
-  <meta name="description" content="笔记本自带的正版系统是Windows10家庭版，因为不满足平时的使用需求，比如远程桌面，组策略什么的，所以就重装了Windows10专业版，但是重装过后就不能自动激活了，所以就从网上找了个靠谱的方法重新激活了系统（正版用不起啊，哭~），这里简单记录下，以后还会用到的。">
+    <!-- so meta -->
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="HandheldFriendly" content="True">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
+    <meta name="description" content="笔记本自带的正版系统是Windows10家庭版，因为不满足平时的使用需求，比如远程桌面，组策略什么的，所以就重装了Windows10专业版，但是重装过后就不能自动激活了，所以就从网上找了个靠谱的方法重新激活了系统（正版用不起啊，哭~），这里简单记录下，以后还会用到的。">
 <meta property="og:type" content="article">
 <meta property="og:title" content="Windows10专业版激活教程">
 <meta property="og:url" content="https://zalmon.cn/2019/04/02/Windows10%E4%B8%93%E4%B8%9A%E7%89%88%E6%BF%80%E6%B4%BB%E6%95%99%E7%A8%8B/index.html">
@@ -59,215 +19,131 @@
 <meta property="article:tag" content="Windows">
 <meta property="article:tag" content="系统">
 <meta name="twitter:card" content="summary">
+    
+    
+        
+          
+              <link rel="shortcut icon" href="/images/favicon.ico">
+          
+        
+        
+          
+            <link rel="icon" type="image/png" href="/images/favicon-192x192.png" sizes="192x192">
+          
+        
+        
+          
+            <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon.png">
+          
+        
+    
+    <!-- title -->
+    <title>Windows10专业版激活教程</title>
+    <!-- styles -->
+    
+<link rel="stylesheet" href="/css/style.css">
 
-<link rel="canonical" href="https://zalmon.cn/2019/04/02/Windows10%E4%B8%93%E4%B8%9A%E7%89%88%E6%BF%80%E6%B4%BB%E6%95%99%E7%A8%8B/">
+    <!-- rss -->
+    
+    
+<meta name="generator" content="Hexo 4.2.0"></head>
 
+<body>
+    
+      <div id="header-post">
+  <a id="menu-icon" href="#"><i class="fa fa-bars fa-lg"></i></a>
+  <a id="menu-icon-tablet" href="#"><i class="fa fa-bars fa-lg"></i></a>
+  <a id="top-icon-tablet" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');" style="display:none;"><i class="fa fa-chevron-up fa-lg"></i></a>
+  <span id="menu">
+    <span id="nav">
+      <ul>
+         
+          <li><a href="/">Home</a></li>
+         
+          <li><a href="/Search/">Search</a></li>
+         
+          <li><a href="/archives/">Writing</a></li>
+         
+          <li><a href="/about/">About</a></li>
+         
+          <li><a href="http://github.com/zalmon-sources" target="_blank" rel="noopener">Projects</a></li>
+        
+      </ul>
+    </span>
+    <br/>
+    <span id="actions">
+      <ul>
+        
+        <li><a class="icon" href="/2019/04/22/Linux%E7%9A%84%E4%BF%AE%E7%82%BC%E4%B9%8B%E8%B7%AF%EF%BC%9A%EF%BC%88%E4%B8%80%EF%BC%89%E5%8F%91%E8%A1%8C%E7%89%88%E7%9A%84%E9%80%89%E6%8B%A9-Ubuntu/"><i class="fa fa-chevron-left" aria-hidden="true" onmouseover="$('#i-prev').toggle();" onmouseout="$('#i-prev').toggle();"></i></a></li>
+        
+        
+        <li><a class="icon" href="/2019/02/27/%E4%BB%8EExcel%E7%94%9F%E6%88%90MySQL%E6%95%B0%E6%8D%AE%E8%A1%A8-Apache-POI/"><i class="fa fa-chevron-right" aria-hidden="true" onmouseover="$('#i-next').toggle();" onmouseout="$('#i-next').toggle();"></i></a></li>
+        
+        <li><a class="icon" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');"><i class="fa fa-chevron-up" aria-hidden="true" onmouseover="$('#i-top').toggle();" onmouseout="$('#i-top').toggle();"></i></a></li>
+        <li><a class="icon" href="#"><i class="fa fa-share-alt" aria-hidden="true" onmouseover="$('#i-share').toggle();" onmouseout="$('#i-share').toggle();" onclick="$('#share').toggle();return false;"></i></a></li>
+      </ul>
+      <span id="i-prev" class="info" style="display:none;">Previous post</span>
+      <span id="i-next" class="info" style="display:none;">Next post</span>
+      <span id="i-top" class="info" style="display:none;">Back to top</span>
+      <span id="i-share" class="info" style="display:none;">Share post</span>
+    </span>
+    <br/>
+    <div id="share" style="display: none">
+      <ul>
+  <li><a class="icon" href="http://www.facebook.com/sharer.php?u=https://zalmon.cn/2019/04/02/Windows10%E4%B8%93%E4%B8%9A%E7%89%88%E6%BF%80%E6%B4%BB%E6%95%99%E7%A8%8B/" target="_blank" rel="noopener"><i class="fa fa-facebook " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="https://twitter.com/share?url=https://zalmon.cn/2019/04/02/Windows10%E4%B8%93%E4%B8%9A%E7%89%88%E6%BF%80%E6%B4%BB%E6%95%99%E7%A8%8B/&text=Windows10专业版激活教程" target="_blank" rel="noopener"><i class="fa fa-twitter " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://www.linkedin.com/shareArticle?url=https://zalmon.cn/2019/04/02/Windows10%E4%B8%93%E4%B8%9A%E7%89%88%E6%BF%80%E6%B4%BB%E6%95%99%E7%A8%8B/&title=Windows10专业版激活教程" target="_blank" rel="noopener"><i class="fa fa-linkedin " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="https://pinterest.com/pin/create/bookmarklet/?url=https://zalmon.cn/2019/04/02/Windows10%E4%B8%93%E4%B8%9A%E7%89%88%E6%BF%80%E6%B4%BB%E6%95%99%E7%A8%8B/&is_video=false&description=Windows10专业版激活教程" target="_blank" rel="noopener"><i class="fa fa-pinterest " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="mailto:?subject=Windows10专业版激活教程&body=Check out this article: https://zalmon.cn/2019/04/02/Windows10%E4%B8%93%E4%B8%9A%E7%89%88%E6%BF%80%E6%B4%BB%E6%95%99%E7%A8%8B/"><i class="fa fa-envelope " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="https://getpocket.com/save?url=https://zalmon.cn/2019/04/02/Windows10%E4%B8%93%E4%B8%9A%E7%89%88%E6%BF%80%E6%B4%BB%E6%95%99%E7%A8%8B/&title=Windows10专业版激活教程" target="_blank" rel="noopener"><i class="fa fa-get-pocket " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://reddit.com/submit?url=https://zalmon.cn/2019/04/02/Windows10%E4%B8%93%E4%B8%9A%E7%89%88%E6%BF%80%E6%B4%BB%E6%95%99%E7%A8%8B/&title=Windows10专业版激活教程" target="_blank" rel="noopener"><i class="fa fa-reddit " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://www.stumbleupon.com/submit?url=https://zalmon.cn/2019/04/02/Windows10%E4%B8%93%E4%B8%9A%E7%89%88%E6%BF%80%E6%B4%BB%E6%95%99%E7%A8%8B/&title=Windows10专业版激活教程" target="_blank" rel="noopener"><i class="fa fa-stumbleupon " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://digg.com/submit?url=https://zalmon.cn/2019/04/02/Windows10%E4%B8%93%E4%B8%9A%E7%89%88%E6%BF%80%E6%B4%BB%E6%95%99%E7%A8%8B/&title=Windows10专业版激活教程" target="_blank" rel="noopener"><i class="fa fa-digg " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://www.tumblr.com/share/link?url=https://zalmon.cn/2019/04/02/Windows10%E4%B8%93%E4%B8%9A%E7%89%88%E6%BF%80%E6%B4%BB%E6%95%99%E7%A8%8B/&name=Windows10专业版激活教程&description=&lt;p&gt;笔记本自带的正版系统是Windows10家庭版，因为不满足平时的使用需求，比如远程桌面，组策略什么的，所以就重装了Windows10专业版，但是重装过后就不能自动激活了，所以就从网上找了个靠谱的方法重新激活了系统（正版用不起啊，哭~），这里简单记录下，以后还会用到的。&lt;/p&gt;" target="_blank" rel="noopener"><i class="fa fa-tumblr " aria-hidden="true"></i></a></li>
+</ul>
 
-<script id="page-configurations">
-  // https://hexo.io/docs/variables.html
-  CONFIG.page = {
-    sidebar: "",
-    isHome: false,
-    isPost: true
-  };
-</script>
-
-  <title>Windows10专业版激活教程 | Zalmon's Blog</title>
-  
-
-
-
-
-
-
-  <noscript>
-  <style>
-  .use-motion .brand,
-  .use-motion .menu-item,
-  .sidebar-inner,
-  .use-motion .post-block,
-  .use-motion .pagination,
-  .use-motion .comments,
-  .use-motion .post-header,
-  .use-motion .post-body,
-  .use-motion .collection-header { opacity: initial; }
-
-  .use-motion .site-title,
-  .use-motion .site-subtitle {
-    opacity: initial;
-    top: initial;
-  }
-
-  .use-motion .logo-line-before i { left: initial; }
-  .use-motion .logo-line-after i { right: initial; }
-  </style>
-</noscript>
-
-</head>
-
-<body itemscope itemtype="http://schema.org/WebPage">
-  <div class="container use-motion">
-    <div class="headband"></div>
-
-    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
-      <div class="header-inner"><div class="site-brand-container">
-  <div class="site-meta">
-
-    <div>
-      <a href="/" class="brand" rel="start">
-        <span class="logo-line-before"><i></i></span>
-        <span class="site-title">Zalmon's Blog</span>
-        <span class="logo-line-after"><i></i></span>
-      </a>
     </div>
-        <p class="site-subtitle">Love life,love coding,and love myself.</p>
-  </div>
-
-  <div class="site-nav-toggle">
-    <div class="toggle" aria-label="切换导航栏">
-      <span class="toggle-line toggle-line-first"></span>
-      <span class="toggle-line toggle-line-middle"></span>
-      <span class="toggle-line toggle-line-last"></span>
+    <div id="toc">
+      
     </div>
-  </div>
-</div>
-
-
-<nav class="site-nav">
-  
-  <ul id="menu" class="menu">
-        <li class="menu-item menu-item-home">
-
-    <a href="/" rel="section"><i class="fa fa-fw fa-home"></i>首页</a>
-
-  </li>
-        <li class="menu-item menu-item-about">
-
-    <a href="/about/" rel="section"><i class="fa fa-fw fa-user"></i>关于</a>
-
-  </li>
-        <li class="menu-item menu-item-tags">
-
-    <a href="/tags/" rel="section"><i class="fa fa-fw fa-tags"></i>标签</a>
-
-  </li>
-        <li class="menu-item menu-item-categories">
-
-    <a href="/categories/" rel="section"><i class="fa fa-fw fa-th"></i>分类</a>
-
-  </li>
-        <li class="menu-item menu-item-archives">
-
-    <a href="/archives/" rel="section"><i class="fa fa-fw fa-archive"></i>归档</a>
-
-  </li>
-      <li class="menu-item menu-item-search">
-        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
-        </a>
-      </li>
-  </ul>
-
-</nav>
-  <div class="site-search">
-    <div class="popup search-popup">
-    <div class="search-header">
-  <span class="search-icon">
-    <i class="fa fa-search"></i>
-  </span>
-  <div class="search-input-container">
-    <input autocomplete="off" autocorrect="off" autocapitalize="none"
-           placeholder="搜索..." spellcheck="false"
-           type="text" id="search-input">
-  </div>
-  <span class="popup-btn-close">
-    <i class="fa fa-times-circle"></i>
   </span>
 </div>
-<div id="search-result"></div>
-
-</div>
-<div class="search-pop-overlay"></div>
-
-  </div>
-</div>
-    </header>
 
     
-  <div class="back-to-top">
-    <i class="fa fa-arrow-up"></i>
-    <span>0%</span>
-  </div>
+    <div class="content index width mx-auto px2 my4">
+        
+        <article class="post" itemscope itemtype="http://schema.org/BlogPosting">
+  <header>
+    
+    <h1 class="posttitle" itemprop="name headline">
+        Windows10专业版激活教程
+    </h1>
 
 
-    <main class="main">
-      <div class="main-inner">
-        <div class="content-wrap">
-          
 
-          <div class="content">
-            
-
-  <div class="posts-expand">
+    <div class="meta">
+      <span class="author" itemprop="author" itemscope itemtype="http://schema.org/Person">
+        <span itemprop="name">Zalmon's Blog</span>
+      </span>
       
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block " lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="https://zalmon.cn/2019/04/02/Windows10%E4%B8%93%E4%B8%9A%E7%89%88%E6%BF%80%E6%B4%BB%E6%95%99%E7%A8%8B/">
+    <div class="postdate">
+        <time datetime="2019-04-02T01:51:50.000Z" itemprop="datePublished">2019-04-02</time>
+    </div>
 
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/favicon-16x16-next.jpg">
-      <meta itemprop="name" content="Zalmon">
-      <meta itemprop="description" content="Zalmon's Blog,record and share.">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Zalmon's Blog">
-    </span>
-      <header class="post-header">
-        <h1 class="post-title" itemprop="name headline">
-          Windows10专业版激活教程
-        </h1>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              <span class="post-meta-item-text">发表于</span>
-
-              <time title="创建时间：2019-04-02 09:51:50" itemprop="dateCreated datePublished" datetime="2019-04-02T09:51:50+08:00">2019-04-02</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-calendar-check-o"></i>
-                </span>
-                <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2019-11-23 10:21:08" itemprop="dateModified" datetime="2019-11-23T10:21:08+08:00">2019-11-23</time>
-              </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              <span class="post-meta-item-text">分类于</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/%E6%95%99%E7%A8%8B/" itemprop="url" rel="index">
-                    <span itemprop="name">教程</span>
-                  </a>
-                </span>
-            </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
 
       
-        <p>笔记本自带的正版系统是Windows10家庭版，因为不满足平时的使用需求，比如远程桌面，组策略什么的，所以就重装了Windows10专业版，但是重装过后就不能自动激活了，所以就从网上找了个靠谱的方法重新激活了系统（正版用不起啊，哭~），这里简单记录下，以后还会用到的。</p>
+    <div class="article-tag">
+        <i class="fa fa-tag"></i>
+        <a class="tag-link" href="/tags/Windows/" rel="tag">Windows</a>, <a class="tag-link" href="/tags/%E7%B3%BB%E7%BB%9F/" rel="tag">系统</a>
+    </div>
+
+
+    </div>
+  </header>
+  
+
+  <div class="content" itemprop="articleBody">
+    <p>笔记本自带的正版系统是Windows10家庭版，因为不满足平时的使用需求，比如远程桌面，组策略什么的，所以就重装了Windows10专业版，但是重装过后就不能自动激活了，所以就从网上找了个靠谱的方法重新激活了系统（正版用不起啊，哭~），这里简单记录下，以后还会用到的。</p>
 <a id="more"></a>
 
 <p>话不多说，直接上教程，本方法简单高效，不需要下载什么激活软件，直接执行几条命令即可，激活期间请保持网络连接正常。</p>
@@ -288,230 +164,122 @@
 </ol>
 <p>执行完以上操作就大功告成，激活Windows10专业版了。</p>
 
-    </div>
-
-    
-    
-    
-
-      <footer class="post-footer">
-          <div class="post-tags">
-              <a href="/tags/Windows/" rel="tag"># Windows</a>
-              <a href="/tags/%E7%B3%BB%E7%BB%9F/" rel="tag"># 系统</a>
-          </div>
-
-        
-
-
-        
-    <div class="post-nav">
-      <div class="post-nav-item">
-    <a href="/2019/02/27/%E4%BB%8EExcel%E7%94%9F%E6%88%90MySQL%E6%95%B0%E6%8D%AE%E8%A1%A8-Apache-POI/" rel="prev" title="从Excel生成MySQL数据表(Apache POI)">
-      <i class="fa fa-chevron-left"></i> 从Excel生成MySQL数据表(Apache POI)
-    </a></div>
-      <div class="post-nav-item">
-    <a href="/2019/04/22/Linux%E7%9A%84%E4%BF%AE%E7%82%BC%E4%B9%8B%E8%B7%AF%EF%BC%9A%EF%BC%88%E4%B8%80%EF%BC%89%E5%8F%91%E8%A1%8C%E7%89%88%E7%9A%84%E9%80%89%E6%8B%A9-Ubuntu/" rel="next" title="Linux的修炼之路：（一）发行版的选择-Ubuntu">
-      Linux的修炼之路：（一）发行版的选择-Ubuntu <i class="fa fa-chevron-right"></i>
-    </a></div>
-    </div>
-      </footer>
-    
-  </article>
-  
-  
-  
-
   </div>
+</article>
 
 
-          </div>
-          
 
-<script>
-  window.addEventListener('tabs:register', () => {
-    let activeClass = CONFIG.comments.activeClass;
-    if (CONFIG.comments.storage) {
-      activeClass = localStorage.getItem('comments_active') || activeClass;
-    }
-    if (activeClass) {
-      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
-      if (activeTab) {
-        activeTab.click();
-      }
-    }
-  });
-  if (CONFIG.comments.storage) {
-    window.addEventListener('tabs:click', event => {
-      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
-      let commentClass = event.target.classList[1];
-      localStorage.setItem('comments_active', commentClass);
-    });
-  }
-</script>
+    </div>
+    
+      <div id="footer-post-container">
+  <div id="footer-post">
 
-        </div>
-          
-  
-  <div class="toggle sidebar-toggle">
-    <span class="toggle-line toggle-line-first"></span>
-    <span class="toggle-line toggle-line-middle"></span>
-    <span class="toggle-line toggle-line-last"></span>
-  </div>
-
-  <aside class="sidebar">
-    <div class="sidebar-inner">
-
-      <ul class="sidebar-nav motion-element">
-        <li class="sidebar-nav-toc">
-          文章目录
-        </li>
-        <li class="sidebar-nav-overview">
-          站点概览
-        </li>
+    <div id="nav-footer" style="display: none">
+      <ul>
+         
+          <li><a href="/">Home</a></li>
+         
+          <li><a href="/Search/">Search</a></li>
+         
+          <li><a href="/archives/">Writing</a></li>
+         
+          <li><a href="/about/">About</a></li>
+         
+          <li><a href="http://github.com/zalmon-sources" target="_blank" rel="noopener">Projects</a></li>
+        
       </ul>
-
-      <!--noindex-->
-      <div class="post-toc-wrap sidebar-panel">
-      </div>
-      <!--/noindex-->
-
-      <div class="site-overview-wrap sidebar-panel">
-        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
-    <img class="site-author-image" itemprop="image" alt="Zalmon"
-      src="/images/favicon-16x16-next.jpg">
-  <p class="site-author-name" itemprop="name">Zalmon</p>
-  <div class="site-description" itemprop="description">Zalmon's Blog,record and share.</div>
-</div>
-<div class="site-state-wrap motion-element">
-  <nav class="site-state">
-      <div class="site-state-item site-state-posts">
-          <a href="/archives/">
-        
-          <span class="site-state-item-count">21</span>
-          <span class="site-state-item-name">日志</span>
-        </a>
-      </div>
-      <div class="site-state-item site-state-categories">
-            <a href="/categories/">
-          
-        <span class="site-state-item-count">8</span>
-        <span class="site-state-item-name">分类</span></a>
-      </div>
-      <div class="site-state-item site-state-tags">
-            <a href="/tags/">
-          
-        <span class="site-state-item-count">19</span>
-        <span class="site-state-item-name">标签</span></a>
-      </div>
-  </nav>
-</div>
-  <div class="links-of-author motion-element">
-      <span class="links-of-author-item">
-        <a href="https://github.com/zalmon-sources" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;zalmon-sources" rel="noopener" target="_blank"><i class="fa fa-fw fa-github"></i>GitHub</a>
-      </span>
-      <span class="links-of-author-item">
-        <a href="mailto:zalmon-sources@qq.com" title="E-Mail → mailto:zalmon-sources@qq.com" rel="noopener" target="_blank"><i class="fa fa-fw fa-envelope"></i>E-Mail</a>
-      </span>
-  </div>
-
-
-  <div class="links-of-blogroll motion-element">
-    <div class="links-of-blogroll-title">
-      <i class="fa fa-fw fa-link"></i>
-      Links
     </div>
-    <ul class="links-of-blogroll-list">
-        <li class="links-of-blogroll-item">
-          <a href="http://glieen.cn/" title="http:&#x2F;&#x2F;glieen.cn" rel="noopener" target="_blank">Glieen's Blog</a>
-        </li>
-    </ul>
-  </div>
 
-      </div>
+    <div id="toc-footer" style="display: none">
+      
+    </div>
+
+    <div id="share-footer" style="display: none">
+      <ul>
+  <li><a class="icon" href="http://www.facebook.com/sharer.php?u=https://zalmon.cn/2019/04/02/Windows10%E4%B8%93%E4%B8%9A%E7%89%88%E6%BF%80%E6%B4%BB%E6%95%99%E7%A8%8B/" target="_blank" rel="noopener"><i class="fa fa-facebook fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="https://twitter.com/share?url=https://zalmon.cn/2019/04/02/Windows10%E4%B8%93%E4%B8%9A%E7%89%88%E6%BF%80%E6%B4%BB%E6%95%99%E7%A8%8B/&text=Windows10专业版激活教程" target="_blank" rel="noopener"><i class="fa fa-twitter fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://www.linkedin.com/shareArticle?url=https://zalmon.cn/2019/04/02/Windows10%E4%B8%93%E4%B8%9A%E7%89%88%E6%BF%80%E6%B4%BB%E6%95%99%E7%A8%8B/&title=Windows10专业版激活教程" target="_blank" rel="noopener"><i class="fa fa-linkedin fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="https://pinterest.com/pin/create/bookmarklet/?url=https://zalmon.cn/2019/04/02/Windows10%E4%B8%93%E4%B8%9A%E7%89%88%E6%BF%80%E6%B4%BB%E6%95%99%E7%A8%8B/&is_video=false&description=Windows10专业版激活教程" target="_blank" rel="noopener"><i class="fa fa-pinterest fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="mailto:?subject=Windows10专业版激活教程&body=Check out this article: https://zalmon.cn/2019/04/02/Windows10%E4%B8%93%E4%B8%9A%E7%89%88%E6%BF%80%E6%B4%BB%E6%95%99%E7%A8%8B/"><i class="fa fa-envelope fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="https://getpocket.com/save?url=https://zalmon.cn/2019/04/02/Windows10%E4%B8%93%E4%B8%9A%E7%89%88%E6%BF%80%E6%B4%BB%E6%95%99%E7%A8%8B/&title=Windows10专业版激活教程" target="_blank" rel="noopener"><i class="fa fa-get-pocket fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://reddit.com/submit?url=https://zalmon.cn/2019/04/02/Windows10%E4%B8%93%E4%B8%9A%E7%89%88%E6%BF%80%E6%B4%BB%E6%95%99%E7%A8%8B/&title=Windows10专业版激活教程" target="_blank" rel="noopener"><i class="fa fa-reddit fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://www.stumbleupon.com/submit?url=https://zalmon.cn/2019/04/02/Windows10%E4%B8%93%E4%B8%9A%E7%89%88%E6%BF%80%E6%B4%BB%E6%95%99%E7%A8%8B/&title=Windows10专业版激活教程" target="_blank" rel="noopener"><i class="fa fa-stumbleupon fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://digg.com/submit?url=https://zalmon.cn/2019/04/02/Windows10%E4%B8%93%E4%B8%9A%E7%89%88%E6%BF%80%E6%B4%BB%E6%95%99%E7%A8%8B/&title=Windows10专业版激活教程" target="_blank" rel="noopener"><i class="fa fa-digg fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://www.tumblr.com/share/link?url=https://zalmon.cn/2019/04/02/Windows10%E4%B8%93%E4%B8%9A%E7%89%88%E6%BF%80%E6%B4%BB%E6%95%99%E7%A8%8B/&name=Windows10专业版激活教程&description=&lt;p&gt;笔记本自带的正版系统是Windows10家庭版，因为不满足平时的使用需求，比如远程桌面，组策略什么的，所以就重装了Windows10专业版，但是重装过后就不能自动激活了，所以就从网上找了个靠谱的方法重新激活了系统（正版用不起啊，哭~），这里简单记录下，以后还会用到的。&lt;/p&gt;" target="_blank" rel="noopener"><i class="fa fa-tumblr fa-lg" aria-hidden="true"></i></a></li>
+</ul>
 
     </div>
-  </aside>
-  <div id="sidebar-dimmer"></div>
 
+    <div id="actions-footer">
+      <ul>
+        <li id="toc"><a class="icon" href="#" onclick="$('#toc-footer').toggle();return false;"><i class="fa fa-list fa-lg" aria-hidden="true"></i> TOC</a></li>
+        <li id="share"><a class="icon" href="#" onclick="$('#share-footer').toggle();return false;"><i class="fa fa-share-alt fa-lg" aria-hidden="true"></i> Share</a></li>
+        <li id="top" style="display:none"><a class="icon" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');"><i class="fa fa-chevron-up fa-lg" aria-hidden="true"></i> Top</a></li>
+        <li id="menu"><a class="icon" href="#" onclick="$('#nav-footer').toggle();return false;"><i class="fa fa-bars fa-lg" aria-hidden="true"></i> Menu</a></li>
+      </ul>
+    </div>
 
-      </div>
-    </main>
-
-    <footer class="footer">
-      <div class="footer-inner">
-        
-
-<div class="copyright">
-  
-  &copy; 
-  <span itemprop="copyrightYear">2020</span>
-  <span class="with-love">
-    <i class="fa fa-user"></i>
-  </span>
-  <span class="author" itemprop="copyrightHolder">Zalmon</span>
+  </div>
 </div>
-  <div class="powered-by">由 <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> 强力驱动 v4.2.0
-  </div>
-  <span class="post-meta-divider">|</span>
-  <div class="theme-info">主题 – <a href="https://mist.theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Mist</a> v7.7.0
-  </div>
 
+    
+    <footer id="footer">
+  <div class="footer-left">
+    Copyright &copy; 2020 Zalmon
+  </div>
+  <div class="footer-right">
+    <nav>
+      <ul>
+         
+          <li><a href="/">Home</a></li>
+         
+          <li><a href="/Search/">Search</a></li>
+         
+          <li><a href="/archives/">Writing</a></li>
+         
+          <li><a href="/about/">About</a></li>
+         
+          <li><a href="http://github.com/zalmon-sources" target="_blank" rel="noopener">Projects</a></li>
         
-
-
-
-
-
-
-
-
-      </div>
-    </footer>
+      </ul>
+    </nav>
   </div>
-
-  
-  
-  <script color='0,0,255' opacity='0.5' zIndex='-1' count='100' src="/lib/canvas-nest/canvas-nest.min.js"></script>
-  <script src="/lib/anime.min.js"></script>
-  <script src="/lib/velocity/velocity.min.js"></script>
-  <script src="/lib/velocity/velocity.ui.min.js"></script>
-
-<script src="/js/utils.js"></script>
-
-<script src="/js/motion.js"></script>
-
-
-<script src="/js/schemes/muse.js"></script>
-
-
-<script src="/js/next-boot.js"></script>
-
-
-
-
-  
-
-
-
-
-  
-<script src="/js/local-search.js"></script>
-
-
-
-
-
-
-
-
-
-
-
-
-
-  
-
-  
+</footer>
 
 </body>
 </html>
+<!-- styles -->
+
+<link rel="stylesheet" href="/lib/font-awesome/css/font-awesome.min.css">
+
+
+<link rel="stylesheet" href="/lib/meslo-LG/styles.css">
+
+
+<link rel="stylesheet" href="/lib/justified-gallery/justifiedGallery.min.css">
+
+
+<!-- jquery -->
+
+<script src="/lib/jquery/jquery.min.js"></script>
+
+
+<script src="/lib/justified-gallery/jquery.justifiedGallery.min.js"></script>
+
+
+<script src="/js/main.js"></script>
+
+
+
+    <!-- Google Analytics -->
+    <script type="text/javascript">
+        (function(i,s,o,g,r,a,m) {i['GoogleAnalyticsObject']=r;i[r]=i[r]||function() {
+        (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+        m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+        })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+        ga('create', 'UA-37473492-6', 'auto');
+        ga('send', 'pageview');
+    </script>
+
+
+
