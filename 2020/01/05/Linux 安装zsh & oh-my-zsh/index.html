@@ -14,7 +14,7 @@
 <meta property="og:description" content="shell 概念shell是一个命令行解释器，相当于机器外面的一层壳，用于人机交互，只要是人与电脑之间交互的借口，就可以称之为shell。表现为用户输入一条命令，shell就立即执行一条命令。不局限于系统、语言等概念、操作方式和表现方式等。 比如我们平时在黑框框里输入命令，叫 command-line interface (CLI)；在屏幕上点点点，叫graphical user interfac">
 <meta property="og:locale" content="zh_CN">
 <meta property="article:published_time" content="2020-01-05T06:10:36.364Z">
-<meta property="article:modified_time" content="2020-01-05T06:46:41.099Z">
+<meta property="article:modified_time" content="2020-01-05T07:11:24.399Z">
 <meta property="article:author" content="Zalmon">
 <meta property="article:tag" content="Zalmon">
 <meta property="article:tag" content="Blog">
@@ -143,7 +143,7 @@
 <p>Bsh和Csh出现的较早，Ksh继承了它两的功能，Bash继承了Bsh和Ksh的升级版，而且是Linux系统中默认的shell，Zsh则兼具了各种shell的程序有点，交互式操作效率更高。很多人使用zsh而不是bash一大半原因是oh-my-zsh这个配置集。</p>
 <h3 id="安装-zsh"><a href="#安装-zsh" class="headerlink" title="安装 zsh"></a>安装 zsh</h3><h4 id="第一步：查看系统中有无zsh及版本"><a href="#第一步：查看系统中有无zsh及版本" class="headerlink" title="第一步：查看系统中有无zsh及版本"></a>第一步：查看系统中有无zsh及版本</h4><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">$ cat /etc/shells 或</span><br><span class="line">$ zsh --version</span><br><span class="line"></span><br><span class="line">$ <span class="built_in">echo</span> <span class="variable">$ZSH_VERSION</span></span><br></pre></td></tr></table></figure>
 
-<h4 id="第二步：若系统中不存在zsh，则需要安装：-更多安装方式"><a href="#第二步：若系统中不存在zsh，则需要安装：-更多安装方式" class="headerlink" title="第二步：若系统中不存在zsh，则需要安装：(更多安装方式)"></a>第二步：若系统中不存在zsh，则需要安装：(<a href="https://github.com/robbyrussell/oh-my-zsh/wiki/Installing-ZSH" target="_blank" rel="noopener">更多安装方式</a>)</h4><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">$ sudo yum install zsh  (Fedora和RedHat以及SUSE中)</span><br><span class="line">$ sudo apt-get install zsh  (Debian系列，Ubuntu )</span><br></pre></td></tr></table></figure>
+<h4 id="第二步：若系统中不存在zsh，则需要安装：-更多安装方式"><a href="#第二步：若系统中不存在zsh，则需要安装：-更多安装方式" class="headerlink" title="第二步：若系统中不存在zsh，则需要安装：(更多安装方式)"></a>第二步：若系统中不存在zsh，则需要安装：(<a href="https://github.com/robbyrussell/oh-my-zsh/wiki/Installing-ZSH" target="_blank" rel="noopener">更多安装方式</a>)</h4><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">$ sudo yum install zsh  (Fedora和RedHat以及SUSE中)</span><br><span class="line">$ sudo apt-get install zsh  (Debian系列，Ubuntu，deepin)</span><br></pre></td></tr></table></figure>
 
 <h4 id="第三步：查看当前默认shell"><a href="#第三步：查看当前默认shell" class="headerlink" title="第三步：查看当前默认shell"></a>第三步：查看当前默认shell</h4><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">$ <span class="built_in">echo</span> <span class="variable">$SHELL</span></span><br><span class="line"></span><br><span class="line">// 把zsh设为默认shell，如果shell列表中没有zsh或者你没有使用chsh权限的时候，不起作用</span><br><span class="line">$ [sudo] chsh -s $(<span class="built_in">which</span> zsh) 或</span><br><span class="line">$ chsh -s /bin/zsh</span><br></pre></td></tr></table></figure>
 
@@ -168,8 +168,8 @@
 <li><p><strong>下载插件</strong></p>
 <figure class="highlight zsh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ wget http://mimosa-pudica.net/src/incr-0.2.zsh</span><br></pre></td></tr></table></figure>
 </li>
-<li><p><strong>将插件移动到oh-my-zsh目录的插件库下 (~/.oh-my-zsh/plugins/incr/)</strong></p>
-<figure class="highlight zsh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">$ <span class="built_in">cd</span> .oh-my-zsh/plugins/incr/</span><br><span class="line">$ ls</span><br><span class="line">incr-0.2.zsh</span><br></pre></td></tr></table></figure>
+<li><p><strong>将插件移动到oh-my-zsh目录的插件库下 (~/.oh-my-zsh/plugins/incr/,如果没有incr就新建一个)</strong></p>
+<figure class="highlight zsh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">$ <span class="built_in">cd</span> ~/.oh-my-zsh/plugins/incr/</span><br><span class="line">$ ls</span><br><span class="line">incr-0.2.zsh</span><br></pre></td></tr></table></figure>
 </li>
 <li><p><strong>在<code>~/.zshrc</code>配置文件末尾加入</strong></p>
 <figure class="highlight zsh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">source</span> ~/.oh-my-zsh/plugins/incr/incr*.zsh</span><br></pre></td></tr></table></figure>
@@ -188,11 +188,9 @@
 
 </li>
 </ul>
+<blockquote>
 <p>参考文章：</p>
-<blockquote>
 <p><a href="https://www.jianshu.com/p/d194d29e488c" target="_blank" rel="noopener">Mac、Linux 安装zsh &amp; ohmyzsh</a></p>
-</blockquote>
-<blockquote>
 <p><a href="https://zhuanlan.zhihu.com/p/34197680" target="_blank" rel="noopener">你明白 shell、bash 和 zsh 等词的真正含义吗？</a></p>
 </blockquote>
 
