@@ -1,6 +1,68 @@
 <?xml version="1.0" encoding="utf-8"?>
 <search>
   <entry>
+    <title>Linux 安装zsh &amp; oh-my-zsh</title>
+    <url>/2020/01/05/Linux%20%E5%AE%89%E8%A3%85zsh%20&amp;%20oh-my-zsh/</url>
+    <content><![CDATA[<h3 id="shell-概念"><a href="#shell-概念" class="headerlink" title="shell 概念"></a>shell 概念</h3><p>shell是一个命令行解释器，相当于机器外面的一层壳，用于人机交互，只要是人与电脑之间交互的借口，就可以称之为shell。表现为用户输入一条命令，shell就立即执行一条命令。不局限于系统、语言等概念、操作方式和表现方式等。 比如我们平时在黑框框里输入命令，叫 command-line interface (CLI)；在屏幕上点点点，叫graphical user interface (GUI)。</p>
+<p>常见的shell种类有：Bsh、Csh、Ksh、Bash、Zsh</p>
+<p>Bsh和Csh出现的较早，Ksh继承了它两的功能，Bash继承了Bsh和Ksh的升级版，而且是Linux系统中默认的shell，Zsh则兼具了各种shell的程序有点，交互式操作效率更高。很多人使用zsh而不是bash一大半原因是oh-my-zsh这个配置集。</p>
+<h3 id="安装-zsh"><a href="#安装-zsh" class="headerlink" title="安装 zsh"></a>安装 zsh</h3><h4 id="第一步：查看系统中有无zsh及版本"><a href="#第一步：查看系统中有无zsh及版本" class="headerlink" title="第一步：查看系统中有无zsh及版本"></a>第一步：查看系统中有无zsh及版本</h4><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ cat /etc/shells 或</span><br><span class="line">$ zsh --version</span><br><span class="line"></span><br><span class="line">$ <span class="built_in">echo</span> <span class="variable">$ZSH_VERSION</span></span><br></pre></td></tr></table></figure>
+
+<h4 id="第二步：若系统中不存在zsh，则需要安装：-更多安装方式"><a href="#第二步：若系统中不存在zsh，则需要安装：-更多安装方式" class="headerlink" title="第二步：若系统中不存在zsh，则需要安装：(更多安装方式)"></a>第二步：若系统中不存在zsh，则需要安装：(<a href="https://github.com/robbyrussell/oh-my-zsh/wiki/Installing-ZSH" target="_blank" rel="noopener">更多安装方式</a>)</h4><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ sudo yum install zsh  (Fedora和RedHat以及SUSE中)</span><br><span class="line">$ sudo apt-get install zsh  (Debian系列，Ubuntu )</span><br></pre></td></tr></table></figure>
+
+<h4 id="第三步：查看当前默认shell"><a href="#第三步：查看当前默认shell" class="headerlink" title="第三步：查看当前默认shell"></a>第三步：查看当前默认shell</h4><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ <span class="built_in">echo</span> <span class="variable">$SHELL</span></span><br><span class="line"></span><br><span class="line">// 把zsh设为默认shell，如果shell列表中没有zsh或者你没有使用chsh权限的时候，不起作用</span><br><span class="line">$ [sudo] chsh -s $(<span class="built_in">which</span> zsh) 或</span><br><span class="line">$ chsh -s /bin/zsh</span><br></pre></td></tr></table></figure>
+
+<p>退出重新登录后生效</p>
+<h4 id="第四步：安装-oh-my-zsh"><a href="#第四步：安装-oh-my-zsh" class="headerlink" title="第四步：安装 oh-my-zsh"></a>第四步：安装 oh-my-zsh</h4><p>安装 oh-my-zsh 之前必须安装zsh，否则会收到如下提示：Zsh is not installed! Please install zsh first!</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment">#方法一：wget方式自动化安装oh my zsh：</span></span><br><span class="line">$ wget https://github.com/robbyrussell/oh-my-zsh/raw/master/tools/install.sh -O - | sh</span><br><span class="line"></span><br><span class="line"><span class="comment">#方法二：</span></span><br><span class="line">$ curl -L https://raw.github.com/robbyrussell/oh-my-zsh/master/tools/install.sh | sh </span><br><span class="line"></span><br><span class="line"><span class="comment">#官网上的另外一种写法 </span></span><br><span class="line">$ sh -c <span class="string">"<span class="variable">$(wget https://raw.github.com/robbyrussell/oh-my-zsh/master/tools/install.sh -O -)</span>"</span></span><br><span class="line">$ sh -c <span class="string">"<span class="variable">$(curl -fsSL https://raw.github.com/robbyrussell/oh-my-zsh/master/tools/install.sh)</span>"</span></span><br><span class="line"></span><br><span class="line"><span class="comment">#方法三：当然也可以通过git下载 </span></span><br><span class="line">$ git <span class="built_in">clone</span> git://github.com/robbyrussell/oh-my-zsh.git ~/.oh-my-zsh</span><br></pre></td></tr></table></figure>
+
+<h4 id="第五步：配置-oh-my-zsh"><a href="#第五步：配置-oh-my-zsh" class="headerlink" title="第五步：配置 oh-my-zsh"></a>第五步：配置 oh-my-zsh</h4><ul>
+<li><p><strong>查看可用主题</strong></p>
+<figure class="highlight zsh"><table><tr><td class="code"><pre><span class="line">$ ls ~/.oh-my-zsh/themes</span><br></pre></td></tr></table></figure>
+</li>
+<li><p><strong>oh-my-zsh的默认配置文件在 ~/.zshrc,通过编辑它修改主题，更改其他配置</strong></p>
+<figure class="highlight zsh"><table><tr><td class="code"><pre><span class="line">$ vim ~/.zshrc  // 修改其中的 ZSH_THEME=“主题名称”，本人使用是ys</span><br></pre></td></tr></table></figure>
+</li>
+<li><p><strong>退出后，应用重启终端或配置文件，配置生效</strong></p>
+<figure class="highlight zsh"><table><tr><td class="code"><pre><span class="line"><span class="built_in">source</span> ~/.zshrc</span><br></pre></td></tr></table></figure>
+
+</li>
+</ul>
+<h4 id="第六步：安装自动补齐插件（选用）"><a href="#第六步：安装自动补齐插件（选用）" class="headerlink" title="第六步：安装自动补齐插件（选用）"></a>第六步：安装自动补齐插件（选用）</h4><p>提示：补齐插件在使用git指令时会出现严重的卡顿现象，酌情使用。</p>
+<ul>
+<li><p><strong>下载插件</strong></p>
+<figure class="highlight zsh"><table><tr><td class="code"><pre><span class="line">$ wget http://mimosa-pudica.net/src/incr-0.2.zsh</span><br></pre></td></tr></table></figure>
+</li>
+<li><p><strong>将插件移动到oh-my-zsh目录的插件库下 (~/.oh-my-zsh/plugins/incr/)</strong></p>
+<figure class="highlight zsh"><table><tr><td class="code"><pre><span class="line">$ <span class="built_in">cd</span> .oh-my-zsh/plugins/incr/</span><br><span class="line">$ ls</span><br><span class="line">incr-0.2.zsh</span><br></pre></td></tr></table></figure>
+</li>
+<li><p><strong>在<code>~/.zshrc</code>配置文件末尾加入</strong></p>
+<figure class="highlight zsh"><table><tr><td class="code"><pre><span class="line"><span class="built_in">source</span> ~/.oh-my-zsh/plugins/incr/incr*.zsh</span><br></pre></td></tr></table></figure>
+</li>
+<li><p><strong>更新配置</strong></p>
+<figure class="highlight zsh"><table><tr><td class="code"><pre><span class="line">$ <span class="built_in">source</span> ~/.zshrc</span><br></pre></td></tr></table></figure>
+</li>
+<li><p><strong>vim冲突解决</strong></p>
+<p>使用自动补全插件可能会与vim的提示功能相冲突，如会报以下错误：</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">$ vim t</span><br><span class="line">_arguments:451: _vim_files: function definition file not found</span><br></pre></td></tr></table></figure>
+
+<p>解决方法：将<code>~/.zcompdump*</code>删除即可</p>
+<figure class="highlight zsh"><table><tr><td class="code"><pre><span class="line">$ rm -rf ~/.zcompdump*</span><br><span class="line">$ <span class="built_in">exec</span> zsh</span><br></pre></td></tr></table></figure>
+
+
+
+</li>
+</ul>
+<p>参考文章：</p>
+<blockquote>
+<p><a href="https://www.jianshu.com/p/d194d29e488c" target="_blank" rel="noopener">Mac、Linux 安装zsh &amp; ohmyzsh</a></p>
+</blockquote>
+<blockquote>
+<p><a href="https://zhuanlan.zhihu.com/p/34197680" target="_blank" rel="noopener">你明白 shell、bash 和 zsh 等词的真正含义吗？</a></p>
+</blockquote>
+]]></content>
+  </entry>
+  <entry>
     <title>Hello World</title>
     <url>/2020/01/04/hello-world/</url>
     <content><![CDATA[<p>Welcome to <a href="https://hexo.io/" target="_blank" rel="noopener">Hexo</a>! This is your very first post. Check <a href="https://hexo.io/docs/" target="_blank" rel="noopener">documentation</a> for more info. If you get any problems when using Hexo, you can find the answer in <a href="https://hexo.io/docs/troubleshooting.html" target="_blank" rel="noopener">troubleshooting</a> or you can ask me on <a href="https://github.com/hexojs/hexo/issues" target="_blank" rel="noopener">GitHub</a>.</p>

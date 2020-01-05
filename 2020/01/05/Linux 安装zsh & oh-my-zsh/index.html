@@ -1,0 +1,317 @@
+<!DOCTYPE html>
+<html lang=zh>
+<head>
+    <!-- so meta -->
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="HandheldFriendly" content="True">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
+    <meta name="description" content="shell 概念shell是一个命令行解释器，相当于机器外面的一层壳，用于人机交互，只要是人与电脑之间交互的借口，就可以称之为shell。表现为用户输入一条命令，shell就立即执行一条命令。不局限于系统、语言等概念、操作方式和表现方式等。 比如我们平时在黑框框里输入命令，叫 command-line interface (CLI)；在屏幕上点点点，叫graphical user interfac">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Linux 安装zsh &amp; oh-my-zsh">
+<meta property="og:url" content="https://zalmon.cn/2020/01/05/Linux%20%E5%AE%89%E8%A3%85zsh%20&%20oh-my-zsh/index.html">
+<meta property="og:site_name" content="Zalmon&#39;s Blog">
+<meta property="og:description" content="shell 概念shell是一个命令行解释器，相当于机器外面的一层壳，用于人机交互，只要是人与电脑之间交互的借口，就可以称之为shell。表现为用户输入一条命令，shell就立即执行一条命令。不局限于系统、语言等概念、操作方式和表现方式等。 比如我们平时在黑框框里输入命令，叫 command-line interface (CLI)；在屏幕上点点点，叫graphical user interfac">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2020-01-05T06:10:36.364Z">
+<meta property="article:modified_time" content="2020-01-05T06:46:41.099Z">
+<meta property="article:author" content="Zalmon">
+<meta property="article:tag" content="Zalmon">
+<meta property="article:tag" content="Blog">
+<meta property="article:tag" content="Java">
+<meta property="article:tag" content="Hexo">
+<meta name="twitter:card" content="summary">
+    
+    
+        
+          
+              <link rel="shortcut icon" href="/images/favicon.ico">
+          
+        
+        
+          
+            <link rel="icon" type="image/png" href="/images/favicon-192x192.png" sizes="192x192">
+          
+        
+        
+          
+            <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon.png">
+          
+        
+    
+    <!-- title -->
+    <title>Linux 安装zsh &amp; oh-my-zsh</title>
+    <!-- styles -->
+    
+<link rel="stylesheet" href="/css/style.css">
+
+    <!-- rss -->
+    
+    
+<meta name="generator" content="Hexo 4.2.0"></head>
+
+<body>
+    
+      <div id="header-post">
+  <a id="menu-icon" href="#"><i class="fa fa-bars fa-lg"></i></a>
+  <a id="menu-icon-tablet" href="#"><i class="fa fa-bars fa-lg"></i></a>
+  <a id="top-icon-tablet" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');" style="display:none;"><i class="fa fa-chevron-up fa-lg"></i></a>
+  <span id="menu">
+    <span id="nav">
+      <ul>
+         
+          <li><a href="/">Home</a></li>
+         
+          <li><a href="/Search/">Search</a></li>
+         
+          <li><a href="/archives/">Writing</a></li>
+         
+          <li><a href="/about/">About</a></li>
+         
+          <li><a href="http://github.com/zalmon-sources" target="_blank" rel="noopener">Projects</a></li>
+        
+      </ul>
+    </span>
+    <br/>
+    <span id="actions">
+      <ul>
+        
+        
+        <li><a class="icon" href="/2020/01/04/hello-world/"><i class="fa fa-chevron-right" aria-hidden="true" onmouseover="$('#i-next').toggle();" onmouseout="$('#i-next').toggle();"></i></a></li>
+        
+        <li><a class="icon" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');"><i class="fa fa-chevron-up" aria-hidden="true" onmouseover="$('#i-top').toggle();" onmouseout="$('#i-top').toggle();"></i></a></li>
+        <li><a class="icon" href="#"><i class="fa fa-share-alt" aria-hidden="true" onmouseover="$('#i-share').toggle();" onmouseout="$('#i-share').toggle();" onclick="$('#share').toggle();return false;"></i></a></li>
+      </ul>
+      <span id="i-prev" class="info" style="display:none;">Previous post</span>
+      <span id="i-next" class="info" style="display:none;">Next post</span>
+      <span id="i-top" class="info" style="display:none;">Back to top</span>
+      <span id="i-share" class="info" style="display:none;">Share post</span>
+    </span>
+    <br/>
+    <div id="share" style="display: none">
+      <ul>
+  <li><a class="icon" href="http://www.facebook.com/sharer.php?u=https://zalmon.cn/2020/01/05/Linux%20%E5%AE%89%E8%A3%85zsh%20&amp;%20oh-my-zsh/" target="_blank" rel="noopener"><i class="fa fa-facebook " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="https://twitter.com/share?url=https://zalmon.cn/2020/01/05/Linux%20%E5%AE%89%E8%A3%85zsh%20&amp;%20oh-my-zsh/&text=Linux 安装zsh &amp; oh-my-zsh" target="_blank" rel="noopener"><i class="fa fa-twitter " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://www.linkedin.com/shareArticle?url=https://zalmon.cn/2020/01/05/Linux%20%E5%AE%89%E8%A3%85zsh%20&amp;%20oh-my-zsh/&title=Linux 安装zsh &amp; oh-my-zsh" target="_blank" rel="noopener"><i class="fa fa-linkedin " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="https://pinterest.com/pin/create/bookmarklet/?url=https://zalmon.cn/2020/01/05/Linux%20%E5%AE%89%E8%A3%85zsh%20&amp;%20oh-my-zsh/&is_video=false&description=Linux 安装zsh &amp; oh-my-zsh" target="_blank" rel="noopener"><i class="fa fa-pinterest " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="mailto:?subject=Linux 安装zsh &amp; oh-my-zsh&body=Check out this article: https://zalmon.cn/2020/01/05/Linux%20%E5%AE%89%E8%A3%85zsh%20&amp;%20oh-my-zsh/"><i class="fa fa-envelope " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="https://getpocket.com/save?url=https://zalmon.cn/2020/01/05/Linux%20%E5%AE%89%E8%A3%85zsh%20&amp;%20oh-my-zsh/&title=Linux 安装zsh &amp; oh-my-zsh" target="_blank" rel="noopener"><i class="fa fa-get-pocket " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://reddit.com/submit?url=https://zalmon.cn/2020/01/05/Linux%20%E5%AE%89%E8%A3%85zsh%20&amp;%20oh-my-zsh/&title=Linux 安装zsh &amp; oh-my-zsh" target="_blank" rel="noopener"><i class="fa fa-reddit " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://www.stumbleupon.com/submit?url=https://zalmon.cn/2020/01/05/Linux%20%E5%AE%89%E8%A3%85zsh%20&amp;%20oh-my-zsh/&title=Linux 安装zsh &amp; oh-my-zsh" target="_blank" rel="noopener"><i class="fa fa-stumbleupon " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://digg.com/submit?url=https://zalmon.cn/2020/01/05/Linux%20%E5%AE%89%E8%A3%85zsh%20&amp;%20oh-my-zsh/&title=Linux 安装zsh &amp; oh-my-zsh" target="_blank" rel="noopener"><i class="fa fa-digg " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://www.tumblr.com/share/link?url=https://zalmon.cn/2020/01/05/Linux%20%E5%AE%89%E8%A3%85zsh%20&amp;%20oh-my-zsh/&name=Linux 安装zsh &amp; oh-my-zsh&description=" target="_blank" rel="noopener"><i class="fa fa-tumblr " aria-hidden="true"></i></a></li>
+</ul>
+
+    </div>
+    <div id="toc">
+      <ol class="toc"><li class="toc-item toc-level-3"><a class="toc-link" href="#shell-概念"><span class="toc-number">1.</span> <span class="toc-text">shell 概念</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#安装-zsh"><span class="toc-number">2.</span> <span class="toc-text">安装 zsh</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#第一步：查看系统中有无zsh及版本"><span class="toc-number">2.1.</span> <span class="toc-text">第一步：查看系统中有无zsh及版本</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#第二步：若系统中不存在zsh，则需要安装：-更多安装方式"><span class="toc-number">2.2.</span> <span class="toc-text">第二步：若系统中不存在zsh，则需要安装：(更多安装方式)</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#第三步：查看当前默认shell"><span class="toc-number">2.3.</span> <span class="toc-text">第三步：查看当前默认shell</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#第四步：安装-oh-my-zsh"><span class="toc-number">2.4.</span> <span class="toc-text">第四步：安装 oh-my-zsh</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#第五步：配置-oh-my-zsh"><span class="toc-number">2.5.</span> <span class="toc-text">第五步：配置 oh-my-zsh</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#第六步：安装自动补齐插件（选用）"><span class="toc-number">2.6.</span> <span class="toc-text">第六步：安装自动补齐插件（选用）</span></a></li></ol></li></ol>
+    </div>
+  </span>
+</div>
+
+    
+    <div class="content index width mx-auto px2 my4">
+        
+        <article class="post" itemscope itemtype="http://schema.org/BlogPosting">
+  <header>
+    
+    <h1 class="posttitle" itemprop="name headline">
+        Linux 安装zsh &amp; oh-my-zsh
+    </h1>
+
+
+
+    <div class="meta">
+      <span class="author" itemprop="author" itemscope itemtype="http://schema.org/Person">
+        <span itemprop="name">Zalmon's Blog</span>
+      </span>
+      
+    <div class="postdate">
+        <time datetime="2020-01-05T06:10:36.364Z" itemprop="datePublished">2020-01-05</time>
+    </div>
+
+
+      
+
+    </div>
+  </header>
+  
+
+  <div class="content" itemprop="articleBody">
+    <h3 id="shell-概念"><a href="#shell-概念" class="headerlink" title="shell 概念"></a>shell 概念</h3><p>shell是一个命令行解释器，相当于机器外面的一层壳，用于人机交互，只要是人与电脑之间交互的借口，就可以称之为shell。表现为用户输入一条命令，shell就立即执行一条命令。不局限于系统、语言等概念、操作方式和表现方式等。 比如我们平时在黑框框里输入命令，叫 command-line interface (CLI)；在屏幕上点点点，叫graphical user interface (GUI)。</p>
+<p>常见的shell种类有：Bsh、Csh、Ksh、Bash、Zsh</p>
+<p>Bsh和Csh出现的较早，Ksh继承了它两的功能，Bash继承了Bsh和Ksh的升级版，而且是Linux系统中默认的shell，Zsh则兼具了各种shell的程序有点，交互式操作效率更高。很多人使用zsh而不是bash一大半原因是oh-my-zsh这个配置集。</p>
+<h3 id="安装-zsh"><a href="#安装-zsh" class="headerlink" title="安装 zsh"></a>安装 zsh</h3><h4 id="第一步：查看系统中有无zsh及版本"><a href="#第一步：查看系统中有无zsh及版本" class="headerlink" title="第一步：查看系统中有无zsh及版本"></a>第一步：查看系统中有无zsh及版本</h4><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">$ cat /etc/shells 或</span><br><span class="line">$ zsh --version</span><br><span class="line"></span><br><span class="line">$ <span class="built_in">echo</span> <span class="variable">$ZSH_VERSION</span></span><br></pre></td></tr></table></figure>
+
+<h4 id="第二步：若系统中不存在zsh，则需要安装：-更多安装方式"><a href="#第二步：若系统中不存在zsh，则需要安装：-更多安装方式" class="headerlink" title="第二步：若系统中不存在zsh，则需要安装：(更多安装方式)"></a>第二步：若系统中不存在zsh，则需要安装：(<a href="https://github.com/robbyrussell/oh-my-zsh/wiki/Installing-ZSH" target="_blank" rel="noopener">更多安装方式</a>)</h4><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">$ sudo yum install zsh  (Fedora和RedHat以及SUSE中)</span><br><span class="line">$ sudo apt-get install zsh  (Debian系列，Ubuntu )</span><br></pre></td></tr></table></figure>
+
+<h4 id="第三步：查看当前默认shell"><a href="#第三步：查看当前默认shell" class="headerlink" title="第三步：查看当前默认shell"></a>第三步：查看当前默认shell</h4><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">$ <span class="built_in">echo</span> <span class="variable">$SHELL</span></span><br><span class="line"></span><br><span class="line">// 把zsh设为默认shell，如果shell列表中没有zsh或者你没有使用chsh权限的时候，不起作用</span><br><span class="line">$ [sudo] chsh -s $(<span class="built_in">which</span> zsh) 或</span><br><span class="line">$ chsh -s /bin/zsh</span><br></pre></td></tr></table></figure>
+
+<p>退出重新登录后生效</p>
+<h4 id="第四步：安装-oh-my-zsh"><a href="#第四步：安装-oh-my-zsh" class="headerlink" title="第四步：安装 oh-my-zsh"></a>第四步：安装 oh-my-zsh</h4><p>安装 oh-my-zsh 之前必须安装zsh，否则会收到如下提示：Zsh is not installed! Please install zsh first!</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#方法一：wget方式自动化安装oh my zsh：</span></span><br><span class="line">$ wget https://github.com/robbyrussell/oh-my-zsh/raw/master/tools/install.sh -O - | sh</span><br><span class="line"></span><br><span class="line"><span class="comment">#方法二：</span></span><br><span class="line">$ curl -L https://raw.github.com/robbyrussell/oh-my-zsh/master/tools/install.sh | sh </span><br><span class="line"></span><br><span class="line"><span class="comment">#官网上的另外一种写法 </span></span><br><span class="line">$ sh -c <span class="string">"<span class="variable">$(wget https://raw.github.com/robbyrussell/oh-my-zsh/master/tools/install.sh -O -)</span>"</span></span><br><span class="line">$ sh -c <span class="string">"<span class="variable">$(curl -fsSL https://raw.github.com/robbyrussell/oh-my-zsh/master/tools/install.sh)</span>"</span></span><br><span class="line"></span><br><span class="line"><span class="comment">#方法三：当然也可以通过git下载 </span></span><br><span class="line">$ git <span class="built_in">clone</span> git://github.com/robbyrussell/oh-my-zsh.git ~/.oh-my-zsh</span><br></pre></td></tr></table></figure>
+
+<h4 id="第五步：配置-oh-my-zsh"><a href="#第五步：配置-oh-my-zsh" class="headerlink" title="第五步：配置 oh-my-zsh"></a>第五步：配置 oh-my-zsh</h4><ul>
+<li><p><strong>查看可用主题</strong></p>
+<figure class="highlight zsh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ ls ~/.oh-my-zsh/themes</span><br></pre></td></tr></table></figure>
+</li>
+<li><p><strong>oh-my-zsh的默认配置文件在 ~/.zshrc,通过编辑它修改主题，更改其他配置</strong></p>
+<figure class="highlight zsh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ vim ~/.zshrc  // 修改其中的 ZSH_THEME=“主题名称”，本人使用是ys</span><br></pre></td></tr></table></figure>
+</li>
+<li><p><strong>退出后，应用重启终端或配置文件，配置生效</strong></p>
+<figure class="highlight zsh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">source</span> ~/.zshrc</span><br></pre></td></tr></table></figure>
+
+</li>
+</ul>
+<h4 id="第六步：安装自动补齐插件（选用）"><a href="#第六步：安装自动补齐插件（选用）" class="headerlink" title="第六步：安装自动补齐插件（选用）"></a>第六步：安装自动补齐插件（选用）</h4><p>提示：补齐插件在使用git指令时会出现严重的卡顿现象，酌情使用。</p>
+<ul>
+<li><p><strong>下载插件</strong></p>
+<figure class="highlight zsh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ wget http://mimosa-pudica.net/src/incr-0.2.zsh</span><br></pre></td></tr></table></figure>
+</li>
+<li><p><strong>将插件移动到oh-my-zsh目录的插件库下 (~/.oh-my-zsh/plugins/incr/)</strong></p>
+<figure class="highlight zsh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">$ <span class="built_in">cd</span> .oh-my-zsh/plugins/incr/</span><br><span class="line">$ ls</span><br><span class="line">incr-0.2.zsh</span><br></pre></td></tr></table></figure>
+</li>
+<li><p><strong>在<code>~/.zshrc</code>配置文件末尾加入</strong></p>
+<figure class="highlight zsh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">source</span> ~/.oh-my-zsh/plugins/incr/incr*.zsh</span><br></pre></td></tr></table></figure>
+</li>
+<li><p><strong>更新配置</strong></p>
+<figure class="highlight zsh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ <span class="built_in">source</span> ~/.zshrc</span><br></pre></td></tr></table></figure>
+</li>
+<li><p><strong>vim冲突解决</strong></p>
+<p>使用自动补全插件可能会与vim的提示功能相冲突，如会报以下错误：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">$ vim t</span><br><span class="line">_arguments:451: _vim_files: function definition file not found</span><br></pre></td></tr></table></figure>
+
+<p>解决方法：将<code>~/.zcompdump*</code>删除即可</p>
+<figure class="highlight zsh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">$ rm -rf ~/.zcompdump*</span><br><span class="line">$ <span class="built_in">exec</span> zsh</span><br></pre></td></tr></table></figure>
+
+
+
+</li>
+</ul>
+<p>参考文章：</p>
+<blockquote>
+<p><a href="https://www.jianshu.com/p/d194d29e488c" target="_blank" rel="noopener">Mac、Linux 安装zsh &amp; ohmyzsh</a></p>
+</blockquote>
+<blockquote>
+<p><a href="https://zhuanlan.zhihu.com/p/34197680" target="_blank" rel="noopener">你明白 shell、bash 和 zsh 等词的真正含义吗？</a></p>
+</blockquote>
+
+  </div>
+</article>
+
+
+
+    </div>
+    
+      <div id="footer-post-container">
+  <div id="footer-post">
+
+    <div id="nav-footer" style="display: none">
+      <ul>
+         
+          <li><a href="/">Home</a></li>
+         
+          <li><a href="/Search/">Search</a></li>
+         
+          <li><a href="/archives/">Writing</a></li>
+         
+          <li><a href="/about/">About</a></li>
+         
+          <li><a href="http://github.com/zalmon-sources" target="_blank" rel="noopener">Projects</a></li>
+        
+      </ul>
+    </div>
+
+    <div id="toc-footer" style="display: none">
+      <ol class="toc"><li class="toc-item toc-level-3"><a class="toc-link" href="#shell-概念"><span class="toc-number">1.</span> <span class="toc-text">shell 概念</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#安装-zsh"><span class="toc-number">2.</span> <span class="toc-text">安装 zsh</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#第一步：查看系统中有无zsh及版本"><span class="toc-number">2.1.</span> <span class="toc-text">第一步：查看系统中有无zsh及版本</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#第二步：若系统中不存在zsh，则需要安装：-更多安装方式"><span class="toc-number">2.2.</span> <span class="toc-text">第二步：若系统中不存在zsh，则需要安装：(更多安装方式)</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#第三步：查看当前默认shell"><span class="toc-number">2.3.</span> <span class="toc-text">第三步：查看当前默认shell</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#第四步：安装-oh-my-zsh"><span class="toc-number">2.4.</span> <span class="toc-text">第四步：安装 oh-my-zsh</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#第五步：配置-oh-my-zsh"><span class="toc-number">2.5.</span> <span class="toc-text">第五步：配置 oh-my-zsh</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#第六步：安装自动补齐插件（选用）"><span class="toc-number">2.6.</span> <span class="toc-text">第六步：安装自动补齐插件（选用）</span></a></li></ol></li></ol>
+    </div>
+
+    <div id="share-footer" style="display: none">
+      <ul>
+  <li><a class="icon" href="http://www.facebook.com/sharer.php?u=https://zalmon.cn/2020/01/05/Linux%20%E5%AE%89%E8%A3%85zsh%20&amp;%20oh-my-zsh/" target="_blank" rel="noopener"><i class="fa fa-facebook fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="https://twitter.com/share?url=https://zalmon.cn/2020/01/05/Linux%20%E5%AE%89%E8%A3%85zsh%20&amp;%20oh-my-zsh/&text=Linux 安装zsh &amp; oh-my-zsh" target="_blank" rel="noopener"><i class="fa fa-twitter fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://www.linkedin.com/shareArticle?url=https://zalmon.cn/2020/01/05/Linux%20%E5%AE%89%E8%A3%85zsh%20&amp;%20oh-my-zsh/&title=Linux 安装zsh &amp; oh-my-zsh" target="_blank" rel="noopener"><i class="fa fa-linkedin fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="https://pinterest.com/pin/create/bookmarklet/?url=https://zalmon.cn/2020/01/05/Linux%20%E5%AE%89%E8%A3%85zsh%20&amp;%20oh-my-zsh/&is_video=false&description=Linux 安装zsh &amp; oh-my-zsh" target="_blank" rel="noopener"><i class="fa fa-pinterest fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="mailto:?subject=Linux 安装zsh &amp; oh-my-zsh&body=Check out this article: https://zalmon.cn/2020/01/05/Linux%20%E5%AE%89%E8%A3%85zsh%20&amp;%20oh-my-zsh/"><i class="fa fa-envelope fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="https://getpocket.com/save?url=https://zalmon.cn/2020/01/05/Linux%20%E5%AE%89%E8%A3%85zsh%20&amp;%20oh-my-zsh/&title=Linux 安装zsh &amp; oh-my-zsh" target="_blank" rel="noopener"><i class="fa fa-get-pocket fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://reddit.com/submit?url=https://zalmon.cn/2020/01/05/Linux%20%E5%AE%89%E8%A3%85zsh%20&amp;%20oh-my-zsh/&title=Linux 安装zsh &amp; oh-my-zsh" target="_blank" rel="noopener"><i class="fa fa-reddit fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://www.stumbleupon.com/submit?url=https://zalmon.cn/2020/01/05/Linux%20%E5%AE%89%E8%A3%85zsh%20&amp;%20oh-my-zsh/&title=Linux 安装zsh &amp; oh-my-zsh" target="_blank" rel="noopener"><i class="fa fa-stumbleupon fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://digg.com/submit?url=https://zalmon.cn/2020/01/05/Linux%20%E5%AE%89%E8%A3%85zsh%20&amp;%20oh-my-zsh/&title=Linux 安装zsh &amp; oh-my-zsh" target="_blank" rel="noopener"><i class="fa fa-digg fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://www.tumblr.com/share/link?url=https://zalmon.cn/2020/01/05/Linux%20%E5%AE%89%E8%A3%85zsh%20&amp;%20oh-my-zsh/&name=Linux 安装zsh &amp; oh-my-zsh&description=" target="_blank" rel="noopener"><i class="fa fa-tumblr fa-lg" aria-hidden="true"></i></a></li>
+</ul>
+
+    </div>
+
+    <div id="actions-footer">
+      <ul>
+        <li id="toc"><a class="icon" href="#" onclick="$('#toc-footer').toggle();return false;"><i class="fa fa-list fa-lg" aria-hidden="true"></i> TOC</a></li>
+        <li id="share"><a class="icon" href="#" onclick="$('#share-footer').toggle();return false;"><i class="fa fa-share-alt fa-lg" aria-hidden="true"></i> Share</a></li>
+        <li id="top" style="display:none"><a class="icon" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');"><i class="fa fa-chevron-up fa-lg" aria-hidden="true"></i> Top</a></li>
+        <li id="menu"><a class="icon" href="#" onclick="$('#nav-footer').toggle();return false;"><i class="fa fa-bars fa-lg" aria-hidden="true"></i> Menu</a></li>
+      </ul>
+    </div>
+
+  </div>
+</div>
+
+    
+    <footer id="footer">
+  <div class="footer-left">
+    Copyright &copy; 2020 Zalmon
+  </div>
+  <div class="footer-right">
+    <nav>
+      <ul>
+         
+          <li><a href="/">Home</a></li>
+         
+          <li><a href="/Search/">Search</a></li>
+         
+          <li><a href="/archives/">Writing</a></li>
+         
+          <li><a href="/about/">About</a></li>
+         
+          <li><a href="http://github.com/zalmon-sources" target="_blank" rel="noopener">Projects</a></li>
+        
+      </ul>
+    </nav>
+  </div>
+</footer>
+
+</body>
+</html>
+<!-- styles -->
+
+<link rel="stylesheet" href="/lib/font-awesome/css/font-awesome.min.css">
+
+
+<link rel="stylesheet" href="/lib/meslo-LG/styles.css">
+
+
+<link rel="stylesheet" href="/lib/justified-gallery/justifiedGallery.min.css">
+
+
+<!-- jquery -->
+
+<script src="/lib/jquery/jquery.min.js"></script>
+
+
+<script src="/lib/justified-gallery/jquery.justifiedGallery.min.js"></script>
+
+
+<script src="/js/main.js"></script>
+
+
+
+    <!-- Google Analytics -->
+    <script type="text/javascript">
+        (function(i,s,o,g,r,a,m) {i['GoogleAnalyticsObject']=r;i[r]=i[r]||function() {
+        (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+        m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+        })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+        ga('create', 'UA-37473492-6', 'auto');
+        ga('send', 'pageview');
+    </script>
+
+
+
