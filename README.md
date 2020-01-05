@@ -1,5 +1,10 @@
 # 我的个人博客:[Zalmon's Blog](https://glieen.cn)
 
+### 安装nodejs和npm
+~~~bash
+$ sudo apt install node
+~~~
+
 ### 初始化Hexo
 
 ```bash
@@ -81,4 +86,17 @@ $ git clone https://github.com/theme-next/theme-next-canvas-nest source/lib/canv
 |           hexo s           |  启动hexo，默认端口号为4000  |
 |         hexo clean         |         清理编译文件         |
 |           hexo d           | 部署编译后的静态文件到Github |
+
+### git提交sources
+
+建立新分支，在本地clone后将源码放入并提交到远程仓库,每次修改都提交一次
+
+~~~git
+git add -A
+git status
+git commit -m "commit"
+git push
+~~~
+
+
 

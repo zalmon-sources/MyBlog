@@ -2,6 +2,8 @@
 
 shell是一个命令行解释器，相当于机器外面的一层壳，用于人机交互，只要是人与电脑之间交互的借口，就可以称之为shell。表现为用户输入一条命令，shell就立即执行一条命令。不局限于系统、语言等概念、操作方式和表现方式等。 比如我们平时在黑框框里输入命令，叫 command-line interface (CLI)；在屏幕上点点点，叫graphical user interface (GUI)。
 
+<!-- more -->
+
 常见的shell种类有：Bsh、Csh、Ksh、Bash、Zsh
 
 Bsh和Csh出现的较早，Ksh继承了它两的功能，Bash继承了Bsh和Ksh的升级版，而且是Linux系统中默认的shell，Zsh则兼具了各种shell的程序有点，交互式操作效率更高。很多人使用zsh而不是bash一大半原因是oh-my-zsh这个配置集。
@@ -69,7 +71,7 @@ $ git clone git://github.com/robbyrussell/oh-my-zsh.git ~/.oh-my-zsh
   $ vim ~/.zshrc  // 修改其中的 ZSH_THEME=“主题名称”，本人使用是ys
   ```
 
-- **退出后，应用重启终端或配置文件，配置生效**
+- **退出后，重启终端或应用配置文件，配置生效**
 
   ```
   source ~/.zshrc
@@ -81,10 +83,8 @@ $ git clone git://github.com/robbyrussell/oh-my-zsh.git ~/.oh-my-zsh
 
 - **下载插件**
 
-  ```
-  $ wget http://mimosa-pudica.net/src/incr-0.2.zsh
-  ```
-
+  http://mimosa-pudica.net/src/incr-0.2.zsh
+  
 - **将插件移动到oh-my-zsh目录的插件库下 (~/.oh-my-zsh/plugins/incr/,如果没有incr就新建一个)**
 
   ```
