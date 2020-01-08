@@ -1,17 +1,20 @@
-## Hexo博客部署恢复
-
 装系统之前先备份一下自己的hexo博客文件夹，现在就是借助这些文件恢复部署一下就好了。具体方法如下：
 
 一、安装 node.js 和 git for windows
+
+~~~zsh
+$ apt install nodejs
+$ apt install git
+~~~
 
 二、配置 git 个人信息，生成新的 ssh 密钥
 
 <!-- more -->
 
 ```
-git config --global user.name "inkbottle"
-git config --global user.email "inkbottle@outlook.com"
-ssh-keygen -t rsa -C "inkbottle@outlook.com"
+git config --global user.name "zalmon-sources"
+git config --global user.email "zalmon@gmail.com"
+ssh-keygen -t rsa -C "zalmon@gmail.com"
 ```
 
 你需要把邮件地址和用户名换成你自己的，然后一路回车，使用默认值即可。
@@ -19,6 +22,8 @@ ssh-keygen -t rsa -C "inkbottle@outlook.com"
 如果一切顺利的话，可以在用户主目录里找到.ssh目录，里面有id_rsa和id_rsa.pub两个文件，打开id_rsa.pub文件，复制里面的内容。
 
 三、将生成的ssh公钥（刚复制的内容）复制到Github的settings里面的ssh选项里去
+
+https://github.com/settings/keys
 
 四、安装hexo：
 
