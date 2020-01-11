@@ -1,26 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <search>
   <entry>
-    <title>mysql 只能Sudo登录问题及修改密码</title>
-    <url>/2020/01/08/mysql%20%E5%8F%AA%E8%83%BDSudo%E7%99%BB%E5%BD%95%E9%97%AE%E9%A2%98%E5%8F%8A%E4%BF%AE%E6%94%B9%E5%AF%86%E7%A0%81/</url>
-    <content><![CDATA[<h3 id="mysql-只能Sudo登录问题"><a href="#mysql-只能Sudo登录问题" class="headerlink" title="mysql 只能Sudo登录问题"></a>mysql 只能Sudo登录问题</h3><p>Linux下安装mysql后，发现登录必须使用sudo，否则会报Access denied。</p>
-<p>解决办法：</p>
-<a id="more"></a>
-
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">$ sudo mysql -uroot -p</span><br><span class="line">$ use mysql</span><br><span class="line">$ select user,host,plugin form user;</span><br><span class="line">$ update user set plugin&#x3D;&#39;mysql_native_password&#39;;</span><br><span class="line">$ flush privileges;</span><br><span class="line">$ exit</span><br></pre></td></tr></table></figure>
-
-<p>退出mysql，重新正常登陆即可。</p>
-<h3 id="修改mysql密码"><a href="#修改mysql密码" class="headerlink" title="修改mysql密码"></a>修改mysql密码</h3><p><em>MySQL 5.7.6</em>版本以下：</p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">$ use mysql;</span><br><span class="line">$ update user set password &#x3D; PASSWORD(&#39;root&#39;) where user &#x3D; &#39;root&#39;;</span><br><span class="line">$ flush privileges;</span><br></pre></td></tr></table></figure>
-
-<p><em>MySQL 5.7.6+</em>版本以上</p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">$ use mysql;</span><br><span class="line">$ update user set authentication_string &#x3D; PASSWORD(&#39;root&#39;) where user &#x3D; &#39;root&#39;;</span><br><span class="line">$ flush privileges;</span><br></pre></td></tr></table></figure>
-
-]]></content>
-  </entry>
-  <entry>
     <title>电脑重装系统后恢复hexo博客部署</title>
-    <url>/2020/01/08/%E7%94%B5%E8%84%91%E9%87%8D%E8%A3%85%E7%B3%BB%E7%BB%9F%E5%90%8E%E6%81%A2%E5%A4%8Dhexo%E5%8D%9A%E5%AE%A2%E9%83%A8%E7%BD%B2/</url>
+    <url>/2020/01/11/%E7%94%B5%E8%84%91%E9%87%8D%E8%A3%85%E7%B3%BB%E7%BB%9F%E5%90%8E%E6%81%A2%E5%A4%8Dhexo%E5%8D%9A%E5%AE%A2%E9%83%A8%E7%BD%B2/</url>
     <content><![CDATA[<p>装系统之前先备份一下自己的hexo博客文件夹，现在就是借助这些文件恢复部署一下就好了。具体方法如下：</p>
 <p>一、安装 node.js 和 git for windows</p>
 <figure class="highlight zsh"><table><tr><td class="code"><pre><span class="line">$ apt install nodejs</span><br><span class="line">$ apt install git</span><br></pre></td></tr></table></figure>
@@ -48,21 +30,45 @@
 <figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">hexo g</span><br><span class="line">hexo d</span><br></pre></td></tr></table></figure>
 
 <p>博客部署恢复完成。</p>
-<h2 id="Hexo部署过程中的难点解决："><a href="#Hexo部署过程中的难点解决：" class="headerlink" title="Hexo部署过程中的难点解决："></a>Hexo部署过程中的难点解决：</h2><p>1、如果博客有RSS订阅和站点地图功能，请在第七步安装下面两个插件，命令如下：</p>
+<h2 id="Hexo部署过程中的难点解决："><a href="#Hexo部署过程中的难点解决：" class="headerlink" title="Hexo部署过程中的难点解决："></a>Hexo部署过程中的难点解决：</h2><p>1、脚本执行过程中遇到:因为在此系统中禁止执行脚本问题</p>
+<p>​    以管理员身份打开cmd,更换执行策略</p>
+<figure class="highlight cmd"><table><tr><td class="code"><pre><span class="line"><span class="built_in">set</span>-executionpolicy remotesigned</span><br></pre></td></tr></table></figure>
+
+
+
+<p>2、如果博客有RSS订阅和站点地图功能，请在第七步安装下面两个插件，命令如下：</p>
 <figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">npm install hexo-generator-feed --save  &#x2F;&#x2F;RSS订阅插件</span><br><span class="line">npm install hexo-generator-sitemap --save &#x2F;&#x2F;站点地图插件</span><br></pre></td></tr></table></figure>
 
-<p>2、安装部署过程中，在git bash中使用hexo g或者hexo d等命令，会报错提示： Cannot find module ‘C:\Program Files\Git\node_modules\hexo-cli\bin\hexo’。</p>
+<p>3、安装部署过程中，在git bash中使用hexo g或者hexo d等命令，会报错提示： Cannot find module ‘C:\Program Files\Git\node_modules\hexo-cli\bin\hexo’。</p>
 <p>如图所示：</p>
 <p><img src="https://i.loli.net/2019/05/09/5cd447d94e80a.jpg" alt="photo"></p>
 <p>我当时的解决办法：<br>在C盘用户目录下，找到这个文件夹：C:\Users\Administrator\AppData\Roaming\npm\node_modules\hexo-cli。<br>然后把node_modules这个文件夹复制到Git安装目录下（C:\Program Files\Git）即可。</p>
-<p>3、怎么用hexo上传一个README.md到github?<br>因为README.md文件一执行hexo d命令之后，README文件就被渲染变为README.html文件。</p>
+<p>4、怎么用hexo上传一个README.md到github?<br>因为README.md文件一执行hexo d命令之后，README文件就被渲染变为README.html文件。</p>
 <p>解决办法：<br>在Hexo目录下的source根目录下添加一个 <a href="http://readme.md/" target="_blank" rel="noopener">README.md</a>；<br>修改Hexo目录下的_config.yml，设置 skip_render: README.md保存退出即可；<br>使用hexo d 命令就不会再渲染 <a href="http://readme.md/" target="_blank" rel="noopener">README.md</a> 这个文件了。</p>
 <p>原博文链接：<a href="https://helloqingfeng.github.io/2017/02/25/hexo-rebuilding/" target="_blank" rel="noopener">重装系统后，Hexo博客如何重新部署恢复</a></p>
 ]]></content>
   </entry>
   <entry>
+    <title>mysql 只能Sudo登录问题及修改密码</title>
+    <url>/2020/01/11/mysql%20%E5%8F%AA%E8%83%BDSudo%E7%99%BB%E5%BD%95%E9%97%AE%E9%A2%98%E5%8F%8A%E4%BF%AE%E6%94%B9%E5%AF%86%E7%A0%81/</url>
+    <content><![CDATA[<h3 id="mysql-只能Sudo登录问题"><a href="#mysql-只能Sudo登录问题" class="headerlink" title="mysql 只能Sudo登录问题"></a>mysql 只能Sudo登录问题</h3><p>Linux下安装mysql后，发现登录必须使用sudo，否则会报Access denied。</p>
+<p>解决办法：</p>
+<a id="more"></a>
+
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">$ sudo mysql -uroot -p</span><br><span class="line">$ use mysql</span><br><span class="line">$ select user,host,plugin form user;</span><br><span class="line">$ update user set plugin&#x3D;&#39;mysql_native_password&#39;;</span><br><span class="line">$ flush privileges;</span><br><span class="line">$ exit</span><br></pre></td></tr></table></figure>
+
+<p>退出mysql，重新正常登陆即可。</p>
+<h3 id="修改mysql密码"><a href="#修改mysql密码" class="headerlink" title="修改mysql密码"></a>修改mysql密码</h3><p><em>MySQL 5.7.6</em>版本以下：</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">$ use mysql;</span><br><span class="line">$ update user set password &#x3D; PASSWORD(&#39;root&#39;) where user &#x3D; &#39;root&#39;;</span><br><span class="line">$ flush privileges;</span><br></pre></td></tr></table></figure>
+
+<p><em>MySQL 5.7.6+</em>版本以上</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">$ use mysql;</span><br><span class="line">$ update user set authentication_string &#x3D; PASSWORD(&#39;root&#39;) where user &#x3D; &#39;root&#39;;</span><br><span class="line">$ flush privileges;</span><br></pre></td></tr></table></figure>
+
+]]></content>
+  </entry>
+  <entry>
     <title>Linux 安装zsh &amp; oh-my-zsh</title>
-    <url>/2020/01/08/Linux%20%E5%AE%89%E8%A3%85zsh%20&amp;%20oh-my-zsh/</url>
+    <url>/2020/01/11/Linux%20%E5%AE%89%E8%A3%85zsh%20&amp;%20oh-my-zsh/</url>
     <content><![CDATA[<h3 id="shell-概念"><a href="#shell-概念" class="headerlink" title="shell 概念"></a>shell 概念</h3><p>shell是一个命令行解释器，相当于机器外面的一层壳，用于人机交互，只要是人与电脑之间交互的借口，就可以称之为shell。表现为用户输入一条命令，shell就立即执行一条命令。不局限于系统、语言等概念、操作方式和表现方式等。 比如我们平时在黑框框里输入命令，叫 command-line interface (CLI)；在屏幕上点点点，叫graphical user interface (GUI)。</p>
 <a id="more"></a>
 
