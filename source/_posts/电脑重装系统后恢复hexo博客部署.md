@@ -56,14 +56,24 @@ hexo d
 
 ## Hexo部署过程中的难点解决：
 
-1、如果博客有RSS订阅和站点地图功能，请在第七步安装下面两个插件，命令如下：
+1、脚本执行过程中遇到:因为在此系统中禁止执行脚本问题
+
+​	以管理员身份打开cmd,更换执行策略
+
+~~~cmd
+set-executionpolicy remotesigned
+~~~
+
+
+
+2、如果博客有RSS订阅和站点地图功能，请在第七步安装下面两个插件，命令如下：
 
 ```
 npm install hexo-generator-feed --save  //RSS订阅插件
 npm install hexo-generator-sitemap --save //站点地图插件
 ```
 
-2、安装部署过程中，在git bash中使用hexo g或者hexo d等命令，会报错提示： Cannot find module ‘C:\Program Files\Git\node_modules\hexo-cli\bin\hexo’。
+3、安装部署过程中，在git bash中使用hexo g或者hexo d等命令，会报错提示： Cannot find module ‘C:\Program Files\Git\node_modules\hexo-cli\bin\hexo’。
 
 如图所示：
 
@@ -73,7 +83,7 @@ npm install hexo-generator-sitemap --save //站点地图插件
 在C盘用户目录下，找到这个文件夹：C:\Users\Administrator\AppData\Roaming\npm\node_modules\hexo-cli。
 然后把node_modules这个文件夹复制到Git安装目录下（C:\Program Files\Git）即可。
 
-3、怎么用hexo上传一个README.md到github?
+4、怎么用hexo上传一个README.md到github?
 因为README.md文件一执行hexo d命令之后，README文件就被渲染变为README.html文件。
 
 解决办法：
