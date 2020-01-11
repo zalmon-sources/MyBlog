@@ -1,0 +1,1168 @@
+<?xml version="1.0" encoding="utf-8"?>
+<search>
+  <entry>
+    <title>mysql 只能Sudo登录问题及修改密码</title>
+    <url>/2020/01/08/mysql%20%E5%8F%AA%E8%83%BDSudo%E7%99%BB%E5%BD%95%E9%97%AE%E9%A2%98%E5%8F%8A%E4%BF%AE%E6%94%B9%E5%AF%86%E7%A0%81/</url>
+    <content><![CDATA[<h3 id="mysql-只能Sudo登录问题"><a href="#mysql-只能Sudo登录问题" class="headerlink" title="mysql 只能Sudo登录问题"></a>mysql 只能Sudo登录问题</h3><p>Linux下安装mysql后，发现登录必须使用sudo，否则会报Access denied。</p>
+<p>解决办法：</p>
+<a id="more"></a>
+
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">$ sudo mysql -uroot -p</span><br><span class="line">$ use mysql</span><br><span class="line">$ select user,host,plugin form user;</span><br><span class="line">$ update user set plugin&#x3D;&#39;mysql_native_password&#39;;</span><br><span class="line">$ flush privileges;</span><br><span class="line">$ exit</span><br></pre></td></tr></table></figure>
+
+<p>退出mysql，重新正常登陆即可。</p>
+<h3 id="修改mysql密码"><a href="#修改mysql密码" class="headerlink" title="修改mysql密码"></a>修改mysql密码</h3><p><em>MySQL 5.7.6</em>版本以下：</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">$ use mysql;</span><br><span class="line">$ update user set password &#x3D; PASSWORD(&#39;root&#39;) where user &#x3D; &#39;root&#39;;</span><br><span class="line">$ flush privileges;</span><br></pre></td></tr></table></figure>
+
+<p><em>MySQL 5.7.6+</em>版本以上</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">$ use mysql;</span><br><span class="line">$ update user set authentication_string &#x3D; PASSWORD(&#39;root&#39;) where user &#x3D; &#39;root&#39;;</span><br><span class="line">$ flush privileges;</span><br></pre></td></tr></table></figure>
+
+]]></content>
+  </entry>
+  <entry>
+    <title>电脑重装系统后恢复hexo博客部署</title>
+    <url>/2020/01/08/%E7%94%B5%E8%84%91%E9%87%8D%E8%A3%85%E7%B3%BB%E7%BB%9F%E5%90%8E%E6%81%A2%E5%A4%8Dhexo%E5%8D%9A%E5%AE%A2%E9%83%A8%E7%BD%B2/</url>
+    <content><![CDATA[<p>装系统之前先备份一下自己的hexo博客文件夹，现在就是借助这些文件恢复部署一下就好了。具体方法如下：</p>
+<p>一、安装 node.js 和 git for windows</p>
+<figure class="highlight zsh"><table><tr><td class="code"><pre><span class="line">$ apt install nodejs</span><br><span class="line">$ apt install git</span><br></pre></td></tr></table></figure>
+
+<p>二、配置 git 个人信息，生成新的 ssh 密钥</p>
+<a id="more"></a>
+
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">git config --global user.name &quot;zalmon-sources&quot;</span><br><span class="line">git config --global user.email &quot;zalmon@gmail.com&quot;</span><br><span class="line">ssh-keygen -t rsa -C &quot;zalmon@gmail.com&quot;</span><br></pre></td></tr></table></figure>
+
+<p>你需要把邮件地址和用户名换成你自己的，然后一路回车，使用默认值即可。</p>
+<p>如果一切顺利的话，可以在用户主目录里找到.ssh目录，里面有id_rsa和id_rsa.pub两个文件，打开id_rsa.pub文件，复制里面的内容。</p>
+<p>三、将生成的ssh公钥（刚复制的内容）复制到Github的settings里面的ssh选项里去</p>
+<p><a href="https://github.com/settings/keys" target="_blank" rel="noopener">https://github.com/settings/keys</a></p>
+<p>四、安装hexo：</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">npm install hexo-cli -g</span><br></pre></td></tr></table></figure>
+
+<p>五、打开原来的hexo博客所在文件夹，只需保留_config.yml，theme/，source/，scaffolds/，package.json，.gitignore 这些项目，删除其他的文件。</p>
+<p>六、然后打开 git bush 运行命令：</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">npm install</span><br></pre></td></tr></table></figure>
+
+<p>七、安装部署插件：</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">npm install hexo-deployer-git --save &#x2F;&#x2F;hexo d 部署到git插件</span><br></pre></td></tr></table></figure>
+
+<p>八、接下来直接hexo g hexo d试一下是否成功。</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">hexo g</span><br><span class="line">hexo d</span><br></pre></td></tr></table></figure>
+
+<p>博客部署恢复完成。</p>
+<h2 id="Hexo部署过程中的难点解决："><a href="#Hexo部署过程中的难点解决：" class="headerlink" title="Hexo部署过程中的难点解决："></a>Hexo部署过程中的难点解决：</h2><p>1、如果博客有RSS订阅和站点地图功能，请在第七步安装下面两个插件，命令如下：</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">npm install hexo-generator-feed --save  &#x2F;&#x2F;RSS订阅插件</span><br><span class="line">npm install hexo-generator-sitemap --save &#x2F;&#x2F;站点地图插件</span><br></pre></td></tr></table></figure>
+
+<p>2、安装部署过程中，在git bash中使用hexo g或者hexo d等命令，会报错提示： Cannot find module ‘C:\Program Files\Git\node_modules\hexo-cli\bin\hexo’。</p>
+<p>如图所示：</p>
+<p><img src="https://i.loli.net/2019/05/09/5cd447d94e80a.jpg" alt="photo"></p>
+<p>我当时的解决办法：<br>在C盘用户目录下，找到这个文件夹：C:\Users\Administrator\AppData\Roaming\npm\node_modules\hexo-cli。<br>然后把node_modules这个文件夹复制到Git安装目录下（C:\Program Files\Git）即可。</p>
+<p>3、怎么用hexo上传一个README.md到github?<br>因为README.md文件一执行hexo d命令之后，README文件就被渲染变为README.html文件。</p>
+<p>解决办法：<br>在Hexo目录下的source根目录下添加一个 <a href="http://readme.md/" target="_blank" rel="noopener">README.md</a>；<br>修改Hexo目录下的_config.yml，设置 skip_render: README.md保存退出即可；<br>使用hexo d 命令就不会再渲染 <a href="http://readme.md/" target="_blank" rel="noopener">README.md</a> 这个文件了。</p>
+<p>原博文链接：<a href="https://helloqingfeng.github.io/2017/02/25/hexo-rebuilding/" target="_blank" rel="noopener">重装系统后，Hexo博客如何重新部署恢复</a></p>
+]]></content>
+  </entry>
+  <entry>
+    <title>Linux 安装zsh &amp; oh-my-zsh</title>
+    <url>/2020/01/08/Linux%20%E5%AE%89%E8%A3%85zsh%20&amp;%20oh-my-zsh/</url>
+    <content><![CDATA[<h3 id="shell-概念"><a href="#shell-概念" class="headerlink" title="shell 概念"></a>shell 概念</h3><p>shell是一个命令行解释器，相当于机器外面的一层壳，用于人机交互，只要是人与电脑之间交互的借口，就可以称之为shell。表现为用户输入一条命令，shell就立即执行一条命令。不局限于系统、语言等概念、操作方式和表现方式等。 比如我们平时在黑框框里输入命令，叫 command-line interface (CLI)；在屏幕上点点点，叫graphical user interface (GUI)。</p>
+<a id="more"></a>
+
+<p>常见的shell种类有：Bsh、Csh、Ksh、Bash、Zsh</p>
+<p>Bsh和Csh出现的较早，Ksh继承了它两的功能，Bash继承了Bsh和Ksh的升级版，而且是Linux系统中默认的shell，Zsh则兼具了各种shell的程序有点，交互式操作效率更高。很多人使用zsh而不是bash一大半原因是oh-my-zsh这个配置集。</p>
+<h3 id="安装-zsh"><a href="#安装-zsh" class="headerlink" title="安装 zsh"></a>安装 zsh</h3><h4 id="第一步：查看系统中有无zsh及版本"><a href="#第一步：查看系统中有无zsh及版本" class="headerlink" title="第一步：查看系统中有无zsh及版本**"></a>第一步：查看系统中有无zsh及版本**</h4><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ cat /etc/shells 或</span><br><span class="line">$ zsh --version</span><br><span class="line"></span><br><span class="line">$ <span class="built_in">echo</span> <span class="variable">$ZSH_VERSION</span></span><br></pre></td></tr></table></figure>
+
+<h4 id="第二步：若系统中不存在zsh，则需要安装：-更多安装方式"><a href="#第二步：若系统中不存在zsh，则需要安装：-更多安装方式" class="headerlink" title="第二步：若系统中不存在zsh，则需要安装：(更多安装方式)"></a><strong>第二步：若系统中不存在zsh，则需要安装：(<a href="https://github.com/robbyrussell/oh-my-zsh/wiki/Installing-ZSH" target="_blank" rel="noopener">更多安装方式</a>)</strong></h4><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ sudo yum install zsh  (Fedora和RedHat以及SUSE中)</span><br><span class="line">$ sudo apt-get install zsh  (Debian系列，Ubuntu，deepin)</span><br></pre></td></tr></table></figure>
+
+<h4 id="第三步：查看当前默认shell"><a href="#第三步：查看当前默认shell" class="headerlink" title="第三步：查看当前默认shell"></a><strong>第三步：查看当前默认shell</strong></h4><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ <span class="built_in">echo</span> <span class="variable">$SHELL</span></span><br><span class="line"></span><br><span class="line">// 把zsh设为默认shell，如果shell列表中没有zsh或者你没有使用chsh权限的时候，不起作用</span><br><span class="line">$ [sudo] chsh -s $(<span class="built_in">which</span> zsh) 或</span><br><span class="line">$ chsh -s /bin/zsh</span><br></pre></td></tr></table></figure>
+
+<p>退出重新登录后生效</p>
+<h4 id="第四步：安装-oh-my-zsh"><a href="#第四步：安装-oh-my-zsh" class="headerlink" title="第四步：安装 oh-my-zsh"></a><strong>第四步：安装 oh-my-zsh</strong></h4><p>安装 oh-my-zsh 之前必须安装zsh，否则会收到如下提示：Zsh is not installed! Please install zsh first!</p>
+<figure class="highlight zsh"><table><tr><td class="code"><pre><span class="line"><span class="comment">#方法一：wget方式自动化安装oh my zsh：</span></span><br><span class="line">$ wget https://github.com/robbyrussell/oh-my-zsh/raw/master/tools/install.sh -O - | sh</span><br><span class="line"></span><br><span class="line"><span class="comment">#方法二：</span></span><br><span class="line">$ curl -L https://raw.github.com/robbyrussell/oh-my-zsh/master/tools/install.sh | sh </span><br><span class="line"></span><br><span class="line"><span class="comment">#官网上的另外一种写法 </span></span><br><span class="line">$ sh -c <span class="string">"<span class="variable">$(wget https://raw.github.com/robbyrussell/oh-my-zsh/master/tools/install.sh -O -)</span>"</span></span><br><span class="line">$ sh -c <span class="string">"<span class="variable">$(curl -fsSL https://raw.github.com/robbyrussell/oh-my-zsh/master/tools/install.sh)</span>"</span></span><br><span class="line"></span><br><span class="line"><span class="comment">#方法三：当然也可以通过git下载 </span></span><br><span class="line">$ git <span class="built_in">clone</span> git://github.com/robbyrussell/oh-my-zsh.git ~/.oh-my-zsh</span><br></pre></td></tr></table></figure>
+
+<h4 id="第五步：配置-oh-my-zsh"><a href="#第五步：配置-oh-my-zsh" class="headerlink" title="第五步：配置 oh-my-zsh"></a><strong>第五步：配置 oh-my-zsh</strong></h4><ul>
+<li><p><strong>查看可用主题</strong></p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">$ ls ~&#x2F;.oh-my-zsh&#x2F;themes</span><br></pre></td></tr></table></figure>
+</li>
+<li><p><strong>oh-my-zsh的默认配置文件在 ~/.zshrc,通过编辑它修改主题，更改其他配置</strong></p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">$ vim ~&#x2F;.zshrc  &#x2F;&#x2F; 修改其中的 ZSH_THEME&#x3D;“主题名称”，本人使用是ys</span><br></pre></td></tr></table></figure>
+</li>
+<li><p><strong>退出后，重启终端或应用配置文件，配置生效</strong></p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">source ~&#x2F;.zshrc</span><br></pre></td></tr></table></figure>
+
+</li>
+</ul>
+<h4 id="第六步：安装自动补齐插件（选用）"><a href="#第六步：安装自动补齐插件（选用）" class="headerlink" title="第六步：安装自动补齐插件（选用）"></a>第六步：安装自动补齐插件（选用）</h4><p>提示：补齐插件在使用git指令时会出现严重的卡顿现象，酌情使用。</p>
+<ul>
+<li><p><strong>下载插件</strong></p>
+<p><a href="http://mimosa-pudica.net/src/incr-0.2.zsh" target="_blank" rel="noopener">http://mimosa-pudica.net/src/incr-0.2.zsh</a></p>
+</li>
+<li><p><strong>将插件移动到oh-my-zsh目录的插件库下 (~/.oh-my-zsh/plugins/incr/,如果没有incr就新建一个)</strong></p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">$ cd ~&#x2F;.oh-my-zsh&#x2F;plugins&#x2F;incr&#x2F;</span><br><span class="line">$ ls</span><br><span class="line">incr-0.2.zsh</span><br></pre></td></tr></table></figure>
+</li>
+<li><p><strong>在<code>~/.zshrc</code>配置文件末尾加入</strong></p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">source ~&#x2F;.oh-my-zsh&#x2F;plugins&#x2F;incr&#x2F;incr*.zsh</span><br></pre></td></tr></table></figure>
+</li>
+<li><p><strong>更新配置</strong></p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">$ source ~&#x2F;.zshrc</span><br></pre></td></tr></table></figure>
+</li>
+<li><p><strong>vim冲突解决</strong></p>
+<p>使用自动补全插件可能会与vim的提示功能相冲突，如会报以下错误：</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">$ vim t</span><br><span class="line">_arguments:451: _vim_files: function definition file not found</span><br></pre></td></tr></table></figure>
+
+<p>解决方法：将<code>~/.zcompdump*</code>删除即可</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">$ rm -rf ~&#x2F;.zcompdump*</span><br><span class="line">$ exec zsh</span><br></pre></td></tr></table></figure>
+
+</li>
+</ul>
+<blockquote>
+<p>参考文章：</p>
+<p><a href="https://www.jianshu.com/p/d194d29e488c" target="_blank" rel="noopener">Mac、Linux 安装zsh &amp; ohmyzsh</a></p>
+<p><a href="https://zhuanlan.zhihu.com/p/34197680" target="_blank" rel="noopener">你明白 shell、bash 和 zsh 等词的真正含义吗？</a></p>
+</blockquote>
+]]></content>
+  </entry>
+  <entry>
+    <title>Linux的修炼之路：（二）Ubuntu的安装</title>
+    <url>/2019/10/09/Linux%E7%9A%84%E4%BF%AE%E7%82%BC%E4%B9%8B%E8%B7%AF%EF%BC%9A%EF%BC%88%E4%BA%8C%EF%BC%89Ubuntu%E7%9A%84%E5%AE%89%E8%A3%85/</url>
+    <content><![CDATA[<p>发行版已经确定，接下来就是系统的安装工作，因为是准备安装Windows和Ubuntu双系统，所以很多操作可以先在Windows下完成，比如修改分区，制作启动盘等。</p>
+<a id="more"></a>
+
+<h3 id="制作启动盘"><a href="#制作启动盘" class="headerlink" title="制作启动盘"></a>制作启动盘</h3><ol>
+<li><p>下载系统镜像</p>
+<p>打开Ubuntu官网下载地址：<a href="https://ubuntu.com/download/desktop" target="_blank" rel="noopener">Download Ubuntu Desktop</a>，下载最新的桌面发行版镜像文件；</p>
+</li>
+<li><p>下载启动盘制作软件</p>
+<p>打开Rufus官网：<a href="https://rufus.ie/" target="_blank" rel="noopener">Rufus</a>，下载最新版本的软件；</p>
+</li>
+<li><p>制作启动盘</p>
+</li>
+</ol>
+<p>   准备一个容量大于4G的U盘，插入电脑，打开Rufus，在设备处会显示插入的U盘，然后点击选择，打开下载的Ubuntu镜像文件，分区类型建议设置为GPT，其他设置默认，然后单击开始，弹窗选择写入模式，默认即可，提示<strong>会清除U盘所有数据，如有重要数据请先备份</strong>，进度条跑完即制作完成。</p>
+<p>   <img src="https://tva3.sinaimg.cn/large/005tkHc2ly1g7t3f62rejj30bk0e7aat.jpg" alt="image"></p>
+<h3 id="准备分区"><a href="#准备分区" class="headerlink" title="准备分区"></a>准备分区</h3><p>在Windows10下右键开始，选择磁盘管理，打开磁盘管理工具。</p>
+<p><img src="https://tvax4.sinaimg.cn/large/005tkHc2ly1g7t3nlitndj30pm0kqwg8.jpg" alt="image"></p>
+<p>这里我准备将F盘分50G出来用作安装Ubuntu，右键想分区的盘，选择压缩卷，输入分割的大小（注意单位是MB），点击压缩即可，即会多出一个大小为50G的未分配区块。</p>
+<p><img src="https://tva3.sinaimg.cn/large/005tkHc2ly1g7t3qfsx3sj30pm0kqdi3.jpg" alt="image"></p>
+<p><img src="https://tva3.sinaimg.cn/large/005tkHc2ly1g7tjadaaeaj30pj037dft.jpg" alt="1570689962547"></p>
+<h3 id="通过启动盘启动"><a href="#通过启动盘启动" class="headerlink" title="通过启动盘启动"></a>通过启动盘启动</h3><p>把制作好的启动盘插入电脑，进入电脑的BIOS系统修改电脑的启动顺序，将启动盘设置成第一启动，以我的电脑（暗影精灵4）为例，开机按F9即可切换启动扇区，不同的品牌的电脑有不同的设置方法，详情可以通过搜索引擎查询自己的电脑型号查看具体的设置操作。</p>
+<p><img src="https://tvax3.sinaimg.cn/large/005tkHc2ly1g7thvll1xaj33402c0b2a.jpg" alt="C611F6C7181A1293C66AA4063BCEC07A"></p>
+<p>启动成功之后会有四个选项，第一个选项是试用Ubuntu，第二个选项是安装Ubuntu，剩下两个不用关注。</p>
+<p><img src="https://tva4.sinaimg.cn/large/005tkHc2ly1g7thwlk63pj32c0340kjm.jpg" alt="6566FC454645D20D48AE8F0848C83FD0"></p>
+<p>这里我选择第一个试用Ubuntu，为了方便截图，当然直接安装也是可以的，稍等片刻后即进入Ubuntu的试用界面。</p>
+<p><img src="https://tva4.sinaimg.cn/large/005tkHc2ly1g7ti08ttjzj31hc0u0tk9.jpg" alt="Screenshot from 2019-10-10 19-57-13"></p>
+<p>进入Ubuntu的试用桌面基本表示启动盘引导启动成功了。</p>
+<h3 id="安装Ubuntu"><a href="#安装Ubuntu" class="headerlink" title="安装Ubuntu"></a>安装Ubuntu</h3><ol>
+<li><p>双击桌面上的<code>Install Ubuntu 18.04.3 LTS</code>图标就可以开始安装系统；</p>
+</li>
+<li><p>选择语言，中文（简体），或者自己想要的语言；</p>
+<p><img src="https://tvax1.sinaimg.cn/large/005tkHc2ly1g7ti42uwgzj30qu0ftjrw.jpg" alt="Screenshot from 2019-10-10 20-03-17"></p>
+</li>
+<li><p>选择键盘布局，默认就可以了；</p>
+<p><img src="https://tva1.sinaimg.cn/large/005tkHc2ly1g7ti671nelj30o90h3q43.jpg" alt="Screenshot from 2019-10-10 20-03-35"></p>
+</li>
+<li><p>设置网络连接，这里不建议在安装的时候连接网络，如果网速慢的话将会影响安装速度，如果是有线网络的话建议先把网线拔掉；</p>
+<p><img src="https://tva2.sinaimg.cn/large/005tkHc2ly1g7ti77xduoj30o90h375t.jpg" alt="Screenshot from 2019-10-10 20-03-41"></p>
+</li>
+<li><p>选择安装的内容，使用最小安装就好了，没必要装那些多余的软件，以后需要用到再去安装；</p>
+<p><img src="https://tva2.sinaimg.cn/large/005tkHc2ly1g7tia3pqf8j30o90h3dhg.jpg" alt="Screenshot from 2019-10-10 20-03-48"></p>
+</li>
+<li><p>选择安装方式，因为电脑已经安装了Windows10系统，如果要图简单的话，选择第一项，与Windows共存就好了，我喜欢自己调整分区，所以我使用的其他选项，<strong>千万不要选择清除整个磁盘并安装Ubuntu</strong>，那样会丢失所有硬盘里的数据；</p>
+<p><img src="https://tva1.sinaimg.cn/large/005tkHc2ly1g7ticc8k6qj30o90h376n.jpg" alt="Screenshot from 2019-10-10 20-04-27"></p>
+</li>
+<li><p>硬盘的分区结构和大小预览，可以看到有一个大小50G左右空闲分区，这是在Windows下面预留出来的，这里我将它扩展成两个分区，一个4G大小的交换分区，用于Ubuntu系统休眠使用，剩下的分为一个EXT4主分区，挂在到<code>/</code>根目录下，关于分区，实在没有必要过于纠结挂载点，建议都挂载到根目录，<strong>千万不要去修改其他非空闲的分区，格式化分区会丢失数据</strong>，分区完成点击现在安装；</p>
+<p><img src="https://tva1.sinaimg.cn/large/005tkHc2ly1g7tif394w6j30nu0neace.jpg" alt="Screenshot from 2019-10-10 20-04-35"><br><em>分区方式：单击选择要修改的分区，点击左下角的“+”，然后设置分区大小和分区格式，点击确定即可。</em><br><img src="https://tvax2.sinaimg.cn/large/005tkHc2ly1g7timqck0bj30hw07mwfn.jpg" alt="Screenshot from 2019-10-10 20-06-58"></p>
+</li>
+<li><p>选择时区，中国的话默认选择上海就可以了；</p>
+<p><img src="https://tva1.sinaimg.cn/large/005tkHc2ly1g7tiptajwrj30nu0ne79u.jpg" alt="Screenshot from 2019-10-10 20-07-06"></p>
+</li>
+<li><p>设置电脑信息和用户信息，自行设置；</p>
+<p><img src="https://tvax2.sinaimg.cn/large/005tkHc2ly1g7tiqiqdumj30nu0nedh1.jpg" alt="Screenshot from 2019-10-11 04-07-31"></p>
+</li>
+<li><p>开始安装系统，等待几分钟即可安装成功；</p>
+<p><img src="https://tva2.sinaimg.cn/large/005tkHc2ly1g7tirgiob5j30kw0ftn1f.jpg" alt="Screenshot from 2019-10-11 04-07-42"></p>
+</li>
+<li><p>安装成功，重启电脑；</p>
+<p><img src="https://tvax1.sinaimg.cn/large/005tkHc2ly1g7tit5wdf5j30m004bdge.jpg" alt="Screenshot from 2019-10-11 04-14-17"></p>
+</li>
+<li><p>重启电脑时将U盘拔下，通常重启电脑之后，BIOS会默认启动Ubuntu的引导界面，如果没有启动到Ubuntu的引导界面，可以自行更改BIOS的启动设置，将Ubuntu设置成第一引导选项。引导界面有四个选项，第一个是正常启动Ubuntu系统，第二个是高级启动，第三个是启动Windows系统，第四个是进入电脑的BIOS设置。界面有10秒倒计时，如果没有更改启动选项则默认启动第一个，通过上下方向键可以更改启动选项，按回车键确定，通常默认启动第一个（正常启动Ubuntu）即可；</p>
+<p><img src="https://tvax1.sinaimg.cn/large/005tkHc2ly1g7tiueoiioj32c03407wi.jpg" alt="9680080688BD30783DBB457347BDC21F"></p>
+</li>
+<li><p>稍等片刻就进入Ubuntu登录界面，选择安装系统时创建的用户，输入密码即可进入系统；</p>
+<p><img src="https://tvax1.sinaimg.cn/large/005tkHc2ly1g7tj0g1qnlj32c03401ky.jpg" alt="A0F892F96AE3577616886671227AFAE1"></p>
+</li>
+<li><p>进入Ubuntu桌面，系统安装成功！</p>
+<p><img src="https://tvax1.sinaimg.cn/large/005tkHc2ly1g7tj2d7xb2j31hc0u07gh.jpg" alt="2019-10-11 12-18-03 的屏幕截图"></p>
+</li>
+</ol>
+<h3 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h3><p>相对来说，Ubuntu桌面版的安装还是非常简单的，全程都是基于可视化操作，非常便捷，稍微仔细点，配合搜索引擎应该都可以安装成功。</p>
+]]></content>
+      <categories>
+        <category>Linux</category>
+      </categories>
+      <tags>
+        <tag>Linux</tag>
+        <tag>Ubuntu</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>关于“怎么判断一个数是奇数”的思考</title>
+    <url>/2019/04/23/%E5%85%B3%E4%BA%8E%E2%80%9C%E6%80%8E%E4%B9%88%E5%88%A4%E6%96%AD%E4%B8%80%E4%B8%AA%E6%95%B0%E6%98%AF%E5%A5%87%E6%95%B0%E2%80%9D%E7%9A%84%E6%80%9D%E8%80%83/</url>
+    <content><![CDATA[<p>有时候，关于一个简单的问题，深入思考之后或许能发现更多不一样的东西。那么现在，我们来讨论一个简单的问题：能不能写一个方法，判断一个数是奇数？</p>
+<a id="more"></a>
+
+<p>可能我们刚看到这个问题，都会不屑的一笑，这么简单的问题，还用得着讨论吗？我觉得是有必要的。</p>
+<p>像下面这样，我们很容易就能写出来：</p>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">boolean</span> <span class="title">test</span><span class="params">(<span class="keyword">int</span> i)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">if</span> (i % <span class="number">2</span> == <span class="number">1</span>) &#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">true</span>;</span><br><span class="line">    &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">false</span>;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>好像没有问题，那能不能优化一下呢？if判断的不就是boolean值么，好像可以直接返回，然后代码可以改成这样：</p>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">boolean</span> <span class="title">test</span><span class="params">(<span class="keyword">int</span> i)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">return</span> i % <span class="number">2</span> == <span class="number">1</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>做到这一步好像已经很棒了，一行代码就能实现，那还能不能再优化一下呢？再看看下面的代码：</p>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">boolean</span> <span class="title">test</span><span class="params">(<span class="keyword">int</span> i)</span> </span>&#123;</span><br><span class="line">	<span class="keyword">return</span> (i &amp; <span class="number">1</span>) == <span class="number">1</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>Amazing~！这里巧妙的使用了位运算，以非常优雅简洁的方式解决了这个问题，对于计算机来说，位运算应该是最快的计算方式了。</p>
+<p>通过上面对一个简单问题处理的一步步优化，我想说的的是，有时候写代码，解决一个问题，并不是能用就行了，还应当考虑，有没有更高效的方式去做更好的处理，这是值得深思的。写代码的时候如果不思考，写出来的代码将会变得臃肿，可读性也很差。如果你看过Java源码，你一定会对其中的一些代码大声惊呼的，仿佛是在看一件美丽的事物，因为里面众多的方法实现太优雅了。</p>
+<blockquote>
+<p>参考文章：<a href="https://zhuanlan.zhihu.com/p/57859872" target="_blank" rel="noopener">记一道简单的java面试题</a></p>
+</blockquote>
+]]></content>
+      <categories>
+        <category>记录</category>
+      </categories>
+      <tags>
+        <tag>Java</tag>
+        <tag>基础知识</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>Linux的修炼之路：（一）发行版的选择-Ubuntu</title>
+    <url>/2019/04/22/Linux%E7%9A%84%E4%BF%AE%E7%82%BC%E4%B9%8B%E8%B7%AF%EF%BC%9A%EF%BC%88%E4%B8%80%EF%BC%89%E5%8F%91%E8%A1%8C%E7%89%88%E7%9A%84%E9%80%89%E6%8B%A9-Ubuntu/</url>
+    <content><![CDATA[<p>从安装到使用Ubuntu已经有一段时间了，期间遇到了很多的坑，得益于前人的贡献，大多数的问题我都在互联网上找到了相应的解决方式，在此先感谢各位前辈了，让我有了一些收获。现在我将我的折腾过程记录下来，方便以后再遇到同样问题的时候查找方便，也为了分享出来，帮助更多的人。</p>
+<a id="more"></a>
+
+<h3 id="折腾的开始"><a href="#折腾的开始" class="headerlink" title="折腾的开始"></a>折腾的开始</h3><p>之前在Windows10中装了个Vmware，跑了个Ubuntu在上面，但是在虚拟机中使用总觉得很不爽，于是痛下决心，准备分一块空间出来装个双系统，平时工作开发的时候就用Linux，回家娱乐就用Windows，单系统是不可能单系统的，毕竟要打游戏的嘛。</p>
+<h3 id="系统的选择"><a href="#系统的选择" class="headerlink" title="系统的选择"></a>系统的选择</h3><p>深知从Windows切换到Linux就是开启了无尽的折腾模式，同时又被各位大佬的各种Linux下华丽的桌面及各种强大的工具所吸引，我选择了入坑，但是为了让折腾起来不这么抓狂这么累，我还是在知乎上了解了很多关于各种Linux发行版的区别，操作及折腾的难度，主要包括各大主流发行版的桌面版，如：Ubuntu、Deepin、CentOS、Manjaro等，还有各种桌面环境，如：Unity、Xfce、KDE、Gnome等。</p>
+<p>我犯了很多初学者同样的错误，在各个发行版中挣扎，想通过对比选出最好最优秀的系统，所以期间我下载了各大发行版，反复的刻镜像反复的装系统，乐此不疲，但始终觉得这并不是我想要的，或者因为某个坑无法解决而放弃。其实这种思维完全是错误的，没有最好的发行版，只有最适合自己的，我想要的不过是稳定，遇到问题能在网上找到答案。所以我最后选择了使用者最多也是桌面发行版最流行的Ubuntu系统，因为我相信我会遇到的坑已经有人帮我填平了，哈哈。附上我装过的各大发行版：</p>
+<p><img src="https://ws3.sinaimg.cn/large/005tkHc2ly1g2buuotudhj30mj060t8w.jpg" alt="image"></p>
+<h3 id="Ubuntu"><a href="#Ubuntu" class="headerlink" title="Ubuntu"></a>Ubuntu</h3><p><img src="https://wx4.sinaimg.cn/large/005tkHc2ly1g2bvixwadxj31hc0u0b29.jpg" alt="image"></p>
+<p>目前使用的是Ubuntu18.04桌面版，这是在我美化之后的效果，个人还是非常喜欢的。</p>
+]]></content>
+      <categories>
+        <category>Linux</category>
+      </categories>
+      <tags>
+        <tag>Linux</tag>
+        <tag>Ubuntu</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>Windows10专业版激活教程</title>
+    <url>/2019/04/02/Windows10%E4%B8%93%E4%B8%9A%E7%89%88%E6%BF%80%E6%B4%BB%E6%95%99%E7%A8%8B/</url>
+    <content><![CDATA[<p>笔记本自带的正版系统是Windows10家庭版，因为不满足平时的使用需求，比如远程桌面，组策略什么的，所以就重装了Windows10专业版，但是重装过后就不能自动激活了，所以就从网上找了个靠谱的方法重新激活了系统（正版用不起啊，哭~），这里简单记录下，以后还会用到的。</p>
+<a id="more"></a>
+
+<p>话不多说，直接上教程，本方法简单高效，不需要下载什么激活软件，直接执行几条命令即可，激活期间请保持网络连接正常。</p>
+<ol>
+<li><p>以管理员身份打开命令提示符。</p>
+</li>
+<li><p>执行命令：<code>slmgr.vbs /upk</code><br>弹出窗口提示：已成功卸载了产品密钥。</p>
+</li>
+<li><p>执行命令：<code>slmgr /ipk W269N-WFGWX-YVC9B-4J6C9-T83GX</code></p>
+<p>弹出窗口提示：成功的安装了产品密钥。</p>
+</li>
+<li><p>执行命令：<code>slmgr /skms zh.us.to</code></p>
+<p>弹出窗口提示：密钥管理服务计算机名成功的设置为zh.us.to。</p>
+</li>
+<li><p>执行命令：<code>slmgr /ato</code></p>
+<p>弹出窗口提示：成功的激活了产品。</p>
+</li>
+</ol>
+<p>执行完以上操作就大功告成，激活Windows10专业版了。</p>
+]]></content>
+      <categories>
+        <category>教程</category>
+      </categories>
+      <tags>
+        <tag>Windows</tag>
+        <tag>系统</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>从Excel生成MySQL数据表(Apache POI)</title>
+    <url>/2019/02/27/%E4%BB%8EExcel%E7%94%9F%E6%88%90MySQL%E6%95%B0%E6%8D%AE%E8%A1%A8-Apache-POI/</url>
+    <content><![CDATA[<p>通常在开发项目的时候，会先生成数据字段的Excel表，然后在MySQL中创建对应的数据表，字段少的时候还不是很麻烦，但是遇到字段特别多的表时，手写SQL效率会非常低下，像Navicat等图形化工具支持从Excle导入，但是操作繁琐而且容易出错，这时候就需要一些工具来帮我们生成数据表了。</p>
+<a id="more"></a>
+
+<h3 id="需求"><a href="#需求" class="headerlink" title="需求"></a>需求</h3><p>从一个数据库设计的Excel表生成MySQL数据表，假设现在有一个设计好的Excel表结构，像下面这样，需要用它来生成数据表。</p>
+<table>
+<thead>
+<tr>
+<th>名称</th>
+<th>字段名</th>
+<th>类型</th>
+<th>长度</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>ID</td>
+<td>id</td>
+<td>int</td>
+<td>11</td>
+</tr>
+<tr>
+<td>姓名</td>
+<td>name</td>
+<td>varchar</td>
+<td>10</td>
+</tr>
+<tr>
+<td>年龄</td>
+<td>age</td>
+<td>int</td>
+<td>3</td>
+</tr>
+<tr>
+<td>生日</td>
+<td>birthday</td>
+<td>date</td>
+<td></td>
+</tr>
+</tbody></table>
+<h3 id="实现"><a href="#实现" class="headerlink" title="实现"></a>实现</h3><p>这里实现的时候使用到了Apache POI这个库，POI编写了非常多实用的API，它可以使用Java读取、创建和修改MS Excel文件，官方文档：<a href="https://poi.apache.org/" target="_blank" rel="noopener">POI</a></p>
+<p>实现的思路是，利用POI，可以非常方便的解析上面的Excel表，读取里面的字段值，注释，类型和长度等，再拼接成SQL，利用JDBC执行，就可以生成数据表结构了。</p>
+<p>代码如下（JDK8）：</p>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="keyword">package</span> cn.glieen;</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> org.apache.poi.ss.usermodel.Cell;</span><br><span class="line"><span class="keyword">import</span> org.apache.poi.ss.usermodel.CellType;</span><br><span class="line"><span class="keyword">import</span> org.apache.poi.ss.usermodel.Row;</span><br><span class="line"><span class="keyword">import</span> org.apache.poi.ss.usermodel.Sheet;</span><br><span class="line"><span class="keyword">import</span> org.apache.poi.xssf.usermodel.XSSFWorkbook;</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> java.io.IOException;</span><br><span class="line"><span class="keyword">import</span> java.io.InputStream;</span><br><span class="line"><span class="keyword">import</span> java.sql.Connection;</span><br><span class="line"><span class="keyword">import</span> java.sql.DriverManager;</span><br><span class="line"><span class="keyword">import</span> java.sql.SQLException;</span><br><span class="line"><span class="keyword">import</span> java.sql.Statement;</span><br><span class="line"><span class="keyword">import</span> java.util.Objects;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Excel2MySQL</span> </span>&#123;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> <span class="keyword">throws</span> IOException, SQLException, ClassNotFoundException </span>&#123;</span><br><span class="line">        String fileName = <span class="string">"user.xlsx"</span>;</span><br><span class="line">        Sheet sheet = loadExcel(fileName);</span><br><span class="line">        String sql = createSQL(sheet, fileName);</span><br><span class="line">        System.out.println(sql);</span><br><span class="line">        executeSQL(sql);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> Sheet <span class="title">loadExcel</span><span class="params">(String fileName)</span> <span class="keyword">throws</span> IOException </span>&#123;</span><br><span class="line">        InputStream excelResource = Excel2MySQL<span class="class">.<span class="keyword">class</span>.<span class="title">getClassLoader</span>().<span class="title">getResourceAsStream</span>(<span class="title">fileName</span>)</span>;</span><br><span class="line">        Objects.requireNonNull(excelResource);</span><br><span class="line">        XSSFWorkbook wb = <span class="keyword">new</span> XSSFWorkbook(excelResource);</span><br><span class="line">        <span class="keyword">return</span> wb.getSheetAt(<span class="number">0</span>);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> String <span class="title">createSQL</span><span class="params">(Sheet sheet, String fileName)</span> </span>&#123;</span><br><span class="line">        StringBuilder sb = <span class="keyword">new</span> StringBuilder(<span class="string">"CREATE TABLE "</span>);</span><br><span class="line">        String tableName = fileName.substring(<span class="number">0</span>, fileName.lastIndexOf(<span class="string">"."</span>));</span><br><span class="line">        sb.append(<span class="string">"`"</span>).append(tableName).append(<span class="string">"`("</span>);</span><br><span class="line">        <span class="keyword">int</span> rowNum = sheet.getLastRowNum();</span><br><span class="line">        <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">1</span>; i &lt; sheet.getLastRowNum() + <span class="number">1</span>; i++) &#123;</span><br><span class="line">            Row row = sheet.getRow(i);</span><br><span class="line">            sb.append(parseField(row));</span><br><span class="line">        &#125;</span><br><span class="line">        sb.deleteCharAt(sb.lastIndexOf(<span class="string">","</span>));</span><br><span class="line">        sb.append(<span class="string">");"</span>);</span><br><span class="line">        <span class="keyword">return</span> sb.toString();</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> String <span class="title">parseField</span><span class="params">(Row row)</span> </span>&#123;</span><br><span class="line">        String comment = getCellValue(row.getCell(<span class="number">0</span>));</span><br><span class="line">        String name = getCellValue(row.getCell(<span class="number">1</span>));</span><br><span class="line">        String type = getCellValue(row.getCell(<span class="number">2</span>));</span><br><span class="line">        String length = getCellValue(row.getCell(<span class="number">3</span>));</span><br><span class="line">        <span class="keyword">if</span> (<span class="string">""</span>.equals(length)) &#123;</span><br><span class="line">            length = <span class="string">""</span>;</span><br><span class="line">        &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">            length = <span class="string">"("</span> + length + <span class="string">")"</span>;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> <span class="string">"\n`"</span> + name + <span class="string">"` "</span> + type + length + <span class="string">" COMMENT '"</span> + comment + <span class="string">"',"</span>;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> String <span class="title">getCellValue</span><span class="params">(Cell cell)</span> </span>&#123;</span><br><span class="line">        cell.setCellType(CellType.STRING);</span><br><span class="line">        <span class="keyword">return</span> cell.getStringCellValue();</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">executeSQL</span><span class="params">(String sql)</span> <span class="keyword">throws</span> ClassNotFoundException, SQLException </span>&#123;</span><br><span class="line">        String url = <span class="string">"jdbc:mysql://localhost:3306/test"</span>;</span><br><span class="line">        String user = <span class="string">"root"</span>;</span><br><span class="line">        String password = <span class="string">"root"</span>;</span><br><span class="line">        Class.forName(<span class="string">"com.mysql.jdbc.Driver"</span>);</span><br><span class="line">        Connection connection = DriverManager.getConnection(url, user, password);</span><br><span class="line">        <span class="keyword">try</span> (Statement statement = connection.createStatement()) &#123;</span><br><span class="line">            statement.executeUpdate(sql);</span><br><span class="line">        &#125;</span><br><span class="line">        connection.close();</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>运行结果：</p>
+<p><img src="https://wx1.sinaimg.cn/large/005tkHc2ly1g0t8hfi8igj30e305274k.jpg" alt="image"></p>
+<p><img src="https://wx1.sinaimg.cn/large/005tkHc2ly1g0t8jrqzz9j30hy0dymxj.jpg" alt="image"></p>
+<p>SQL语句成功打印，数据表成功创建。</p>
+<h3 id="扩展"><a href="#扩展" class="headerlink" title="扩展"></a>扩展</h3><p>上面只是一个简单的Demo，当需要更多的功能，比如，自增长，主键和索引等内容时，可以对代码进行更丰富的扩充和完善。这只是简单使用了POI的一小部分，更多的处理接口还待发现。</p>
+]]></content>
+      <categories>
+        <category>记录</category>
+      </categories>
+      <tags>
+        <tag>Excle</tag>
+        <tag>POI</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>配置Github公钥</title>
+    <url>/2019/02/14/%E9%85%8D%E7%BD%AEGithub%E5%85%AC%E9%92%A5/</url>
+    <content><![CDATA[<p>大多数 Git 服务器都会选择使用 SSH 公钥来进行授权,系统中的每个用户都必须提供一个公钥用于授权，没有的话就要生成一个。生成公钥的过程在所有操作系统上都差不多。</p>
+<a id="more"></a>
+
+<h3 id="公钥和私钥"><a href="#公钥和私钥" class="headerlink" title="公钥和私钥"></a>公钥和私钥</h3><p>SSH公钥默认储存在用户的家路径的<code>.ssh</code>目录下，Windows为<code>C:\Users\用户名\.ssh</code>目录，Linux为<code>~/.ssh</code>目录，下图为Windows下的文件列表。</p>
+<p><img src="https://wx1.sinaimg.cn/large/005tkHc2gy1g06257oya9j30jy08p3yw.jpg" alt="image"></p>
+<p><code>id_rsa</code>为私钥文件，<code>id_rsa.pub</code>为公钥文件。</p>
+<h3 id="生成公钥和私钥"><a href="#生成公钥和私钥" class="headerlink" title="生成公钥和私钥"></a>生成公钥和私钥</h3><ol>
+<li>确保家路径下没有<code>.ssh</code>目录，有则先删除该文件夹；</li>
+<li>打开bash终端，运行<code>ssh-keygen</code>工具；</li>
+<li>会有三次提示操作，第一次是确认生成密钥的目录，默认是家路径下的 <code>.ssh</code>目录，第二次和第三次是提示输入密码和确认密码，可以为空；</li>
+<li>生成成功。</li>
+</ol>
+<p><img src="https://ws1.sinaimg.cn/large/005tkHc2gy1g062genf7hj30sr0j5jvn.jpg" alt="image"></p>
+<p>生成后的公钥大概就是这个样子：</p>
+<figure class="highlight markdown"><table><tr><td class="code"><pre><span class="line">ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQDiupK6UEUhjsa/E7+lRx1WJpEE+arG6YiWJ5cdFCyHuXq3X+2anW7C68X6Wn41eivFmEcD4fXP8/ZM5x40spFfXsvE3qAAAZUxF9HDM0gj9zojaz9P1QtF1dqZKTiBszi9c0kPgb3iR24h6H+NzmX06dVp4PPv6Zlci7TEAf9gsFot1reEtT0Bp+jVivEutvz231A3pZcUBuYkGCXdfvw7gbT5NPFlVm8l+kY8xBbJ6sMXKWDO06Kx/aEpUbDHPsxlD4Vmu0A6NSjtxATjG9xEeaNHct2Ry6jpOWE28xIYYtS3b5FAx4k4XEULYWIMMersdwHA768LGnWibh9W9IUJ Glieen@Firefly</span><br></pre></td></tr></table></figure>
+
+<h3 id="配置SSH到Github"><a href="#配置SSH到Github" class="headerlink" title="配置SSH到Github"></a>配置SSH到Github</h3><ol>
+<li>登录Github并打开SSH配置链接：<a href="https://github.com/settings/keys" target="_blank" rel="noopener">Github-Keys</a>；</li>
+<li>点击<code>New SSH Key</code>，Title可以随意命名，将公钥文件<code>id_rsa.pub</code>里的内容复制并粘贴到Key文本框中，点击<code>Add SSH Key</code>即可成功添加；</li>
+<li>打开bash终端，输入：<code>ssh git@github.com</code>可以测试是否配置成功。</li>
+</ol>
+<p><img src="https://wx3.sinaimg.cn/large/005tkHc2gy1g062nognw0j30mo07e3yz.jpg" alt="image"></p>
+<p><img src="https://ws1.sinaimg.cn/large/005tkHc2gy1g062s45um3j30pp06omy7.jpg" alt="image"></p>
+]]></content>
+      <categories>
+        <category>Git</category>
+      </categories>
+      <tags>
+        <tag>Git</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>MySQL压缩版安装记录</title>
+    <url>/2019/02/14/MySQL%E5%8E%8B%E7%BC%A9%E7%89%88%E5%AE%89%E8%A3%85%E8%AE%B0%E5%BD%95/</url>
+    <content><![CDATA[<p>作为程序员，免不了与数据库打交道，MySQL作为一款最流行的关系型数据库，更是使用的非常之多，这篇文章主要记录MySQL压缩版在Windows下的安装和简单配置过程。</p>
+<a id="more"></a>
+
+<h3 id="安装环境"><a href="#安装环境" class="headerlink" title="安装环境"></a>安装环境</h3><p>Windows版本：Windows 10专业版</p>
+<p>MySQL版本：MySQL 5.7.22 64位ZIP压缩版</p>
+<h3 id="下载安装包"><a href="#下载安装包" class="headerlink" title="下载安装包"></a>下载安装包</h3><p>我推荐前往MySQL的官方网站下载MySQL的安装包，下载地址：<a href="https://downloads.mysql.com/archives/community/" target="_blank" rel="noopener">MySQL Community Server</a>，选择与自己系统对应的版本，下载安装包到本地磁盘。</p>
+<p>本文使用的安装包为：mysql-5.7.22-winx64.zip</p>
+<h3 id="配置环境变量"><a href="#配置环境变量" class="headerlink" title="配置环境变量"></a>配置环境变量</h3><p>将安装包解压到指定位置（为避免不必要的麻烦，位置路径请不要包含中文和空格字符），我这里是解压到<code>F:\Software\MySQL57</code>路径下，目录结构如下图所示。</p>
+<p><img src="https://wx1.sinaimg.cn/large/005tkHc2gy1g05yym2lzqj30pi0eeabr.jpg" alt="image"></p>
+<p>打开Windows的系统变量设置，将MySQL下的bin目录配置进系统的Path变量，注意变量之间使用分号（;）间隔，这样就省去了每次都输入完整路径的麻烦。</p>
+<p><img src="https://wx3.sinaimg.cn/large/005tkHc2gy1g05z2wds2wj30ij05awel.jpg" alt="image"></p>
+<p>以管理员权限打开命令提示符，输入<code>mysql -V</code>，正确显示MySQL的版本号即配置成功。</p>
+<p><img src="https://wx2.sinaimg.cn/large/005tkHc2gy1g05z6mnt18j30rl0eft90.jpg" alt="image"></p>
+<h3 id="创建MySQL默认配置文件"><a href="#创建MySQL默认配置文件" class="headerlink" title="创建MySQL默认配置文件"></a>创建MySQL默认配置文件</h3><p>新建一个文本文件，命名为<code>my.ini</code>，将以下内容复制保存到文件中，注意<code>basedir</code>和<code>datadir</code>对应为MySQL的解压路径。</p>
+<figure class="highlight properties"><table><tr><td class="code"><pre><span class="line"><span class="attr">[mysql]</span></span><br><span class="line"><span class="comment"># 设置mysql客户端默认字符集</span></span><br><span class="line"><span class="meta">default-character-set</span>=<span class="string">utf8 </span></span><br><span class="line"><span class="attr">[mysqld]</span></span><br><span class="line"><span class="comment">#设置3306端口</span></span><br><span class="line"><span class="attr">port</span> = <span class="string">3306 </span></span><br><span class="line"><span class="comment"># 设置mysql的安装目录</span></span><br><span class="line"><span class="attr">basedir</span>=<span class="string">"F:\Software\MySQL57"</span></span><br><span class="line"><span class="comment"># 设置mysql数据库的数据的存放目录</span></span><br><span class="line"><span class="attr">datadir</span>=<span class="string">"F:\Software\MySQL57\data"</span></span><br><span class="line"><span class="comment"># 允许最大连接数</span></span><br><span class="line"><span class="attr">max_connections</span>=<span class="string">200</span></span><br><span class="line"><span class="comment"># 服务端使用的字符集默认为8比特编码的latin1字符集</span></span><br><span class="line"><span class="meta">character-set-server</span>=<span class="string">utf8</span></span><br><span class="line"><span class="comment"># 创建新表时将使用的默认存储引擎</span></span><br><span class="line"><span class="meta">default-storage-engine</span>=<span class="string">INNODB</span></span><br></pre></td></tr></table></figure>
+
+<h3 id="初始化MySQL"><a href="#初始化MySQL" class="headerlink" title="初始化MySQL"></a>初始化MySQL</h3><p>以管理员权限打开命令提示符，执行命令：<code>mysqld --initialize-insecure --user=mysql</code>，执行完这个命令后，MySQL会在安装目录下创建一个data文件夹，且创建好默认数据库，登录的用户名为<code>root</code>，密码为空。</p>
+<p><img src="https://wx2.sinaimg.cn/large/005tkHc2gy1g05zhq4xipj30ms01zglg.jpg" alt="image"></p>
+<h3 id="安装MySQL"><a href="#安装MySQL" class="headerlink" title="安装MySQL"></a>安装MySQL</h3><p>以管理员权限打开命令提示符，执行命令：<code>mysqld install</code>，提示<code>Service successfully installed</code>即安装成功。</p>
+<p><img src="https://ws4.sinaimg.cn/large/005tkHc2gy1g05ziy4v4xj30f0028mwz.jpg" alt="image"></p>
+<p><em>卸载MySQL的命令为：<code>mysqld remove</code></em></p>
+<h3 id="启动MySQL"><a href="#启动MySQL" class="headerlink" title="启动MySQL"></a>启动MySQL</h3><p>以管理员权限打开命令提示符，执行命令：<code>net start mysql</code>，提示<code>MySQL服务已经启动成功</code>即表示MySQL已经正常启动。</p>
+<p><img src="https://ws4.sinaimg.cn/large/005tkHc2gy1g05zl8og02j30em05wt8p.jpg" alt="image"></p>
+<h3 id="登录MySQL"><a href="#登录MySQL" class="headerlink" title="登录MySQL"></a>登录MySQL</h3><p>打开命令提示符，执行命令：<code>mysql -u root -p</code>，密码默认为空，直接回车即可，表示以<code>root</code>用户登录MySQL。</p>
+<p><img src="https://wx4.sinaimg.cn/large/005tkHc2gy1g060md7wctj30iw08l0sy.jpg" alt="image"></p>
+<h3 id="修改用户密码"><a href="#修改用户密码" class="headerlink" title="修改用户密码"></a>修改用户密码</h3><p>以命令提示符登录MySQL，执行命令：<code>set password for root@localhost = password(&quot;root&quot;);</code>结尾分号不能省略，表示修改<code>root</code>用户的密码为<code>root</code>，修改之后，下次登录则需键入新的密码。</p>
+<p><img src="https://ws2.sinaimg.cn/large/005tkHc2gy1g05zyvwslsj30ig0id3za.jpg" alt="image"></p>
+<h3 id="修改远程访问权限"><a href="#修改远程访问权限" class="headerlink" title="修改远程访问权限"></a>修改远程访问权限</h3><p>以命令提示符登录MySQL，执行以下两个命令：<code>grant all privileges on *.* to &#39;root&#39;@&#39;%&#39; identified by &#39;password&#39;;</code>和<code>flush privileges;</code>，第一个“*”表示所有数据库，第二个“*”表示所有数据表，root表示允许远程登录的用户名，%表示任意IP，password表示远程登录使用的密码，<code>flush privileges</code>是让权限立即生效。</p>
+<p><img src="https://wx4.sinaimg.cn/large/005tkHc2gy1g060i660b7j30kg0bndg8.jpg" alt="image"></p>
+<h3 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h3><p>MySQL压缩版的安装及配置只是一个简单的开始，想要在开发中更好的运用MySQL，后期的学习和努力还需要更多。</p>
+]]></content>
+      <categories>
+        <category>MySQL</category>
+      </categories>
+      <tags>
+        <tag>MySQL</tag>
+        <tag>数据库</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>初识Socket</title>
+    <url>/2019/01/24/%E5%88%9D%E8%AF%86Socket/</url>
+    <content><![CDATA[<p>在网络编程中，我们经常提及socket，什么是socket呢？我们经常把socket翻译为套接字，socket是在应用层和传输层之间的一个抽象层，它把TCP/IP层复杂的操作抽象为几个简单的接口供应用层调用以实现进程在网络中通信。</p>
+<a id="more"></a>
+
+<h3 id="Java中基于TCP的Socket"><a href="#Java中基于TCP的Socket" class="headerlink" title="Java中基于TCP的Socket"></a>Java中基于TCP的Socket</h3><p>TCP协议是面向连接的、可靠的、有序的、以字节流的方式发送数据，通过三次握手方式建立连接，形成传输数据的通道。</p>
+<p>Java中基于TCP实现的套接字类有Socket类和ServerSocket类，ServerSocket类用于服务器端，监听请求，Socket是在连接建立时使用的，在连接成功时，应用程序的两端都会生成一个Socket实例，对这个实例进行操作就能实现服务端和客户端的通信了。</p>
+<h3 id="通信步骤"><a href="#通信步骤" class="headerlink" title="通信步骤"></a>通信步骤</h3><h4 id="服务器端"><a href="#服务器端" class="headerlink" title="服务器端"></a>服务器端</h4><ol>
+<li>创建ServerSocket对象，绑定监听端口号；</li>
+<li>通过<code>accept()</code>方法监听客户端请求；</li>
+<li>连接建立之后，通过输入流读取客户端发送的请求信息；</li>
+<li>通过输出流将响应信息发送到客户端；</li>
+<li>关闭连接。</li>
+</ol>
+<h4 id="客户端"><a href="#客户端" class="headerlink" title="客户端"></a>客户端</h4><ol>
+<li>创建Socket对象，指明需要连接的服务器的地址和端口号。</li>
+<li>连接建立后，通过输出流向服务器发送请求信息。</li>
+<li>通过输入流获取服务器响应的信息。</li>
+<li>关闭连接。</li>
+</ol>
+<h3 id="代码实现"><a href="#代码实现" class="headerlink" title="代码实现"></a>代码实现</h3><p>服务器端</p>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Server</span> </span>&#123;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> <span class="keyword">throws</span> IOException </span>&#123;</span><br><span class="line">        <span class="comment">// 创建ServerSocket实例,端口号设置为2333</span></span><br><span class="line">        ServerSocket serverSocket = <span class="keyword">new</span> ServerSocket(<span class="number">2333</span>);</span><br><span class="line">        <span class="comment">// 循环监听客户端发来的请求</span></span><br><span class="line">        System.out.println(<span class="string">"服务器端已启动"</span>);</span><br><span class="line">        <span class="keyword">while</span> (<span class="keyword">true</span>) &#123;</span><br><span class="line">            System.out.println(<span class="string">"正在监听请求..."</span>);</span><br><span class="line">            Socket socket = serverSocket.accept();</span><br><span class="line">            <span class="comment">// 将请求得到的socket句柄交由handle方法处理</span></span><br><span class="line">            <span class="keyword">new</span> Server().handle(socket);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">private</span> <span class="keyword">void</span> <span class="title">handle</span><span class="params">(Socket socket)</span> <span class="keyword">throws</span> IOException </span>&#123;</span><br><span class="line">        <span class="comment">// 将字节流转换成字符流</span></span><br><span class="line">        BufferedReader reader = <span class="keyword">new</span> BufferedReader(<span class="keyword">new</span> InputStreamReader(socket.getInputStream(), StandardCharsets.UTF_8));</span><br><span class="line">        String string = reader.readLine();</span><br><span class="line">        <span class="keyword">while</span> (string != <span class="keyword">null</span>) &#123;</span><br><span class="line">            System.out.println(string);</span><br><span class="line">            string = reader.readLine();</span><br><span class="line">        &#125;</span><br><span class="line">        OutputStream outputStream = socket.getOutputStream();</span><br><span class="line">        outputStream.write(<span class="string">"你好,这是服务器端回复的消息!"</span>.getBytes());</span><br><span class="line">        outputStream.flush();</span><br><span class="line">        socket.close();</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>客户端</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">public class Client &#123;</span><br><span class="line">    public static void main(String[] args) throws IOException &#123;</span><br><span class="line">        System.out.println(&quot;正在连接服务端...&quot;);</span><br><span class="line">        Socket socket &#x3D; new Socket(&quot;127.0.0.1&quot;, 2333);</span><br><span class="line">        OutputStream outputStream &#x3D; socket.getOutputStream();</span><br><span class="line">        outputStream.write(&quot;你好,这是客户端发来的消息!&quot;.getBytes());</span><br><span class="line">        outputStream.flush();</span><br><span class="line">        &#x2F;&#x2F; 关闭输出流，告知服务端消息已经发送完毕</span><br><span class="line">        socket.shutdownOutput();</span><br><span class="line">        System.out.println(&quot;消息发送成功&quot;);</span><br><span class="line">        BufferedReader reader &#x3D; new BufferedReader(new InputStreamReader(socket.getInputStream()));</span><br><span class="line">        String string &#x3D; reader.readLine();</span><br><span class="line">        while (string !&#x3D; null) &#123;</span><br><span class="line">            System.out.println(string);</span><br><span class="line">            string &#x3D; reader.readLine();</span><br><span class="line">        &#125;</span><br><span class="line">        socket.close();</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>因为Socket是阻塞的，阻塞会发生多个地方，一个是accept方法，调用这个方法之后，服务端会一直等待，直到有客户端连接进来；第二个地方是流的读取，当服务端使用输入流读取了客户端发送的消息，而服务端没有标记消息已经发送完成，那么服务端就会一直等待，所以这里要使用<code>socket.shutdownOutput()</code>这个方法关闭客户端的输出流，告知服务端消息已经发送完成，后续的代码才会继续执行。</p>
+<h3 id="测试结果"><a href="#测试结果" class="headerlink" title="测试结果"></a>测试结果</h3><p><img src="https://ws1.sinaimg.cn/large/005tkHc2gy1fzmhpu7sivj30g204c3yl.jpg" alt="image"></p>
+<p><img src="https://ws2.sinaimg.cn/large/005tkHc2gy1fzmhq9ydikj30gw06imxk.jpg" alt="image"></p>
+<p><img src="https://wx3.sinaimg.cn/large/005tkHc2gy1fzmhqjnnvrj30dv05wmxh.jpg" alt="image"></p>
+<h3 id="多线程处理"><a href="#多线程处理" class="headerlink" title="多线程处理"></a>多线程处理</h3><p>因为服务端是循环监听客户端的请求，那么当一个客户端建立连接，但是又长期通信的时候，其他客户端的请求将会全部阻塞，无法建立连接，所以这里改进了一下代码，使用多线程技术提高处理的效率。</p>
+<p>服务端</p>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Server</span> <span class="keyword">implements</span> <span class="title">Runnable</span></span>&#123;</span><br><span class="line">    <span class="keyword">private</span> Socket socket;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="title">Server</span><span class="params">(Socket socket)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">this</span>.socket = socket;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> <span class="keyword">throws</span> IOException </span>&#123;</span><br><span class="line">        <span class="comment">// 创建ServerSocket实例,端口号设置为2333</span></span><br><span class="line">        ServerSocket serverSocket = <span class="keyword">new</span> ServerSocket(<span class="number">2333</span>);</span><br><span class="line">        <span class="comment">// 循环监听客户端发来的请求</span></span><br><span class="line">        System.out.println(<span class="string">"服务器端已启动"</span>);</span><br><span class="line">        <span class="keyword">while</span> (<span class="keyword">true</span>) &#123;</span><br><span class="line">            System.out.println(<span class="string">"正在监听请求..."</span>);</span><br><span class="line">            Socket socket = serverSocket.accept();</span><br><span class="line">            <span class="comment">// 将请求得到的socket句柄交由handle方法处理</span></span><br><span class="line">            <span class="keyword">new</span> Thread(<span class="keyword">new</span> Server(socket)).start();</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">run</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">try</span> &#123;</span><br><span class="line">            <span class="comment">// 将字节流转换成字符流</span></span><br><span class="line">            BufferedReader reader = <span class="keyword">new</span> BufferedReader(<span class="keyword">new</span> InputStreamReader(socket.getInputStream(), StandardCharsets.UTF_8));</span><br><span class="line">            String string = reader.readLine();</span><br><span class="line">            <span class="keyword">while</span> (string != <span class="keyword">null</span>) &#123;</span><br><span class="line">                System.out.println(string);</span><br><span class="line">                string = reader.readLine();</span><br><span class="line">            &#125;</span><br><span class="line">            OutputStream outputStream = socket.getOutputStream();</span><br><span class="line">            outputStream.write(<span class="string">"你好,这是服务器端回复的消息!"</span>.getBytes());</span><br><span class="line">            outputStream.flush();</span><br><span class="line">            socket.close();</span><br><span class="line">        &#125; <span class="keyword">catch</span> (IOException e) &#123;</span><br><span class="line">            e.printStackTrace();</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h3><p>了解Socket对理解计算机的网络通信有更深的意义，只有掌握了应用的沟通方式才能更加得心应手的去使用代码控制它，Java对Socket的支持还是比较好的，提供了大量接口给开发者使用。</p>
+]]></content>
+      <categories>
+        <category>Java</category>
+      </categories>
+      <tags>
+        <tag>Socket</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>Windows10系统安装教程（UEFI+GPT）</title>
+    <url>/2019/01/21/Windows10%E7%B3%BB%E7%BB%9F%E5%AE%89%E8%A3%85%E6%95%99%E7%A8%8B%EF%BC%88UEFI+GPT%EF%BC%89/</url>
+    <content><![CDATA[<p>作为一个程序员，修电脑和装系统是必须要会的（手动狗头），因为总会有朋友来问我怎么重装系统，所以准备写一个教程，以后要是还有人来问我怎么重装，直接把本文链接怼到他脸上（哼哼），本教程使用的是UEFI+GPT安装Windows10。</p>
+<a id="more"></a>
+
+<h3 id="准备"><a href="#准备" class="headerlink" title="准备"></a>准备</h3><p>电脑一台</p>
+<p>U盘一个（大小8G及以上）</p>
+<h3 id="下载镜像"><a href="#下载镜像" class="headerlink" title="下载镜像"></a>下载镜像</h3><p>去<a href="https://www.microsoft.com" target="_blank" rel="noopener">官网</a>或者<a href="https://msdn.itellyou.cn/" target="_blank" rel="noopener">MSDN</a>下载原版ISO镜像文件，以MSDN为例，打开链接，在左边导航栏【操作系统】列表中找到想要重装的系统版本，打开镜像列表，选择适合自己的镜像版本，2G以上内存推荐安装64位操作系统，复制ed2k链接，使用迅雷下载镜像文件即可，本教程使用的镜像文件如下：</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">文件名：cn_windows_10_consumer_editions_version_1809_updated_jan_2019_x64_dvd_34b4d4fb.iso</span><br><span class="line">SHA1：61c07b037574454b88bcac7f5a571c042304c884</span><br><span class="line">文件大小：4.89GB</span><br><span class="line">发布时间：2019-01-16</span><br><span class="line">ed2k:&#x2F;&#x2F;|file|cn_windows_10_consumer_editions_version_1809_updated_jan_2019_x64_dvd_34b4d4fb.iso|5246148608|D93F5C49291A0B7AA888537954785DC3|&#x2F;</span><br></pre></td></tr></table></figure>
+
+<h3 id="制作启动盘"><a href="#制作启动盘" class="headerlink" title="制作启动盘"></a>制作启动盘</h3><ol>
+<li><p>下载启动盘制作工具Rufus，官网地址：<a href="https://rufus.ie/" target="_blank" rel="noopener">Rufus</a></p>
+</li>
+<li><p>插入U盘</p>
+</li>
+<li><p>打开Rufus，选择设备，通常会自动选定插入的U盘，选择镜像文件，分区类型选择GPT，目标系统类型选择UFEFI，其他设置默认，如图所示：</p>
+<p><img src="https://ws2.sinaimg.cn/large/005tkHc2gy1fzf5ko8tg2j30bq0g6jrz.jpg" alt="image"></p>
+</li>
+<li><p>点击开始，工具即开始制作启动盘，<strong>提醒：制作启动盘会清除U盘中的所有数据，请提前备份！</strong></p>
+</li>
+<li><p>进度条跑完后，恭喜你，启动盘制作成功了！关闭Rufus，准备重装系统吧。</p>
+</li>
+</ol>
+<h3 id="从启动盘启动"><a href="#从启动盘启动" class="headerlink" title="从启动盘启动"></a>从启动盘启动</h3><p>启动盘制作完毕后，不要拔出U盘，然后重启电脑，进入BIOS，各个品牌的主板（笔记本）进入BIOS的按键不一致，通常台式机是<code>Delete</code>，笔记本是<code>Esc</code>，<code>F2</code>，<code>F10</code>之类的，如果不对请查看主板（笔记本）说明书或者百度解决。</p>
+<p>以下我以我手头的笔记本电脑<strong>神舟战神K650D</strong>举例，通常大多数电脑设置基本都是一致的，不会有很大的差别，具体的BIOS设置请百度自己的电脑主板或笔记本型号。</p>
+<ol>
+<li><p>关闭安全启动，进入BIOS，找到Secure Boot选项，将其设置为关闭；</p>
+<p><img src="https://ws3.sinaimg.cn/large/005tkHc2gy1fzf5kojgmaj31770ku1iu.jpg" alt="image"></p>
+</li>
+<li><p>开启UEFI模式，在BIOS中找到Boot下的UEFI设置，将其设置为打开；</p>
+<p><img src="https://wx1.sinaimg.cn/large/005tkHc2gy1fzf5koya3tj315x0jcb1f.jpg" alt="image"></p>
+</li>
+<li><p>将U盘设置为第一启动项，U盘是以UEFI开头的就对了，把它移动到第一的位置；</p>
+<p><img src="https://ws3.sinaimg.cn/large/005tkHc2gy1fzf5kpbgu4j316s0ks4qp.jpg" alt="image"></p>
+</li>
+<li><p>保存设置并重启电脑。</p>
+</li>
+</ol>
+<h3 id="系统安装"><a href="#系统安装" class="headerlink" title="系统安装"></a>系统安装</h3><ol>
+<li><p>如果上面的步骤都没有问题的话，那电脑重启应该可以进入到Win PE的安装界面了，像下面这样。</p>
+<p><img src="https://ws1.sinaimg.cn/large/005tkHc2gy1fzf5kprckfj31530n64qp.jpg" alt="image"></p>
+</li>
+<li><p>点击下一步开始安装</p>
+<p><img src="https://ws2.sinaimg.cn/large/005tkHc2gy1fzf5kq7sayj313w0mfb29.jpg" alt="image"></p>
+</li>
+<li><p>点击现在安装，进入到激活</p>
+<p><img src="https://wx1.sinaimg.cn/large/005tkHc2gy1fzf5kqq9ppj312s0ma7wh.jpg" alt="image"></p>
+</li>
+<li><p>这里选择我没有产品密钥，装完系统之后再进行激活（KMS你懂的），进入操作系统版本选择</p>
+<p><img src="https://ws2.sinaimg.cn/large/005tkHc2gy1fzf5kr5t7qj312e0lfkjl.jpg" alt="image"></p>
+</li>
+<li><p>这里我选择家庭版为例，然后单击下一步，进入许可条款</p>
+<p><img src="https://ws1.sinaimg.cn/large/005tkHc2gy1fzf5krm6a1j31160k47wh.jpg" alt="image"></p>
+</li>
+<li><p>我接受许可条款打勾，单击下一步，进入安装选项</p>
+<p><img src="https://ws1.sinaimg.cn/large/005tkHc2gy1fzf5ks27j4j30yp0js4qp.jpg" alt="image"></p>
+</li>
+<li><p>因为是安装全新的系统，所以这里选择自定义，进入安装磁盘选择</p>
+<p><img src="https://ws2.sinaimg.cn/large/005tkHc2gy1fzf5kshan5j311h0l2x6p.jpg" alt="image"></p>
+</li>
+<li><p>到这里是最容易遇到问题的地方了，可能遇到所选磁盘不是GPT格式的分区，磁盘容量大小不足等等问题，只要你以上步骤都正确操作，硬盘是没有问题且大小合适的，那么接下来一系列步骤应该能解决大多数安装遇到的问题，按下键盘上的<code>Shift+F10</code>打开命令提示行</p>
+<p><img src="https://ws4.sinaimg.cn/large/005tkHc2gy1fzf5ksy7npj31720mue81.jpg" alt="image"></p>
+</li>
+<li><p>根据提示输入以下的代码</p>
+<figure class="highlight powershell"><table><tr><td class="code"><pre><span class="line"><span class="comment"># 打开磁盘工具</span></span><br><span class="line">diskpart</span><br><span class="line"><span class="comment"># 列出硬盘</span></span><br><span class="line">list disk</span><br><span class="line"><span class="comment"># 选择操作的硬盘，这里X是硬盘里的编号，你需要把系统装到哪个硬盘你就输入对应硬盘的编号</span></span><br><span class="line">select disk X</span><br><span class="line"><span class="comment"># 清除硬盘，这个操作会将整个硬盘的内容全部清除，如果有重要数据请一定提前备份</span></span><br><span class="line">clean</span><br><span class="line"><span class="comment"># 将硬盘装换成GPT分区格式</span></span><br><span class="line">convert gpt</span><br><span class="line"><span class="comment"># 创建EFI分区，用来存放系统的引导文件，大小256M左右差不多够了</span></span><br><span class="line">create partition efi size = <span class="number">256</span></span><br><span class="line"><span class="comment"># 创建主分区，这是第一个主分区，我喜欢把系统装在这个分区里面，大小的话通常大于50G，因为我不喜欢在C盘放过多的文件和装软件，我这里分了50G</span></span><br><span class="line">create partition primary size = <span class="number">51200</span></span><br><span class="line"><span class="comment"># 创建主分区，这里省略了大小设置，就是默认将剩下的所有容量分到这个区，我喜欢把第二个分区用作D盘，装一些软件</span></span><br><span class="line">create partition primary</span><br></pre></td></tr></table></figure>
+
+<p>下面是具体的操作过程截图，<strong>慎重操作，注意备份数据</strong></p>
+<p><img src="https://ws1.sinaimg.cn/large/005tkHc2gy1fzf5kmifgcj30xc0orhdt.jpg" alt="image"></p>
+<p>操作完成之后右上角叉叉或者输入命令<code>exit</code>退出命令行</p>
+</li>
+<li><p>再次回到安装磁盘选择，点击刷新，就可以看到重新分区后的磁盘列表了</p>
+<p><img src="https://ws4.sinaimg.cn/large/005tkHc2gy1fzf5kmz9xlj314z0n84qq.jpg" alt="image"></p>
+</li>
+<li><p>选择为系统准备的分区，如图，我会选择<code>驱动器1分区2</code>然后单击下一步，系统开始安装，即将大功告成</p>
+<p><img src="https://ws4.sinaimg.cn/large/005tkHc2gy1fzf5knjkswj31800oekjl.jpg" alt="image"></p>
+</li>
+<li><p>等待进度条读完，然后会提示重启系统完成安装，点击重启就可以了，<strong>重启的时候记得把U盘给拔下来</strong>，系统可能会重启多次，重启完成之后会进入系统的启动设置，这些都是一些基础的设置，设置完成后就能进入系统</p>
+<p><img src="https://ws3.sinaimg.cn/large/005tkHc2gy1fzf5knxosxj31hc0u04qp.jpg" alt="image"></p>
+</li>
+<li><p>开始体验全新的Windows 10吧！！！</p>
+</li>
+</ol>
+<h3 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h3><p>遇到问题不要灰心，不要畏惧，善于利用百度/谷歌等搜索引擎！！！善于利用百度/谷歌等搜索引擎！！！善于利用百度/谷歌等搜索引擎！！！重要的事说三遍！！！</p>
+]]></content>
+      <categories>
+        <category>教程</category>
+      </categories>
+      <tags>
+        <tag>Windows</tag>
+        <tag>系统</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>SpringBoot全局异常处理</title>
+    <url>/2019/01/17/SpringBoot%E5%85%A8%E5%B1%80%E5%BC%82%E5%B8%B8%E5%A4%84%E7%90%86/</url>
+    <content><![CDATA[<p>异常是Java开发中经常会遇到的问题，异常如果不妥善的处理将会对开发带来非常大的困扰，所以在代码中我们经常能看到<code>try-catch</code>代码块手动处理异常，这对业务代码会产生干扰，而SpringBoot提供了全局的异常处理机制，简单而且优雅，本文就简要介绍一下SpringBoot全局异常处理的配置。</p>
+<a id="more"></a>
+
+<h3 id="创建项目"><a href="#创建项目" class="headerlink" title="创建项目"></a>创建项目</h3><p>使用Maven创建一个SpringBoot项目，添加web模块的依赖即可，因为只是简单展示一下异常的处理，就不用引入过多的依赖了。</p>
+<figure class="highlight xml"><table><tr><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">parent</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">groupId</span>&gt;</span>org.springframework.boot<span class="tag">&lt;/<span class="name">groupId</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">artifactId</span>&gt;</span>spring-boot-parent<span class="tag">&lt;/<span class="name">artifactId</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">version</span>&gt;</span>2.0.5.RELEASE<span class="tag">&lt;/<span class="name">version</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">relativePath</span>/&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">parent</span>&gt;</span></span><br><span class="line"></span><br><span class="line"><span class="tag">&lt;<span class="name">dependencies</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">dependency</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">groupId</span>&gt;</span>org.springframework.boot<span class="tag">&lt;/<span class="name">groupId</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">artifactId</span>&gt;</span>spring-boot-starter-web<span class="tag">&lt;/<span class="name">artifactId</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">dependency</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">dependencies</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+<h3 id="创建控制器和启动类"><a href="#创建控制器和启动类" class="headerlink" title="创建控制器和启动类"></a>创建控制器和启动类</h3><p>简单的一个<code>Controller</code>和<code>MainApplication</code></p>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="comment">// 控制器</span></span><br><span class="line"><span class="meta">@RestController</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">HelloController</span> </span>&#123;</span><br><span class="line">    <span class="meta">@GetMapping</span>(<span class="string">"/hello"</span>)</span><br><span class="line">    <span class="function"><span class="keyword">public</span> String <span class="title">hello</span><span class="params">(String name)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="string">"Hello "</span> + name;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="comment">// SpringBoot</span></span><br><span class="line"><span class="meta">@SpringBootApplication</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">MainApplication</span> </span>&#123;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span></span>&#123;</span><br><span class="line">        SpringApplication.run(MainApplication<span class="class">.<span class="keyword">class</span>, <span class="title">args</span>)</span>;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>启动<code>MainApplication</code>，打开Postman（Postman是一个非常方便的接口测试工具），访问地址<code>localhost:8080/hello?name=Glieen</code>，成功返回响应数据。</p>
+<p><img src="https://wx1.sinaimg.cn/large/005tkHc2gy1fzfi261jarj30qy09naae.jpg" alt="image"></p>
+<h3 id="创建异常响应实体类"><a href="#创建异常响应实体类" class="headerlink" title="创建异常响应实体类"></a>创建异常响应实体类</h3><p>我们不能直接将异常返回到客户端，这对用户和开发者来说都不友好，也不方便对异常进行处理，这里我们创建一个异常的响应实体来封装异常信息。</p>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="comment">// 异常响应实体</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">ErrorMessage</span> </span>&#123;</span><br><span class="line">    <span class="comment">// 提示信息</span></span><br><span class="line">    <span class="keyword">private</span> String message;</span><br><span class="line">    <span class="comment">// 请求地址</span></span><br><span class="line">    <span class="keyword">private</span> String url;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> String <span class="title">getMessage</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> message;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">setMessage</span><span class="params">(String message)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">this</span>.message = message;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> String <span class="title">getUrl</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> url;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">setUrl</span><span class="params">(String url)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">this</span>.url = url;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="创建自定义异常和异常处理类"><a href="#创建自定义异常和异常处理类" class="headerlink" title="创建自定义异常和异常处理类"></a>创建自定义异常和异常处理类</h3><p>开发中经常遇到的是运行时异常，所以这里我们继承<code>RuntimeException</code>创建自定义的异常，具体的异常在实际运用中应该跟业务逻辑有很大的关系。</p>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="comment">// 自定义异常</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">MyException</span> <span class="keyword">extends</span> <span class="title">RuntimeException</span> </span>&#123;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="title">MyException</span><span class="params">(String message)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">super</span>(message);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>异常处理类只需要创建一个简单的Java类，并且加上<code>ControllerAdvice</code>注解，SpringBoot在启动时会自动扫描并配置。这里使用的<code>RestControllerAdvice</code>是组合了<code>ResponseBody</code>和<code>ControllerAdvice</code>的注解，用来返回json数据，<code>ExceptionHandler</code>注解用来捕捉程序运行时发生的异常，将其配置到方法上，当指定的异常发生时即会调用该注解下的方法。</p>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="comment">// 异常处理类</span></span><br><span class="line"><span class="meta">@RestControllerAdvice</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">DefaultExceptionHandler</span> </span>&#123;</span><br><span class="line">    <span class="comment">// 日志对象</span></span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">final</span> Logger logger = LoggerFactory.getLogger(DefaultExceptionHandler<span class="class">.<span class="keyword">class</span>)</span>;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 捕捉自定义异常MyException</span></span><br><span class="line">    <span class="meta">@ExceptionHandler</span>(MyException<span class="class">.<span class="keyword">class</span>)</span></span><br><span class="line"><span class="class">    <span class="title">public</span> <span class="title">ErrorMessage</span> <span class="title">exception</span>(<span class="title">HttpServletRequest</span> <span class="title">request</span>, <span class="title">Exception</span> <span class="title">e</span>) </span>&#123;</span><br><span class="line">        logger.info(<span class="string">"This is my custom exception!"</span>);</span><br><span class="line">        <span class="keyword">return</span> exceptionHandler(request.getRequestURI(), e.getMessage());</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">private</span> ErrorMessage <span class="title">exceptionHandler</span><span class="params">(String url, String message)</span> </span>&#123;</span><br><span class="line">        ErrorMessage errorMessage = <span class="keyword">new</span> ErrorMessage();</span><br><span class="line">        errorMessage.setMessage(message);</span><br><span class="line">        errorMessage.setUrl(url);</span><br><span class="line">        <span class="keyword">return</span> errorMessage;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="测试异常处理流程"><a href="#测试异常处理流程" class="headerlink" title="测试异常处理流程"></a>测试异常处理流程</h3><p>这里我们将控制器做一个简单的修改，让其主动抛出自定义异常。</p>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="comment">// 控制器类</span></span><br><span class="line"><span class="meta">@RestController</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">HelloController</span> </span>&#123;</span><br><span class="line">    </span><br><span class="line">    <span class="meta">@GetMapping</span>(<span class="string">"/hello"</span>)</span><br><span class="line">    <span class="function"><span class="keyword">public</span> String <span class="title">hello</span><span class="params">(String name)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">if</span> (<span class="keyword">true</span>)</span><br><span class="line">            <span class="keyword">throw</span> <span class="keyword">new</span> MyException(<span class="string">"MyException"</span>);</span><br><span class="line">        <span class="keyword">return</span> <span class="string">"hello "</span> + name;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>使用Postman再次访问该接口<code>localhost:8080/hello?name=Glieen</code>，程序将自定义的异常实体类以json形式返回，包含提示信息和请求地址，同时在控制台输出日志信息，异常被成功捕捉并处理。</p>
+<p><img src="https://wx1.sinaimg.cn/large/005tkHc2gy1fzfij9qvgqj30rh0aijrt.jpg" alt="image"></p>
+<p><img src="https://ws3.sinaimg.cn/large/005tkHc2gy1fzfimpxulqj31bc04j0t3.jpg" alt="image"></p>
+<h3 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h3><p>SpringBoot是如此的高效和简单，在处理全局异常亦是如此，本文只是简单的记录如何捕获程序运行时发生的异常，相信在以后的开发中会用的更加得心应手。</p>
+]]></content>
+      <categories>
+        <category>Spring</category>
+      </categories>
+      <tags>
+        <tag>Spring</tag>
+        <tag>SpringBoot</tag>
+        <tag>异常</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>javap的基本用法</title>
+    <url>/2019/01/17/javap%E7%9A%84%E5%9F%BA%E6%9C%AC%E7%94%A8%E6%B3%95/</url>
+    <content><![CDATA[<p>有时候需要深入了解类的运行方式和流程，或者查看一个类中的属性成员，我们可以使用反编译来进行查看，JDK自带了一个反编译工具javap，可以反编译，也可以查看Java编译器生成的字节码，用于分解class文件，本文简单介绍一下javap的基本方法。</p>
+<a id="more"></a>
+
+<h3 id="javap命令参数"><a href="#javap命令参数" class="headerlink" title="javap命令参数"></a>javap命令参数</h3><p>在控制台输入<code>javap -help</code>查看javap的命令用法以及参数</p>
+<figure class="highlight powershell"><table><tr><td class="code"><pre><span class="line">C:\Windows\system32&gt;javap <span class="literal">-help</span></span><br><span class="line">用法: javap &lt;options&gt; &lt;classes&gt;</span><br><span class="line">其中, 可能的选项包括:</span><br><span class="line">  <span class="literal">-help</span>  -<span class="literal">-help</span>  -?        输出此用法消息</span><br><span class="line">  <span class="literal">-version</span>                 版本信息</span><br><span class="line">  <span class="literal">-v</span>  <span class="literal">-verbose</span>             输出附加信息</span><br><span class="line">  <span class="literal">-l</span>                       输出行号和本地变量表</span><br><span class="line">  <span class="literal">-public</span>                  仅显示公共类和成员</span><br><span class="line">  <span class="literal">-protected</span>               显示受保护的/公共类和成员</span><br><span class="line">  <span class="literal">-package</span>                 显示程序包/受保护的/公共类</span><br><span class="line">                           和成员 (默认)</span><br><span class="line">  <span class="literal">-p</span>  <span class="literal">-private</span>             显示所有类和成员</span><br><span class="line">  <span class="literal">-c</span>                       对代码进行反汇编</span><br><span class="line">  <span class="literal">-s</span>                       输出内部类型签名</span><br><span class="line">  <span class="literal">-sysinfo</span>                 显示正在处理的类的</span><br><span class="line">                           系统信息 (路径, 大小, 日期, MD5 散列)</span><br><span class="line">  <span class="literal">-constants</span>               显示最终常量</span><br><span class="line">  <span class="literal">-classpath</span> &lt;path&gt;        指定查找用户类文件的位置</span><br><span class="line">  <span class="literal">-cp</span> &lt;path&gt;               指定查找用户类文件的位置</span><br><span class="line">  <span class="literal">-bootclasspath</span> &lt;path&gt;    覆盖引导类文件的位置</span><br></pre></td></tr></table></figure>
+
+<h3 id="实际使用"><a href="#实际使用" class="headerlink" title="实际使用"></a>实际使用</h3><h4 id="测试类"><a href="#测试类" class="headerlink" title="测试类"></a>测试类</h4><figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Test</span> </span>&#123;</span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">int</span> a = <span class="number">1</span>;</span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">int</span> b = <span class="number">2</span>;</span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">final</span> <span class="keyword">int</span> c = <span class="number">3</span>;</span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">int</span> D = <span class="number">4</span>;</span><br><span class="line">    <span class="keyword">public</span> Integer e = <span class="number">5</span>;</span><br><span class="line">    <span class="keyword">int</span> f = <span class="number">6</span>;</span><br><span class="line">    <span class="keyword">protected</span> <span class="keyword">int</span> g =<span class="number">7</span>;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">method1</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">private</span> <span class="keyword">void</span> <span class="title">method2</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">int</span> <span class="title">method3</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h4 id="javap-p"><a href="#javap-p" class="headerlink" title="javap -p"></a>javap -p</h4><figure class="highlight powershell"><table><tr><td class="code"><pre><span class="line">C:\Users\Glieen\Desktop&gt; javap <span class="literal">-p</span> Test<span class="class">.<span class="keyword">class</span></span></span><br><span class="line"><span class="class"><span class="title">Compiled</span> <span class="title">from</span> "<span class="title">Test</span>.<span class="title">java</span>"</span></span><br><span class="line"><span class="class"><span class="title">public</span> <span class="title">class</span> <span class="title">Test</span></span> &#123;</span><br><span class="line">  public int a;</span><br><span class="line">  private int b;</span><br><span class="line">  public final int c;</span><br><span class="line">  public <span class="keyword">static</span> int D;</span><br><span class="line">  public java.lang.Integer e;</span><br><span class="line">  int f;</span><br><span class="line">  protected int g;</span><br><span class="line">  public Test();</span><br><span class="line">  public void method1();</span><br><span class="line">  private void method2();</span><br><span class="line">  public int method3();</span><br><span class="line">  <span class="keyword">static</span> &#123;&#125;;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>默认执行javap只能查看到公开和包级别的成员变量，使用<code>javap -p</code>可以查看类中所有的成员变量。</p>
+<h4 id="javap-v-p"><a href="#javap-v-p" class="headerlink" title="javap -v -p"></a>javap -v -p</h4><figure class="highlight powershell"><table><tr><td class="code"><pre><span class="line">C:\Users\Glieen\Desktop&gt; javap <span class="literal">-v</span> <span class="literal">-p</span> .\Test<span class="class">.<span class="keyword">class</span></span></span><br><span class="line"><span class="class"><span class="title">Classfile</span> /<span class="title">C</span>:/<span class="title">Users</span>/<span class="title">Glieen</span>/<span class="title">Desktop</span>/<span class="title">Test</span>.<span class="title">class</span></span></span><br><span class="line"><span class="class">  <span class="title">Last</span> <span class="title">modified</span> 2019-1-17; <span class="title">size</span> 726 <span class="title">bytes</span></span></span><br><span class="line"><span class="class">  <span class="title">MD5</span> <span class="title">checksum</span> <span class="title">eb60967015bd6e02e460a5bf462e8c5a</span></span></span><br><span class="line"><span class="class">  <span class="title">Compiled</span> <span class="title">from</span> "<span class="title">Test</span>.<span class="title">java</span>"</span></span><br><span class="line"><span class="class"><span class="title">public</span> <span class="title">class</span> <span class="title">Test</span></span></span><br><span class="line"><span class="class">  <span class="title">minor</span> <span class="title">version</span>: 0</span></span><br><span class="line"><span class="class">  <span class="title">major</span> <span class="title">version</span>: 52</span></span><br><span class="line"><span class="class">  <span class="title">flags</span>: <span class="title">ACC_PUBLIC</span>, <span class="title">ACC_SUPER</span></span></span><br><span class="line"><span class="class"><span class="title">Constant</span> <span class="title">pool</span>:</span></span><br><span class="line"><span class="class">   #1 = <span class="title">Methodref</span>          #11.#34        // <span class="title">java</span>/<span class="title">lang</span>/<span class="title">Object</span>."&lt;<span class="title">init</span>&gt;":()<span class="title">V</span></span></span><br><span class="line"><span class="class">   #2 = <span class="title">Fieldref</span>           #10.#35        // <span class="title">Test</span>.<span class="title">a</span>:<span class="title">I</span></span></span><br><span class="line"><span class="class">   #3 = <span class="title">Fieldref</span>           #10.#36        // <span class="title">Test</span>.<span class="title">b</span>:<span class="title">I</span></span></span><br><span class="line"><span class="class">   #4 = <span class="title">Fieldref</span>           #10.#37        // <span class="title">Test</span>.<span class="title">c</span>:<span class="title">I</span></span></span><br><span class="line"><span class="class">   #5 = <span class="title">Methodref</span>          #38.#39        // <span class="title">java</span>/<span class="title">lang</span>/<span class="title">Integer</span>.<span class="title">valueOf</span>:(<span class="title">I</span>)<span class="title">Ljava</span>/<span class="title">lang</span>/<span class="title">Integer</span>;</span></span><br><span class="line"><span class="class">   #6 = <span class="title">Fieldref</span>           #10.#40        // <span class="title">Test</span>.<span class="title">e</span>:<span class="title">Ljava</span>/<span class="title">lang</span>/<span class="title">Integer</span>;</span></span><br><span class="line"><span class="class">   #7 = <span class="title">Fieldref</span>           #10.#41        // <span class="title">Test</span>.<span class="title">f</span>:<span class="title">I</span></span></span><br><span class="line"><span class="class">   #8 = <span class="title">Fieldref</span>           #10.#42        // <span class="title">Test</span>.<span class="title">g</span>:<span class="title">I</span></span></span><br><span class="line"><span class="class">   #9 = <span class="title">Fieldref</span>           #10.#43        // <span class="title">Test</span>.<span class="title">D</span>:<span class="title">I</span></span></span><br><span class="line"><span class="class">  #10 = <span class="title">Class</span>              #44            // <span class="title">Test</span></span></span><br><span class="line"><span class="class">  #11 = <span class="title">Class</span>              #45            // <span class="title">java</span>/<span class="title">lang</span>/<span class="title">Object</span></span></span><br><span class="line"><span class="class">  #12 = <span class="title">Utf8</span>               <span class="title">a</span></span></span><br><span class="line"><span class="class">  #13 = <span class="title">Utf8</span>               <span class="title">I</span></span></span><br><span class="line"><span class="class">  #14 = <span class="title">Utf8</span>               <span class="title">b</span></span></span><br><span class="line"><span class="class">  #15 = <span class="title">Utf8</span>               <span class="title">c</span></span></span><br><span class="line"><span class="class">  #16 = <span class="title">Utf8</span>               <span class="title">ConstantValue</span></span></span><br><span class="line"><span class="class">  #17 = <span class="title">Integer</span>            3</span></span><br><span class="line"><span class="class">  #18 = <span class="title">Utf8</span>               <span class="title">D</span></span></span><br><span class="line"><span class="class">  #19 = <span class="title">Utf8</span>               <span class="title">e</span></span></span><br><span class="line"><span class="class">  #20 = <span class="title">Utf8</span>               <span class="title">Ljava</span>/<span class="title">lang</span>/<span class="title">Integer</span>;</span></span><br><span class="line"><span class="class">  #21 = <span class="title">Utf8</span>               <span class="title">f</span></span></span><br><span class="line"><span class="class">  #22 = <span class="title">Utf8</span>               <span class="title">g</span></span></span><br><span class="line"><span class="class">  #23 = <span class="title">Utf8</span>               &lt;<span class="title">init</span>&gt;</span></span><br><span class="line"><span class="class">  #24 = <span class="title">Utf8</span>               ()<span class="title">V</span></span></span><br><span class="line"><span class="class">  #25 = <span class="title">Utf8</span>               <span class="title">Code</span></span></span><br><span class="line"><span class="class">  #26 = <span class="title">Utf8</span>               <span class="title">LineNumberTable</span></span></span><br><span class="line"><span class="class">  #27 = <span class="title">Utf8</span>               <span class="title">method1</span></span></span><br><span class="line"><span class="class">  #28 = <span class="title">Utf8</span>               <span class="title">method2</span></span></span><br><span class="line"><span class="class">  #29 = <span class="title">Utf8</span>               <span class="title">method3</span></span></span><br><span class="line"><span class="class">  #30 = <span class="title">Utf8</span>               ()<span class="title">I</span></span></span><br><span class="line"><span class="class">  #31 = <span class="title">Utf8</span>               &lt;<span class="title">clinit</span>&gt;</span></span><br><span class="line"><span class="class">  #32 = <span class="title">Utf8</span>               <span class="title">SourceFile</span></span></span><br><span class="line"><span class="class">  #33 = <span class="title">Utf8</span>               <span class="title">Test</span>.<span class="title">java</span></span></span><br><span class="line"><span class="class">  #34 = <span class="title">NameAndType</span>        #23:#24        // "&lt;<span class="title">init</span>&gt;":()<span class="title">V</span></span></span><br><span class="line"><span class="class">  #35 = <span class="title">NameAndType</span>        #12:#13        // <span class="title">a</span>:<span class="title">I</span></span></span><br><span class="line"><span class="class">  #36 = <span class="title">NameAndType</span>        #14:#13        // <span class="title">b</span>:<span class="title">I</span></span></span><br><span class="line"><span class="class">  #37 = <span class="title">NameAndType</span>        #15:#13        // <span class="title">c</span>:<span class="title">I</span></span></span><br><span class="line"><span class="class">  #38 = <span class="title">Class</span>              #46            // <span class="title">java</span>/<span class="title">lang</span>/<span class="title">Integer</span></span></span><br><span class="line"><span class="class">  #39 = <span class="title">NameAndType</span>        #47:#48        // <span class="title">valueOf</span>:(<span class="title">I</span>)<span class="title">Ljava</span>/<span class="title">lang</span>/<span class="title">Integer</span>;</span></span><br><span class="line"><span class="class">  #40 = <span class="title">NameAndType</span>        #19:#20        // <span class="title">e</span>:<span class="title">Ljava</span>/<span class="title">lang</span>/<span class="title">Integer</span>;</span></span><br><span class="line"><span class="class">  #41 = <span class="title">NameAndType</span>        #21:#13        // <span class="title">f</span>:<span class="title">I</span></span></span><br><span class="line"><span class="class">  #42 = <span class="title">NameAndType</span>        #22:#13        // <span class="title">g</span>:<span class="title">I</span></span></span><br><span class="line"><span class="class">  #43 = <span class="title">NameAndType</span>        #18:#13        // <span class="title">D</span>:<span class="title">I</span></span></span><br><span class="line"><span class="class">  #44 = <span class="title">Utf8</span>               <span class="title">Test</span></span></span><br><span class="line"><span class="class">  #45 = <span class="title">Utf8</span>               <span class="title">java</span>/<span class="title">lang</span>/<span class="title">Object</span></span></span><br><span class="line"><span class="class">  #46 = <span class="title">Utf8</span>               <span class="title">java</span>/<span class="title">lang</span>/<span class="title">Integer</span></span></span><br><span class="line"><span class="class">  #47 = <span class="title">Utf8</span>               <span class="title">valueOf</span></span></span><br><span class="line"><span class="class">  #48 = <span class="title">Utf8</span>               (<span class="title">I</span>)<span class="title">Ljava</span>/<span class="title">lang</span>/<span class="title">Integer</span>;</span></span><br><span class="line"><span class="class"></span>&#123;</span><br><span class="line">  public int a;</span><br><span class="line">    descriptor: I</span><br><span class="line">    flags: ACC_PUBLIC</span><br><span class="line"></span><br><span class="line">  private int b;</span><br><span class="line">    descriptor: I</span><br><span class="line">    flags: ACC_PRIVATE</span><br><span class="line"></span><br><span class="line">  public final int c;</span><br><span class="line">    descriptor: I</span><br><span class="line">    flags: ACC_PUBLIC, ACC_FINAL</span><br><span class="line">    ConstantValue: int <span class="number">3</span></span><br><span class="line"></span><br><span class="line">  public <span class="keyword">static</span> int D;</span><br><span class="line">    descriptor: I</span><br><span class="line">    flags: ACC_PUBLIC, ACC_STATIC</span><br><span class="line"></span><br><span class="line">  public java.lang.Integer e;</span><br><span class="line">    descriptor: Ljava/lang/Integer;</span><br><span class="line">    flags: ACC_PUBLIC</span><br><span class="line"></span><br><span class="line">  int f;</span><br><span class="line">    descriptor: I</span><br><span class="line">    flags:</span><br><span class="line"></span><br><span class="line">  protected int g;</span><br><span class="line">    descriptor: I</span><br><span class="line">    flags: ACC_PROTECTED</span><br><span class="line"></span><br><span class="line">  public Test();</span><br><span class="line">    descriptor: ()V</span><br><span class="line">    flags: ACC_PUBLIC</span><br><span class="line">    Code:</span><br><span class="line">      stack=<span class="number">2</span>, locals=<span class="number">1</span>, args_size=<span class="number">1</span></span><br><span class="line">         <span class="number">0</span>: aload_0</span><br><span class="line">         <span class="number">1</span>: invokespecial <span class="comment">#1                  // Method java/lang/Object."&lt;init&gt;":()V</span></span><br><span class="line">         <span class="number">4</span>: aload_0</span><br><span class="line">         <span class="number">5</span>: iconst_1</span><br><span class="line">         <span class="number">6</span>: putfield      <span class="comment">#2                  // Field a:I</span></span><br><span class="line">         <span class="number">9</span>: aload_0</span><br><span class="line">        <span class="number">10</span>: iconst_2</span><br><span class="line">        <span class="number">11</span>: putfield      <span class="comment">#3                  // Field b:I</span></span><br><span class="line">        <span class="number">14</span>: aload_0</span><br><span class="line">        <span class="number">15</span>: iconst_3</span><br><span class="line">        <span class="number">16</span>: putfield      <span class="comment">#4                  // Field c:I</span></span><br><span class="line">        <span class="number">19</span>: aload_0</span><br><span class="line">        <span class="number">20</span>: iconst_5</span><br><span class="line">        <span class="number">21</span>: invokestatic  <span class="comment">#5                  // Method java/lang/Integer.valueOf:(I)Ljava/lang/Integer;</span></span><br><span class="line">        <span class="number">24</span>: putfield      <span class="comment">#6                  // Field e:Ljava/lang/Integer;</span></span><br><span class="line">        <span class="number">27</span>: aload_0</span><br><span class="line">        <span class="number">28</span>: bipush        <span class="number">6</span></span><br><span class="line">        <span class="number">30</span>: putfield      <span class="comment">#7                  // Field f:I</span></span><br><span class="line">        <span class="number">33</span>: aload_0</span><br><span class="line">        <span class="number">34</span>: bipush        <span class="number">7</span></span><br><span class="line">        <span class="number">36</span>: putfield      <span class="comment">#8                  // Field g:I</span></span><br><span class="line">        <span class="number">39</span>: <span class="keyword">return</span></span><br><span class="line">      LineNumberTable:</span><br><span class="line">        line <span class="number">1</span>: <span class="number">0</span></span><br><span class="line">        line <span class="number">2</span>: <span class="number">4</span></span><br><span class="line">        line <span class="number">3</span>: <span class="number">9</span></span><br><span class="line">        line <span class="number">4</span>: <span class="number">14</span></span><br><span class="line">        line <span class="number">6</span>: <span class="number">19</span></span><br><span class="line">        line <span class="number">7</span>: <span class="number">27</span></span><br><span class="line">        line <span class="number">8</span>: <span class="number">33</span></span><br><span class="line"></span><br><span class="line">  public void method1();</span><br><span class="line">    descriptor: ()V</span><br><span class="line">    flags: ACC_PUBLIC</span><br><span class="line">    Code:</span><br><span class="line">      stack=<span class="number">0</span>, locals=<span class="number">1</span>, args_size=<span class="number">1</span></span><br><span class="line">         <span class="number">0</span>: <span class="keyword">return</span></span><br><span class="line">      LineNumberTable:</span><br><span class="line">        line <span class="number">11</span>: <span class="number">0</span></span><br><span class="line"></span><br><span class="line">  private void method2();</span><br><span class="line">    descriptor: ()V</span><br><span class="line">    flags: ACC_PRIVATE</span><br><span class="line">    Code:</span><br><span class="line">      stack=<span class="number">0</span>, locals=<span class="number">1</span>, args_size=<span class="number">1</span></span><br><span class="line">         <span class="number">0</span>: <span class="keyword">return</span></span><br><span class="line">      LineNumberTable:</span><br><span class="line">        line <span class="number">14</span>: <span class="number">0</span></span><br><span class="line"></span><br><span class="line">  public int method3();</span><br><span class="line">    descriptor: ()I</span><br><span class="line">    flags: ACC_PUBLIC</span><br><span class="line">    Code:</span><br><span class="line">      stack=<span class="number">1</span>, locals=<span class="number">1</span>, args_size=<span class="number">1</span></span><br><span class="line">         <span class="number">0</span>: iconst_0</span><br><span class="line">         <span class="number">1</span>: ireturn</span><br><span class="line">      LineNumberTable:</span><br><span class="line">        line <span class="number">17</span>: <span class="number">0</span></span><br><span class="line"></span><br><span class="line">  <span class="keyword">static</span> &#123;&#125;;</span><br><span class="line">    descriptor: ()V</span><br><span class="line">    flags: ACC_STATIC</span><br><span class="line">    Code:</span><br><span class="line">      stack=<span class="number">1</span>, locals=<span class="number">0</span>, args_size=<span class="number">0</span></span><br><span class="line">         <span class="number">0</span>: iconst_4</span><br><span class="line">         <span class="number">1</span>: putstatic     <span class="comment">#9                  // Field D:I</span></span><br><span class="line">         <span class="number">4</span>: <span class="keyword">return</span></span><br><span class="line">      LineNumberTable:</span><br><span class="line">        line <span class="number">5</span>: <span class="number">0</span></span><br><span class="line">&#125;</span><br><span class="line">SourceFile: <span class="string">"Test.java"</span></span><br></pre></td></tr></table></figure>
+
+<p>可以查看到类中所有的成员变量以及字节码，通过分析字节码和类中的常量池，就能对类有一个更加深入的了解。</p>
+<h3 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h3><p>本文只是记录一下javap的简单用法，学会使用javap可以在深入理解Java基础和了解JVM时提供更大的助力，有时候遇到一些奇奇怪怪的问题，用javap反编译看一下字节码将会得到不一样的收获。</p>
+]]></content>
+      <categories>
+        <category>JVM</category>
+      </categories>
+      <tags>
+        <tag>javap</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>SpringBoot下实现AOP日志</title>
+    <url>/2019/01/17/SpringBoot%E4%B8%8B%E5%AE%9E%E7%8E%B0AOP%E6%97%A5%E5%BF%97/</url>
+    <content><![CDATA[<p>Spring两大核心为IoC和AOP，本篇文章旨在记录下在SpringBoot下如何整合使用AOP，适用场景为Web项目中对请求做切面来记录日志。</p>
+<a id="more"></a>
+
+<h3 id="引入依赖"><a href="#引入依赖" class="headerlink" title="引入依赖"></a>引入依赖</h3><figure class="highlight xml"><table><tr><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">parent</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">groupId</span>&gt;</span>org.springframework.boot<span class="tag">&lt;/<span class="name">groupId</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">artifactId</span>&gt;</span>spring-boot-starter-parent<span class="tag">&lt;/<span class="name">artifactId</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">version</span>&gt;</span>2.0.5.RELEASE<span class="tag">&lt;/<span class="name">version</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">relativePath</span>/&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">parent</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">dependencies</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">dependency</span>&gt;</span></span><br><span class="line">    	<span class="tag">&lt;<span class="name">groupId</span>&gt;</span>org.springframework.boot<span class="tag">&lt;/<span class="name">groupId</span>&gt;</span></span><br><span class="line">    	<span class="tag">&lt;<span class="name">artifactId</span>&gt;</span>spring-boot-starter-web<span class="tag">&lt;/<span class="name">artifactId</span>&gt;</span></span><br><span class="line">	<span class="tag">&lt;/<span class="name">dependency</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">dependency</span>&gt;</span></span><br><span class="line">		<span class="tag">&lt;<span class="name">groupId</span>&gt;</span>org.springframework.boot<span class="tag">&lt;/<span class="name">groupId</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">artifactId</span>&gt;</span>spring-boot-starter-aop<span class="tag">&lt;/<span class="name">artifactId</span>&gt;</span></span><br><span class="line">     <span class="tag">&lt;/<span class="name">dependency</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">dependencies</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+<p>本次项目使用的是SpringBoot 2.0.5，引入web和aop依赖。</p>
+<h3 id="实现一个Web请求"><a href="#实现一个Web请求" class="headerlink" title="实现一个Web请求"></a>实现一个Web请求</h3><figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="meta">@RestController</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">HelloController</span> </span>&#123;</span><br><span class="line">    <span class="meta">@GetMapping</span>(<span class="string">"/hello"</span>)</span><br><span class="line">    <span class="function"><span class="keyword">public</span> String <span class="title">hello</span><span class="params">(String name)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="string">"Hello "</span> + name;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="实现切面和日志"><a href="#实现切面和日志" class="headerlink" title="实现切面和日志"></a>实现切面和日志</h3><figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="keyword">package</span> cn.glieen.aop;</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> org.aspectj.lang.JoinPoint;</span><br><span class="line"><span class="keyword">import</span> org.aspectj.lang.annotation.Aspect;</span><br><span class="line"><span class="keyword">import</span> org.aspectj.lang.annotation.Before;</span><br><span class="line"><span class="keyword">import</span> org.aspectj.lang.annotation.Pointcut;</span><br><span class="line"><span class="keyword">import</span> org.slf4j.Logger;</span><br><span class="line"><span class="keyword">import</span> org.slf4j.LoggerFactory;</span><br><span class="line"><span class="keyword">import</span> org.springframework.stereotype.Component;</span><br><span class="line"></span><br><span class="line"><span class="meta">@Aspect</span></span><br><span class="line"><span class="meta">@Component</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">LogAop</span> </span>&#123;</span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">final</span> Logger logger = LoggerFactory.getLogger(LogAop<span class="class">.<span class="keyword">class</span>)</span>;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Pointcut</span>(<span class="string">"execution(* cn.glieen.controller.*.*(..))"</span>)</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">pointcut</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Before</span>(<span class="string">"pointcut()"</span>)</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">log</span><span class="params">(JoinPoint joinPoint)</span> </span>&#123;</span><br><span class="line">        StringBuilder param = <span class="keyword">new</span> StringBuilder();</span><br><span class="line">        Object[] args = joinPoint.getArgs();</span><br><span class="line">        <span class="keyword">for</span> (Object arg : args) &#123;</span><br><span class="line">            param.append(arg).append(<span class="string">" "</span>);</span><br><span class="line">        &#125;</span><br><span class="line">        logger.info(<span class="string">"Args:"</span> + param.toString());</span><br><span class="line">        logger.info(<span class="string">"Method:"</span> + joinPoint.getSignature().toLongString());</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p><code>@Aspect</code>定义为切面类</p>
+<p><code>@Component</code>将切面注入到Spring容器中</p>
+<p><code>@Pointcut</code>定义切入点</p>
+<p><code>@Before</code>前置通知，在执行目标方法之前执行切面方法</p>
+<p><code>JoinPoint</code>可以获得通知的签名信息</p>
+<h3 id="运行结果"><a href="#运行结果" class="headerlink" title="运行结果"></a>运行结果</h3><p>使用Postman或者浏览器访问<code>http://localhost:8080/hello?name=Glieen</code>，的到以下运行结果：</p>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line">INFO <span class="number">10856</span> --- [nio-<span class="number">8080</span>-exec-<span class="number">1</span>] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring FrameworkServlet <span class="string">'dispatcherServlet'</span></span><br><span class="line">INFO <span class="number">10856</span> --- [nio-<span class="number">8080</span>-exec-<span class="number">1</span>] o.s.web.servlet.DispatcherServlet        : FrameworkServlet <span class="string">'dispatcherServlet'</span>: initialization started</span><br><span class="line">INFO <span class="number">10856</span> --- [nio-<span class="number">8080</span>-exec-<span class="number">1</span>] o.s.web.servlet.DispatcherServlet        : FrameworkServlet <span class="string">'dispatcherServlet'</span>: initialization completed in <span class="number">7</span> ms</span><br><span class="line">INFO <span class="number">10856</span> --- [nio-<span class="number">8080</span>-exec-<span class="number">1</span>] cn.glieen.aop.LogAop                     : Args:Glieen </span><br><span class="line">INFO <span class="number">10856</span> --- [nio-<span class="number">8080</span>-exec-<span class="number">1</span>] cn.glieen.aop.LogAop                     : Method:<span class="keyword">public</span> java.lang.String cn.glieen.controller.HelloController.hello(java.lang.String)</span><br></pre></td></tr></table></figure>
+
+<p>现在就可以使用AOP来记录方法的访问日志了。</p>
+]]></content>
+      <categories>
+        <category>Spring</category>
+      </categories>
+      <tags>
+        <tag>Spring</tag>
+        <tag>SpringBoot</tag>
+        <tag>AOP</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>修改Ubuntu解锁界面的背景图片</title>
+    <url>/2019/01/17/%E4%BF%AE%E6%94%B9Ubuntu%E8%A7%A3%E9%94%81%E7%95%8C%E9%9D%A2%E7%9A%84%E8%83%8C%E6%99%AF%E5%9B%BE%E7%89%87/</url>
+    <content><![CDATA[<p>因为学习Linux已经在Vmware装上Ubuntu有一段时间了，因为我装的是桌面版Ubuntu，所以是有GUI界面的，前几天逛知乎看到一篇修改Ubuntu解锁界面背景图片的文章，照着文章做了下，效果不错，所以在这里记录下来并分享给大家。</p>
+<a id="more"></a>
+
+<p>默认的解锁界面简洁干净</p>
+<p><img src="https://ws2.sinaimg.cn/large/005tkHc2gy1fzf5jnd1ysj30uo0h7102.jpg" alt="image"></p>
+<h3 id="准备"><a href="#准备" class="headerlink" title="准备"></a>准备</h3><p>Linux版本：Ubuntu 18.04</p>
+<p>一张用来做背景的图片，png或者jpg格式的都可以，分辨率1080*1920比较合适，将图片命名为background.jpg，放置到家目录下</p>
+<h3 id="修改"><a href="#修改" class="headerlink" title="修改"></a>修改</h3><p>打开终端，使用命令行把图片移动到/usr/share/backgrounds/目录下，如提示权限不足就用sudo命令。</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ sudo mv ~/background.jpg  /usr/share/backgrounds/</span><br></pre></td></tr></table></figure>
+
+<p>打开Ubuntu的样式文件</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ sudo nano /etc/alternatives/gdm3.css</span><br></pre></td></tr></table></figure>
+
+<p>使用<code>ctrl+w</code>搜索lockDialogGroup定位到解锁样式的位置，默认样式为</p>
+<figure class="highlight css"><table><tr><td class="code"><pre><span class="line"><span class="selector-id">#lockDialogGroup</span> &#123;</span><br><span class="line">  <span class="attribute">background</span>: <span class="number">#2c001e</span> <span class="built_in">url</span>(resource:///org/gnome/shell/theme/noise-texture.png);</span><br><span class="line">  <span class="attribute">background-repeat</span>: repeat; &#125;</span><br></pre></td></tr></table></figure>
+
+<p>修改为以下样式</p>
+<figure class="highlight css"><table><tr><td class="code"><pre><span class="line"><span class="selector-id">#lockDialogGroup</span> &#123;</span><br><span class="line">  <span class="attribute">background</span>: <span class="number">#2c001e</span> <span class="built_in">url</span>(file:///usr/share/backgrounds/background.jpg);         </span><br><span class="line">  <span class="attribute">background-repeat</span>: no-repeat;</span><br><span class="line">  <span class="attribute">background-size</span>: cover;</span><br><span class="line">  <span class="attribute">background-position</span>: center; </span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p><code>ctrl+o</code>保存文件，然后<code>ctrl+x</code>关闭文件。</p>
+<h3 id="生效"><a href="#生效" class="headerlink" title="生效"></a>生效</h3><p>使用命令行重启系统</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ reboot</span><br></pre></td></tr></table></figure>
+
+<p>重启系统即可看到修改后的效果了，如果对css有更多的了解，还可以定制喜欢的样式。</p>
+<p><img src="https://wx3.sinaimg.cn/large/005tkHc2gy1fzf5jmuo7rj31hc0u0hdu.jpg" alt="image"></p>
+<blockquote>
+<p>原文链接：<a href="https://zhuanlan.zhihu.com/p/36470249" target="_blank" rel="noopener">Ubuntu18.04 更改登录界面默认背景图</a></p>
+</blockquote>
+]]></content>
+      <categories>
+        <category>Linux</category>
+      </categories>
+      <tags>
+        <tag>Linux</tag>
+        <tag>Ubuntu</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>写一个简单的死锁</title>
+    <url>/2019/01/17/%E5%86%99%E4%B8%80%E4%B8%AA%E7%AE%80%E5%8D%95%E7%9A%84%E6%AD%BB%E9%94%81/</url>
+    <content><![CDATA[<p>用Java写一个简单的死锁。</p>
+<a id="more"></a>
+
+<h3 id="死锁"><a href="#死锁" class="headerlink" title="死锁"></a>死锁</h3><blockquote>
+<p>死锁（英语：Deadlock），又译为死结，计算机科学名词。当两个以上的运算单元，双方都在等待对方停止运行，以获取系统资源，但是没有一方提前退出时，就称为死锁。–wikipedia</p>
+</blockquote>
+<h3 id="Java实现"><a href="#Java实现" class="headerlink" title="Java实现"></a>Java实现</h3><figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Test</span> </span>&#123;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> </span>&#123;</span><br><span class="line">        Object a = <span class="keyword">new</span> Object();</span><br><span class="line">        Object b = <span class="keyword">new</span> Object();</span><br><span class="line"></span><br><span class="line">        <span class="keyword">new</span> Thread(() -&gt; &#123;</span><br><span class="line">            <span class="keyword">while</span> (<span class="keyword">true</span>) &#123;</span><br><span class="line">                <span class="keyword">synchronized</span> (a) &#123;</span><br><span class="line">                    <span class="keyword">synchronized</span> (b) &#123;</span><br><span class="line">                        System.out.println(Thread.currentThread());</span><br><span class="line">                    &#125;</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;).start();</span><br><span class="line">        <span class="keyword">new</span> Thread(() -&gt; &#123;</span><br><span class="line">            <span class="keyword">while</span> (<span class="keyword">true</span>) &#123;</span><br><span class="line">                <span class="keyword">synchronized</span> (b) &#123;</span><br><span class="line">                    <span class="keyword">synchronized</span> (a) &#123;</span><br><span class="line">                        System.out.println(Thread.currentThread());</span><br><span class="line">                    &#125;</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;).start();</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>两个线程分先后顺序锁住两个对象，当一个线程锁住a对象，另一个线程锁住b对象时，两个线程都会因为无法得到另一个对象的锁而无限等待，产生死锁。</p>
+]]></content>
+      <categories>
+        <category>Java</category>
+      </categories>
+      <tags>
+        <tag>Java</tag>
+        <tag>锁</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>Java知识点总结</title>
+    <url>/2018/11/17/Java%E7%9F%A5%E8%AF%86%E7%82%B9%E6%80%BB%E7%BB%93/</url>
+    <content><![CDATA[<p>Java作为一门发展了多年的编程语言，拥有众多的开发者，我亦是其中之一，Java有众多的特性和知识点，为避免遗忘，我将我所了解的记录在此，知识点无先后顺序，本文长期维护更新，拓展新的知识点。</p>
+<a id="more"></a>
+
+<blockquote>
+<p>本文基于Java 1.8</p>
+<p>水平有限，如有错误，还望指正，不甚感激。</p>
+</blockquote>
+<ol>
+<li><p>Java中的基本数据类型（int,byte等），比较时使用<code>==</code>，比较的是它们的值，引用类型（类）使用<code>==</code>比较的是它们的地址值，如果要比较对象的内容是否相等，需要重写equals方法，equals方法继承自Object类，重写equals方法时通常还应该重写hashCode方法；</p>
+</li>
+<li><p>（Override）重写方法时，可以返回父类方法返回值类型的子类，但不允许返回返回值类型的父类；</p>
+</li>
+<li><p>基本数据类型和包装类之间可以互相转换，方法是固定的，如int/Integer，装箱方法为<code>Integer.valueOf(int)</code>，拆箱方法为<code>Integer.intValue()</code>；</p>
+</li>
+<li><p>警惕三目运算符中的拆箱：</p>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="keyword">int</span> a = <span class="number">0</span>;</span><br><span class="line">Integer b = <span class="keyword">null</span>;</span><br><span class="line">System.out.println(<span class="keyword">false</span> ? a : b);<span class="comment">// NullPointerException</span></span><br></pre></td></tr></table></figure>
+
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line">Integer a = <span class="keyword">null</span>;</span><br><span class="line">Integer b = <span class="keyword">null</span>;</span><br><span class="line">System.out.println(<span class="keyword">false</span> ? a : b);<span class="comment">// null</span></span><br></pre></td></tr></table></figure>
+
+<p>第一段代码会报<code>NullPointerException</code>异常，第二段代码能正常输出null，这是因为三目运算符返回结果中同时包含基础类型和包装类型时，会对包装类型进行拆包，如果拆包对象为null，则会抛出异常，在使用三目运算符时应当注意返回结果有没有可能为null；</p>
+</li>
+<li><p>Java接口中的成员都是<code>public</code>的，可以包含成员变量，默认修饰<code>public static final</code>，成员方法默认修饰<code>public abstract</code>，在JDK8之后，接口中的方法可以有实现，默认修饰<code>public static</code>，实现后的方法属于该接口，实现类无法再重写该方法；</p>
+</li>
+<li><p><em>非静态内部类会持有外部类的引用</em>，内部类可以访问外部类的成员变量，但是外部类无法得知内部类的成员变量；</p>
+</li>
+<li><p>try-catch-finally语句块中如果都有返回值，finally中的返回值会屏蔽掉try/catch中的返回值；</p>
+</li>
+<li><p>如果finally有返回值且无异常，则会屏蔽掉try/catch中出现异常；没有finally时，catch中出现未捕获异常，则语句块抛出异常；</p>
+</li>
+<li><p>如果仅try/catch中有返回值，finally无法修改已经返回的返回值；</p>
+</li>
+<li><p>谨慎使用泛型中的super和extends关键字，<code>List&lt;? extends E&gt;</code>表示泛型是E的子类，无法add，只能get；<code>List&lt;? super E&gt;</code>表示泛型是E的父类，无法get，只能add；</p>
+</li>
+<li><p>匿名的内部类不能extends（继承）其它类，但内部类（接口）可以被另一个内部类继承或实现；</p>
+</li>
+<li><p>整形的二进制表示法（以0b开头）：<code>int i = 0b10101;</code>,八进制表示法（以0开头）：<code>int i = 065;</code>，十六进制表示法（以0x开头）：<code>int i = 0x354af</code>；</p>
+</li>
+<li><p>在定义数值类型时，可以使用下划线<code>_</code>做隔断，且不限制下划线个数，方便阅读，如：<code>float pi = 3.14_15F;</code>，<code>long l= 0x7fff_ffff_ffff_ffffL;</code>，<code>int i = 1554__4546_46_5</code>都是可以的，但是不能在数值的起始位置或末端添加；</p>
+</li>
+<li><p><code>short s = 1;s = s +1;</code>存在语法错误，整形在做运算时会将类型提升为int型，再赋值给s就需要做强制类型转换。<code>+=</code>，<code>-=</code>，<code>*=</code>，<code>/=</code>，<code>++</code>，<code>--</code>这几类运算隐含了强制类型转换，所以<code>short s = 1;s += 1;</code>是正确的；</p>
+</li>
+<li><p><code>Math.round(11.5)</code>结果为12，<code>Math.round(-11.5)</code>结果为-11，<code>Math.round(-11.6)</code>结果为-12，<code>Math.round()</code>方法可以看作先将数值<code>+0.5</code>再向下舍入。</p>
+</li>
+<li><p>Java中的小数运算是不精确的，使用时应当注意，如果要采用精确的小数运算，推荐使用BigDecimal类；</p>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="keyword">double</span> a = <span class="number">0.8</span> - <span class="number">0.7</span>;</span><br><span class="line"><span class="keyword">double</span> b = <span class="number">0.6</span> - <span class="number">0.5</span>;</span><br><span class="line"><span class="keyword">double</span> c = <span class="number">0.5</span> - <span class="number">0.4</span>;</span><br><span class="line">System.out.println(a == b);<span class="comment">// false</span></span><br><span class="line">System.out.println(b == c);<span class="comment">// true</span></span><br></pre></td></tr></table></figure></li>
+<li><p>关于for循环，三个表达式都是可选的，第一个表达式只会执行一次，后两个表达式每循环一次就会执行一次，第一/三个表达式允许写多条语句，使用<code>,</code>分隔，第二个表达式要么为空，要么返回布尔值；</p>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="comment">// 无限循环</span></span><br><span class="line"><span class="keyword">for</span>(;;)&#123;</span><br><span class="line">	<span class="comment">// do something</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * method1和method2只执行一次</span></span><br><span class="line"><span class="comment"> * method3，method4和method5每次循环都会执行</span></span><br><span class="line"><span class="comment"> * method6会在method3之后执行</span></span><br><span class="line"><span class="comment"> * method3必须返回boolean值，其他方法无要求</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="keyword">for</span> (method1(), method2(); method3(); method4(), method5()) &#123;</span><br><span class="line">    method6();</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>当使用<code>Arrays.asList()</code>方法将数组转换成列表的时候，需要注意参数的类型，当参数为基础类型的数组时，生成的列表长度为1，其内容为参数指向的数组对象，使用基础类型的包装类数组可以解决这个问题；</p>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="keyword">int</span>[] ints = &#123;<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>&#125;;</span><br><span class="line">System.out.println(Arrays.asList(ints).size());<span class="comment">// 1</span></span><br><span class="line">Integer[] integers = &#123;<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>&#125;;</span><br><span class="line">System.out.println(Arrays.asList(integers).size());<span class="comment">// 3</span></span><br></pre></td></tr></table></figure>
+</li>
+<li><p>当方法的参数是基础数据类型时，调用方法传入对应的包装类，会调用对应包装类的拆箱方法<code>xxxValue（）</code>，如果传入的参数为null，则会报空指针异常；</p>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line">Double d = <span class="keyword">null</span>;</span><br><span class="line">method(d);<span class="comment">// NullPointerException</span></span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">method</span><span class="params">(<span class="keyword">double</span> d)</span> </span>&#123;</span><br><span class="line">	<span class="comment">// do something</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>接口可以继承多个接口，类只能继承一个类，可以实现多个接口。</p>
+</li>
+</ol>
+]]></content>
+      <categories>
+        <category>Java</category>
+      </categories>
+      <tags>
+        <tag>Java</tag>
+        <tag>基础知识</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>Integer的拆装箱和缓存</title>
+    <url>/2018/08/31/Integer%E7%9A%84%E6%8B%86%E8%A3%85%E7%AE%B1%E5%92%8C%E7%BC%93%E5%AD%98/</url>
+    <content><![CDATA[<p>Integer作为基础类型int的包装类，提供了非常多的功能，增强了基础类型的一些方法使用，但是在使用的时候还是有一些问题需要注意的。</p>
+<a id="more"></a>
+
+<h2 id="true还是false？"><a href="#true还是false？" class="headerlink" title="true还是false？"></a>true还是false？</h2><p>咱们先看下面这段代码：</p>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">IntegerTest</span> </span>&#123;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> </span>&#123;</span><br><span class="line">        Integer i1 = <span class="number">1</span>;</span><br><span class="line">        Integer i2 = <span class="number">1</span>;</span><br><span class="line">        System.out.println(i1 == i2);</span><br><span class="line"></span><br><span class="line">        Integer i3 = <span class="keyword">new</span> Integer(<span class="number">200</span>);</span><br><span class="line">        Integer i4 = <span class="keyword">new</span> Integer(<span class="number">200</span>);</span><br><span class="line">        System.out.println(i3 == i4);</span><br><span class="line"></span><br><span class="line">        Integer i5 = <span class="number">200</span>;</span><br><span class="line">        Integer i6 = <span class="number">200</span>;</span><br><span class="line">        System.out.println(i5 == i6);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>运行结果：</p>
+<blockquote>
+<p>true<br>false<br>false</p>
+</blockquote>
+<p><code>i3 == i4</code>返回结果为<code>false</code>可能会很容易理解，使用new关键字创建两个类，应当为其分配不同的内存空间，所以它们的地址应该是不同的。但是为什么<code>i1 == i2</code>返回结果为<code>true</code>，而<code>i5 == i6</code>返回结果为<code>false</code>呢？</p>
+<h3 id="自动装箱"><a href="#自动装箱" class="headerlink" title="自动装箱"></a>自动装箱</h3><p>实际上当给Integer对象赋值为数值对象时，Java虚拟机会执行装箱操作，就是将基础数据类型封装成对应的包装类，其底层调用的方法是Integer中的静态方法<code>Integer.valueOf(int i)</code>，那我们来看看这个方法具体是怎么做的。</p>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * Returns an &#123;<span class="doctag">@code</span> Integer&#125; instance representing the specified</span></span><br><span class="line"><span class="comment"> * &#123;<span class="doctag">@code</span> int&#125; value.  If a new &#123;<span class="doctag">@code</span> Integer&#125; instance is not</span></span><br><span class="line"><span class="comment"> * required, this method should generally be used in preference to</span></span><br><span class="line"><span class="comment"> * the constructor &#123;<span class="doctag">@link</span> #Integer(int)&#125;, as this method is likely</span></span><br><span class="line"><span class="comment"> * to yield significantly better space and time performance by</span></span><br><span class="line"><span class="comment"> * caching frequently requested values.</span></span><br><span class="line"><span class="comment"> *</span></span><br><span class="line"><span class="comment"> * This method will always cache values in the range -128 to 127,</span></span><br><span class="line"><span class="comment"> * inclusive, and may cache other values outside of this range.</span></span><br><span class="line"><span class="comment"> *</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@param</span>  i an &#123;<span class="doctag">@code</span> int&#125; value.</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@return</span> an &#123;<span class="doctag">@code</span> Integer&#125; instance representing &#123;<span class="doctag">@code</span> i&#125;.</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@since</span>  1.5</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">static</span> Integer <span class="title">valueOf</span><span class="params">(<span class="keyword">int</span> i)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">if</span> (i &gt;= IntegerCache.low &amp;&amp; i &lt;= IntegerCache.high)</span><br><span class="line">        <span class="keyword">return</span> IntegerCache.cache[i + (-IntegerCache.low)];</span><br><span class="line">    <span class="keyword">return</span> <span class="keyword">new</span> Integer(i);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>通过注解我们可以看到，这个方法会返回一个Integer对象的实例，当对象值处于<code>-128 ~ 127</code>之间时，从缓存中返回实例，不处于区间之中则通过new关键字创建一个实例并返回。</p>
+<p>IntegerCache是Integer类中的一个内部类，Java虚拟机会用它做一个对象的缓存池，缓存整型值介于<code>-128 ~ 127</code>之间的Integer对象实例，用以提升Java的性能。</p>
+<h3 id="结论"><a href="#结论" class="headerlink" title="结论"></a>结论</h3><p>回到代码中，现在结论就应该很清楚了，i1和i2取值都为1，介于<code>-128 ~ 127</code>之间，所以直接返回的是缓存池中的实例，所以它们都指向同一个对象，地址是相等的，i5和i6取值都为200，不在缓存池中，所以都是新创建的对象实例，所以它们的地址不相等。</p>
+]]></content>
+      <categories>
+        <category>Java</category>
+      </categories>
+      <tags>
+        <tag>Java</tag>
+        <tag>基础知识</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>列表循环问题</title>
+    <url>/2018/08/31/%E5%88%97%E8%A1%A8%E5%BE%AA%E7%8E%AF%E9%97%AE%E9%A2%98/</url>
+    <content><![CDATA[<p>列表是Java中使用最多的数据结构之一，列表的循环也是经常会使用的操作，这是我最近在对列表循环的时候遇到的一个问题，在此记录下来。</p>
+<a id="more"></a>
+
+<h3 id="问题代码"><a href="#问题代码" class="headerlink" title="问题代码"></a>问题代码</h3><figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">ArrayTest</span> </span>&#123;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> </span>&#123;</span><br><span class="line">        List&lt;Character&gt; list = <span class="keyword">new</span> ArrayList&lt;&gt;();</span><br><span class="line">        list.add(<span class="string">'a'</span>);</span><br><span class="line">        list.add(<span class="string">'b'</span>);</span><br><span class="line">        list.add(<span class="string">'c'</span>);</span><br><span class="line">        list.add(<span class="string">'d'</span>);</span><br><span class="line">        System.out.println(list);</span><br><span class="line">        <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; list.size(); i++) &#123;</span><br><span class="line">            list.remove(i);</span><br><span class="line">        &#125;</span><br><span class="line">        System.out.println(list);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>预期结果：</p>
+<blockquote>
+<p>[a, b, c, d]</p>
+<p>[]</p>
+</blockquote>
+<p>实际结果：</p>
+<blockquote>
+<p>[a, b, c, d]</p>
+<p>[b, d]</p>
+</blockquote>
+<p>根据逻辑来说，对列表进行循环，循环中移除每一个元素，看似是没有问题的，但是这里忽略了一个问题，那就是在移除元素的过程中，数组的大小其实已经变化了，实际上并没有遍历所有的元素，某些元素是被跳过了。</p>
+<h3 id="还有几个错误示范"><a href="#还有几个错误示范" class="headerlink" title="还有几个错误示范"></a>还有几个错误示范</h3><figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="keyword">for</span> (Character character : list) &#123;</span><br><span class="line">    list.remove(character);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line">Iterator&lt;Character&gt; iterator = list.iterator();</span><br><span class="line"><span class="keyword">while</span> (iterator.hasNext()) &#123;</span><br><span class="line">    Character character = iterator.next();</span><br><span class="line">    list.remove(character);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>这两种方式用来移除列表中的元素都是会抛出<code>ConcurrentModificationException</code>异常的，故不可取。</p>
+<h3 id="正确操作"><a href="#正确操作" class="headerlink" title="正确操作"></a>正确操作</h3><p>应对这个问题，我们可以使用迭代器来实现列表的删除元素操作。</p>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line">Iterator&lt;Character&gt; iterator = list.iterator();</span><br><span class="line"><span class="keyword">while</span> (iterator.hasNext()) &#123;</span><br><span class="line">    iterator.next();</span><br><span class="line">    iterator.remove();</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>利用迭代器的<code>iterator.remove()</code>方法，我们就可以正常移除列表中的元素啦。</p>
+]]></content>
+      <categories>
+        <category>Java</category>
+      </categories>
+      <tags>
+        <tag>Java</tag>
+        <tag>基础知识</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>Java基本数据类型</title>
+    <url>/2018/08/31/Java%E5%9F%BA%E6%9C%AC%E6%95%B0%E6%8D%AE%E7%B1%BB%E5%9E%8B/</url>
+    <content><![CDATA[<p>Java是一种强类型语言，在声明变量的时必须指定数据类型。Java数据类型分为基本数据类型和引用类型，基本数据类型分为8种，也是我们编程中使用最频繁的类型，本篇文章简要介绍Java的八大数据类型。</p>
+<a id="more"></a>
+
+<h3 id="八大数据类型一览"><a href="#八大数据类型一览" class="headerlink" title="八大数据类型一览"></a>八大数据类型一览</h3><table>
+<thead>
+<tr>
+<th align="center">类型名称</th>
+<th align="center">类型定义</th>
+<th align="center">占用大小</th>
+<th align="center">取值范围</th>
+<th align="center">默认值</th>
+<th align="center">封装类</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="center">boolean</td>
+<td align="center">布尔值，用作二元判断</td>
+<td align="center">Java规范中，没有明确指出boolean的大小。JVM规范中，boolean变量作为int处理，也就是4字节，boolean数组当做byte数组处理。</td>
+<td align="center">true,false</td>
+<td align="center">false</td>
+<td align="center">java.lang.Boolean</td>
+</tr>
+<tr>
+<td align="center">char</td>
+<td align="center">Unicode字符</td>
+<td align="center">2字节/16位</td>
+<td align="center"><code>\u0000</code> ~ <code>\uffff</code></td>
+<td align="center"><code>\u0000</code></td>
+<td align="center">java.lang.Character</td>
+</tr>
+<tr>
+<td align="center">byte</td>
+<td align="center">有符号整数</td>
+<td align="center">1字节/8位</td>
+<td align="center">-128 ~ 127</td>
+<td align="center">0</td>
+<td align="center">java.lang.Byte</td>
+</tr>
+<tr>
+<td align="center">short</td>
+<td align="center">有符号整数</td>
+<td align="center">2字节/16位</td>
+<td align="center">-32768 ~ 32767</td>
+<td align="center">0</td>
+<td align="center">java.lang.Short</td>
+</tr>
+<tr>
+<td align="center">int</td>
+<td align="center">有符号整数</td>
+<td align="center">4字节/32位</td>
+<td align="center">-2,147,483,648(-2^31) ~ 2,147,483,647(2^31-1)</td>
+<td align="center">0</td>
+<td align="center">java.lang.Integer</td>
+</tr>
+<tr>
+<td align="center">long</td>
+<td align="center">有符号整数</td>
+<td align="center">8字节/64位</td>
+<td align="center">-2^63 ~ 2^63-1</td>
+<td align="center">0L</td>
+<td align="center">java.lang.Long</td>
+</tr>
+<tr>
+<td align="center">float</td>
+<td align="center">单精度浮点数</td>
+<td align="center">4字节/32位</td>
+<td align="center">1.4E-45 ~ 3.4028235E38</td>
+<td align="center">0.0F</td>
+<td align="center">java.lang.Float</td>
+</tr>
+<tr>
+<td align="center">double</td>
+<td align="center">双精度浮点数</td>
+<td align="center">8字节/64位</td>
+<td align="center">4.9E-324 ~ 1.7976931348623157E308</td>
+<td align="center">0.0D</td>
+<td align="center">java.lang.Double</td>
+</tr>
+</tbody></table>
+<p><strong>注意：</strong>在Java中，默认声明的小数是double类型，默认声明的整数是int类型。</p>
+<h3 id="类型转换"><a href="#类型转换" class="headerlink" title="类型转换"></a>类型转换</h3><p>整型、浮点型、字符型数据可以混合运算，运算中，不同类型的数据会转换成相同类型，然后进行运算。</p>
+<blockquote>
+<p>低 —————————————&gt; 高</p>
+<p>byte,short,char–&gt;int–&gt;long–&gt;float–&gt;double</p>
+</blockquote>
+<p>从低级转到高级是自动类型转换，这是一种默认的转换，从高级转到低级需要强制类型转换，这么做可能会导致精度丢失。</p>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="keyword">byte</span> a = <span class="number">111</span>;</span><br><span class="line"><span class="comment">// 自动类型转换</span></span><br><span class="line"><span class="keyword">int</span> b = a;</span><br><span class="line"><span class="keyword">int</span> c = <span class="number">128</span>;</span><br><span class="line"><span class="comment">// 强制类型转换导致精度丢失，因为byte类型是8位，最大值为127，所以当int强制转换为byte类型时，值128时候就会导致溢出，此处d实际值位-128</span></span><br><span class="line"><span class="keyword">byte</span> d = (<span class="keyword">byte</span>) c;</span><br><span class="line"><span class="keyword">double</span> e = <span class="number">1.23</span>;</span><br><span class="line"><span class="comment">// 浮点型强制转换为整型是舍弃小数部分而不是四舍五入</span></span><br><span class="line"><span class="keyword">int</span> f = (<span class="keyword">int</span>)e;</span><br></pre></td></tr></table></figure>
+
+<p>char类型转换为整型时会转为字符对应的ASCII码值。</p>
+<p>不能对boolean类型进行类型转换。</p>
+<h3 id="类型的自动提升"><a href="#类型的自动提升" class="headerlink" title="类型的自动提升"></a>类型的自动提升</h3><p>在基本类型的混合运算中，最后的结果类型会是参与运算的最高级的类型， 关于类型的自动提升，注意下面的规则。</p>
+<p>①所有的byte,short,char型的值将被提升为int型；</p>
+<p>②如果有一个操作数是long型，计算结果是long型；</p>
+<p>③如果有一个操作数是float型，计算结果是float型；</p>
+<p>④如果有一个操作数是double型，计算结果是double型；</p>
+<h3 id="整型的进制"><a href="#整型的进制" class="headerlink" title="整型的进制"></a>整型的进制</h3><p>Java中默认声明整型的进制为10进制，当然也可以通过特殊的表示方法表示常用的二进制，八进制和十六进制。</p>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="comment">// 十进制表示</span></span><br><span class="line"><span class="keyword">int</span> i = <span class="number">10</span>;</span><br><span class="line"><span class="comment">// 二进制表示</span></span><br><span class="line"><span class="keyword">int</span> a = <span class="number">0b1010</span>;</span><br><span class="line"><span class="comment">// 八进制表示</span></span><br><span class="line"><span class="keyword">int</span> b = <span class="number">01067</span>;</span><br><span class="line"><span class="comment">// 十六进制表示</span></span><br><span class="line"><span class="keyword">int</span> c = <span class="number">0x2afc</span>;</span><br></pre></td></tr></table></figure>
+
+<h3 id="转义字符"><a href="#转义字符" class="headerlink" title="转义字符"></a>转义字符</h3><p>Java中char类型包含一些特殊的转义字符，这些字符通常具有一些特殊的含义。</p>
+<table>
+<thead>
+<tr>
+<th align="center">符号</th>
+<th align="center">字符含义</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="center"><code>\n</code></td>
+<td align="center">换行 (0x0a)</td>
+</tr>
+<tr>
+<td align="center"><code>\r</code></td>
+<td align="center">回车 (0x0d)</td>
+</tr>
+<tr>
+<td align="center"><code>\f</code></td>
+<td align="center">换页符(0x0c)</td>
+</tr>
+<tr>
+<td align="center"><code>\b</code></td>
+<td align="center">退格 (0x08)</td>
+</tr>
+<tr>
+<td align="center"><code>\0</code></td>
+<td align="center">空字符 (0x20)</td>
+</tr>
+<tr>
+<td align="center"><code>\s</code></td>
+<td align="center">字符串</td>
+</tr>
+<tr>
+<td align="center"><code>\t</code></td>
+<td align="center">制表符</td>
+</tr>
+<tr>
+<td align="center"><code>\&quot;</code></td>
+<td align="center">双引号</td>
+</tr>
+<tr>
+<td align="center"><code>\&#39;</code></td>
+<td align="center">单引号</td>
+</tr>
+<tr>
+<td align="center"><code>\\</code></td>
+<td align="center">反斜杠</td>
+</tr>
+<tr>
+<td align="center"><code>\ddd</code></td>
+<td align="center">八进制字符 (ddd)</td>
+</tr>
+<tr>
+<td align="center"><code>\uxxxx</code></td>
+<td align="center">16进制Unicode字符 (xxxx)</td>
+</tr>
+</tbody></table>
+<h3 id="包装类与自动拆装箱"><a href="#包装类与自动拆装箱" class="headerlink" title="包装类与自动拆装箱"></a>包装类与自动拆装箱</h3><p>八大数据类型都有其对应的包装类，参见类型一览表，包装类可以直接对其赋值（自动装箱），包装类可以直接参与运算（自动拆箱），包装类具有非常多的静态和普通方法，这扩展了基本类型的功能，这在平时的编码中会有很多的运用。</p>
+]]></content>
+      <categories>
+        <category>Java</category>
+      </categories>
+      <tags>
+        <tag>Java</tag>
+        <tag>基础知识</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>用Hexo搭建博客</title>
+    <url>/2018/08/21/%E7%94%A8Hexo%E6%90%AD%E5%BB%BA%E5%8D%9A%E5%AE%A2/</url>
+    <content><![CDATA[<p>作为一个开发者，拥有一个自己的博客来记录和分享自己的技术心得是非常有必要的，最近花了一些时间搭建了这个博客，做了一点简单的工作，在这篇文章中我会将博客的搭建过程完整的记录下来，算是一个总结，也可以帮助更多的人搭建属于自己的博客。</p>
+<a id="more"></a>
+
+<h3 id="Hexo"><a href="#Hexo" class="headerlink" title="Hexo"></a>Hexo</h3><p>Hexo是一款基于Node.js的静态博客框架，易于安装与部署，可以快速的搭建一个个人博客，并且可以托管在Github上，是搭建博客的不二之选。Hexo有自己的官方网站和文档 (<a href="https://hexo.io" target="_blank" rel="noopener">hexo.io</a>)，可以了解到它的更多细节，同时它也是Github上的一个开源项目，参见：<a href="https://github.com/hexojs/hexo" target="_blank" rel="noopener">Github/Hexo</a>,Hexo同时拥有众多的主题和插件，博主可以为自己的博客定义非常多个性的元素。</p>
+<p><img src="https://ws1.sinaimg.cn/large/005tkHc2gy1fzf5d8wfxcj30hu07aabf.jpg" alt="image"></p>
+<h3 id="Node-js"><a href="#Node-js" class="headerlink" title="Node.js"></a>Node.js</h3><p>Hexo是基于Node.js的，所以需要安装Node.js，可以在官网下载到Node.js，下载地址：<a href="https://nodejs.org/zh-cn/download/" target="_blank" rel="noopener">Node.js</a></p>
+<p><img src="https://ws2.sinaimg.cn/large/005tkHc2gy1fzf5dazkvkj30xc0ke3zo.jpg" alt="image"></p>
+<p>注意安装Node.js的时候要配置好环境变量以及NPM，安装完成之后在命令行输入： <code>node -v</code>和<code>npm -v</code>，能正确显示它们的版本号即成功了。</p>
+<p><img src="https://ws3.sinaimg.cn/large/005tkHc2gy1fzf5db5cbkj3072034dfl.jpg" alt="image"></p>
+<h3 id="Git"><a href="#Git" class="headerlink" title="Git"></a>Git</h3><p>因为会用到Github上的一些开源项目，博客系统也要托管到Github上，所以需要安装上Git用来做项目的同步，Git也可以去官网下载，下载地址：<a href="https://git-scm.com/download" target="_blank" rel="noopener">Git</a></p>
+<p><img src="https://ws1.sinaimg.cn/large/005tkHc2gy1fzf5d8hjdjj30b40b4weq.jpg" alt="image"></p>
+<p>Git安装完成之后，右键菜单会多出bash终端的选项</p>
+<p><img src="https://wx2.sinaimg.cn/large/005tkHc2gy1fzf5d8807gj306e0cb0t0.jpg" alt="image"></p>
+<p>进入终端输入：<code>git --version</code>，正确显示git 的版本号即安装成功</p>
+<p><img src="https://ws3.sinaimg.cn/large/005tkHc2gy1fzf5d8mre8j30h603p0sq.jpg" alt="image"></p>
+<h3 id="安装Hexo"><a href="#安装Hexo" class="headerlink" title="安装Hexo"></a>安装Hexo</h3><p>环境安装配置好之后，就可以开始安装Hexo了，安装过程非常简单。在资源管理器中右键，打开bash终端，创建文件夹，并定位到文件夹位置。</p>
+<p><img src="https://wx3.sinaimg.cn/large/005tkHc2gy1fzf5daljnlj30ca063q2x.jpg" alt="image"></p>
+<p>运行<code>npm install -g hexo-cli</code>安装Hexo脚手架</p>
+<p><img src="https://ws3.sinaimg.cn/large/005tkHc2gy1fzf5dah33wj30xu08daan.jpg" alt="image"></p>
+<p>运行<code>hexo init</code>初始化Hexo框架</p>
+<p><img src="https://ws3.sinaimg.cn/large/005tkHc2gy1fzf5da0widj30wl0ki40r.jpg" alt="image"></p>
+<p>到这里Hexo的安装已经完成了</p>
+<h3 id="启动Hexo"><a href="#启动Hexo" class="headerlink" title="启动Hexo"></a>启动Hexo</h3><p>安装完成之后，接下来介绍几个简单的命令，用以编辑和启动Hexo。</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment">#编译博客</span></span><br><span class="line">hexo g</span><br><span class="line"><span class="comment">#启动Hexo(-i绑定IP，-p绑定端口)</span></span><br><span class="line">hexo s [-i] [-p]</span><br><span class="line"><span class="comment">#清理编译文件</span></span><br><span class="line">hexo clean</span><br><span class="line"><span class="comment">#新建文章</span></span><br><span class="line">hexo new [post] <span class="string">"postName"</span></span><br></pre></td></tr></table></figure>
+
+<p><img src="https://ws1.sinaimg.cn/large/005tkHc2gy1fzf5da92xhj30pg0no0vc.jpg" alt="image"></p>
+<p>Hexo启动成功即可访问Hexo绑定的IP和端口查看博客了，默认的URL是：<a href="http://localhost:4000" target="_blank" rel="noopener">http://localhost:4000</a></p>
+<p><img src="https://ws2.sinaimg.cn/large/005tkHc2gy1fzf5d968q6j31170h0wjk.jpg" alt="image"></p>
+<p>访问到如图所示页面即表示Hexo已成功部署并启动了。</p>
+<h3 id="Hexo文件结构"><a href="#Hexo文件结构" class="headerlink" title="Hexo文件结构"></a>Hexo文件结构</h3><p>用资源管理器打开博客目录，查看文件结构</p>
+<p><img src="https://ws4.sinaimg.cn/large/005tkHc2gy1fzf5d8d23zj306t07tjr9.jpg" alt="image"></p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment">#简单介绍下目录构成</span></span><br><span class="line">public：博客的发布文件，最终生成的文件</span><br><span class="line">scaffolds：创建文章的模板，可以自定义创建格式</span><br><span class="line"><span class="built_in">source</span>：文章的源代码文件，markdown文件</span><br><span class="line">themes：Hexo的主题目录</span><br><span class="line">_config.yml：Hexo的主配置文件</span><br><span class="line"><span class="comment">#每个主题里面也有一个_config.yml，我们称之为主题配置文件，之后会讲到</span></span><br></pre></td></tr></table></figure>
+
+<h3 id="发表文章"><a href="#发表文章" class="headerlink" title="发表文章"></a>发表文章</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment">#发表新文章</span></span><br><span class="line">hexo new [post] <span class="string">"postName"</span></span><br></pre></td></tr></table></figure>
+
+<p><img src="https://wx4.sinaimg.cn/large/005tkHc2gy1fzf5daoig5j30kv02uaa0.jpg" alt="image"></p>
+<p>Hexo的文章编写是基于Markdown语法的，Markdown不过多介绍，想了解更多Markdown的知识，前往<a href="https://zh.wikipedia.org/wiki/Markdown" target="_blank" rel="noopener">维基百科-Markdown</a>。这里介绍一款非常好用的Markdown编辑器：<a href="https://typora.io/" target="_blank" rel="noopener">Typora</a>，可以前往官网下载，支持多平台运行，实时预览。用Typora打开刚刚新建的md文件，即可对文章进行编辑操作。</p>
+<p><img src="https://ws4.sinaimg.cn/large/005tkHc2gy1fzf5d8ptsvj30ix0cn749.jpg" alt="image"></p>
+<p>编辑完成之后重新编译并启动Hexo即可查看刚发布的文章了。</p>
+<p><img src="https://ws2.sinaimg.cn/large/005tkHc2gy1fzf5d8ptsvj30ix0cn749.jpg" alt="image"></p>
+<h3 id="部署到Github"><a href="#部署到Github" class="headerlink" title="部署到Github"></a>部署到Github</h3><p>安装 <a href="https://github.com/hexojs/hexo-deployer-git" target="_blank" rel="noopener">hexo-deployer-git</a>。</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ npm install hexo-deployer-git --save</span><br></pre></td></tr></table></figure>
+
+<p>修改配置。</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">deploy:</span><br><span class="line">  <span class="built_in">type</span>: git</span><br><span class="line">  repo: &lt;repository url&gt;</span><br><span class="line">  branch: [branch]</span><br><span class="line">  message: [message]</span><br></pre></td></tr></table></figure>
+
+<table>
+<thead>
+<tr>
+<th>参数</th>
+<th>描述</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>repo</code></td>
+<td>库（Repository）地址</td>
+</tr>
+<tr>
+<td><code>branch</code></td>
+<td>分支名称。如果您使用的是 GitHub 或 GitCafe 的话，程序会尝试自动检测。</td>
+</tr>
+<tr>
+<td><code>message</code></td>
+<td>自定义提交信息</td>
+</tr>
+</tbody></table>
+<p>配置完成之后运行命令<code>hexo d</code>即可进行部署。</p>
+<h3 id="更换主题"><a href="#更换主题" class="headerlink" title="更换主题"></a>更换主题</h3><p>Hexo默认的主题并不美观，得益于Hexo庞大的主题库，我们可以使用自己喜欢的主题样式，并添加自定义的一些功能，这里我选用的是<a href="https://theme-next.iissnan.com/" target="_blank" rel="noopener">NexT</a>，这套主题简洁明了，非常不错。</p>
+<p><strong>获取主题：</strong>在终端窗口下，定位到 Hexo 站点目录下。使用 <code>Git</code> checkout 代码：</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ git <span class="built_in">clone</span> https://github.com/iissnan/hexo-theme-next themes/next</span><br></pre></td></tr></table></figure>
+
+<p><strong>使用主题：</strong>与所有 Hexo 主题启用的模式一样。 当 克隆/下载 完成后，打开 站点配置文件， 找到 <code>theme</code> 字段，并将其值更改为 <code>next</code>。</p>
+<p>启用 NexT 主题</p>
+<figure class="highlight xml"><table><tr><td class="code"><pre><span class="line">theme: next</span><br></pre></td></tr></table></figure>
+
+<p>到此，NexT 主题安装完成。下一步我们将验证主题是否正确启用。在切换主题之后、验证之前， 我们最好使用 <code>hexo clean</code> 来清除 Hexo 的缓存。编译并启动Hexo即可看到应用主题后的样式。</p>
+<p><img src="https://ws1.sinaimg.cn/large/005tkHc2gy1fzf5das2kcj30pc0o7q3g.jpg" alt="image"></p>
+<p>更多详细的主题配置请参阅NexT的官方文档：<a href="https://theme-next.iissnan.com/theme-settings.html" target="_blank" rel="noopener">主题配置</a></p>
+<h3 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h3><p>Hexo的简单搭建部署就是这样，其他更多的一些设置会在之后的文章中补充。</p>
+]]></content>
+      <categories>
+        <category>记录</category>
+      </categories>
+      <tags>
+        <tag>Hexo</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>Java高级特性-反射</title>
+    <url>/2018/07/24/Java%E9%AB%98%E7%BA%A7%E7%89%B9%E6%80%A7-%E5%8F%8D%E5%B0%84/</url>
+    <content><![CDATA[<p>在Java开发中，反射是一个经常用到的技术，几乎所有的框架都有使用反射机制，反射作为Java的一种高级特性，在实际生产中被大量应用，掌握它就显得尤为必要了。</p>
+<a id="more"></a>
+
+<h3 id="什么是反射？"><a href="#什么是反射？" class="headerlink" title="什么是反射？"></a>什么是反射？</h3><p>反射机制是Java 语言的特性之一，所谓的反射就是Java语言在运行时拥有的一项自观的能力。在Java运行时环境中，对于任意一个类，可以知道这个类有哪些属性和方法；对于任意一个对象，可以调用它的任意一个方法。这种动态获取类的信息以及动态调用对象的方法的能力就是Java 语言的反射（Reflection）机制。 </p>
+<h3 id="万物皆对象"><a href="#万物皆对象" class="headerlink" title="万物皆对象"></a>万物皆对象</h3><p>Java是面向对象的高级语言，在面向对象的世界里，万事万物皆是对象，那么类是不是对象呢？是的，我们写的每一个类都是<code>Class</code>类的对象。每一个类有自己的对象，同时也是<code>Class</code>类的对象，想要了解反射，就必须先了解<code>Class</code>这个类。</p>
+<h4 id="java-lang-Class"><a href="#java-lang-Class" class="headerlink" title="java.lang.Class"></a>java.lang.Class</h4><p>构造方法</p>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="comment">/*</span></span><br><span class="line"><span class="comment">    * Private constructor. Only the Java Virtual Machine creates Class objects.</span></span><br><span class="line"><span class="comment">    * This constructor is not used and prevents the default constructor being</span></span><br><span class="line"><span class="comment">    * generated.</span></span><br><span class="line"><span class="comment">    */</span></span><br><span class="line">   <span class="function"><span class="keyword">private</span> <span class="title">Class</span><span class="params">(ClassLoader loader)</span> </span>&#123;</span><br><span class="line">       classLoader = loader;</span><br><span class="line">   &#125;</span><br></pre></td></tr></table></figure>
+
+<p>根据注释可知，<code>Class</code>类的构造方法是私有的，只有 Java 虚拟机可以创建该类的对象，因此我们无法在代码中显式地声明一个 <code>Class</code>对象。</p>
+<h4 id="获取Class类的对象"><a href="#获取Class类的对象" class="headerlink" title="获取Class类的对象"></a>获取Class类的对象</h4><p>声明一个<code>Person</code>类</p>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Person</span> </span>&#123;</span><br><span class="line">    <span class="keyword">private</span> String name;</span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">int</span> age;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="title">Person</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="title">Person</span><span class="params">(String name, <span class="keyword">int</span> age)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">this</span>.name = name;</span><br><span class="line">        <span class="keyword">this</span>.age = age;</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    <span class="comment">//省略setter和getter</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>在上面说过，<code>Class</code> 类的构造方法是私有的，只有 java 虚拟机可以调用该方法创建该类的对象。也就是说我们无法像定义普通类对象一样，通过 new 直接创建 <code>Class</code> 类的对象，那应该如何得到<code>Person</code>的类对象呢？有以下几种方法。</p>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">ClassTest</span> </span>&#123;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> <span class="keyword">throws</span> ClassNotFoundException </span>&#123;</span><br><span class="line">        Person person = <span class="keyword">new</span> Person();</span><br><span class="line">        Class clazz;</span><br><span class="line"></span><br><span class="line">        <span class="comment">// 1、通过类的静态成员得到Person的类对象，每一个类都有一个隐含的静态成员class</span></span><br><span class="line">        clazz = Person<span class="class">.<span class="keyword">class</span></span>;</span><br><span class="line">        System.out.println(clazz);</span><br><span class="line"></span><br><span class="line">        <span class="comment">// 2、通过Person类的实例得到它的Class对象</span></span><br><span class="line">        clazz = person.getClass();</span><br><span class="line">        System.out.println(clazz);</span><br><span class="line"></span><br><span class="line">        <span class="comment">// 3、通过Class的静态方法forName(className)得到类对象，这里注意处理异常</span></span><br><span class="line">        clazz = Class.forName(<span class="string">"cn.glieen.pojo.Person"</span>);</span><br><span class="line">        System.out.println(clazz);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>从运行结果可以看到，我们都能得到<code>Person</code> 的<code>Class</code>对象。</p>
+<p><img src="https://ws1.sinaimg.cn/large/005tkHc2gy1fzf5p44tt7j30dn02wjrb.jpg" alt="image"></p>
+<p>实际使用当中，最常用的是第三种方法，该方法可以实现类的动态加载，在使用时才加载该类。</p>
+<h3 id="反射的基本运用"><a href="#反射的基本运用" class="headerlink" title="反射的基本运用"></a>反射的基本运用</h3><h4 id="得到类的成员（constructor、field、method）"><a href="#得到类的成员（constructor、field、method）" class="headerlink" title="得到类的成员（constructor、field、method）"></a>得到类的成员（constructor、field、method）</h4><figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">ReflectTest</span> </span>&#123;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> <span class="keyword">throws</span> ClassNotFoundException </span>&#123;</span><br><span class="line">        <span class="comment">// 得到类的Class对象</span></span><br><span class="line">        Class&lt;?&gt; clazz = Class.forName(<span class="string">"cn.glieen.pojo.Person"</span>);</span><br><span class="line"></span><br><span class="line">        <span class="comment">// 获取类的构造方法</span></span><br><span class="line">        Constructor&lt;?&gt;[] constructors = clazz.getConstructors();</span><br><span class="line">        <span class="keyword">for</span> (Constructor&lt;?&gt; constructor : constructors) &#123;</span><br><span class="line">            System.out.println(<span class="string">"constructor = "</span> + constructor);</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        <span class="comment">// 获取类的成员变量</span></span><br><span class="line">        Field[] fields = clazz.getDeclaredFields();</span><br><span class="line">        <span class="keyword">for</span> (Field field : fields) &#123;</span><br><span class="line">            System.out.println(<span class="string">"field = "</span> + field);</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        <span class="comment">// 获取类的成员方法</span></span><br><span class="line">        Method[] methods = clazz.getMethods();</span><br><span class="line">        <span class="keyword">for</span> (Method method : methods) &#123;</span><br><span class="line">            System.out.println(<span class="string">"method = "</span> + method);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>运行结果：</p>
+<p><img src="https://ws2.sinaimg.cn/large/005tkHc2gy1fzf5p49bsej30rv0bnt9o.jpg" alt="image"></p>
+<p>由运行结果我们可以看到，<code>Person</code>类的构造方法，成员变量和成员方法都获取到了，<strong>值得注意的是</strong>，<code>getConstructors()</code>、<code>getFields()</code>和<code>getMethods()</code>只能得到类中公有的成员属性，如果想得到私有的成员属性，需要调用<code>getDeclaredConstructors()</code>、<code>getDeclaredFields()</code>和<code>getDeclaredMethods()</code>方法。</p>
+<h4 id="得到类的实例"><a href="#得到类的实例" class="headerlink" title="得到类的实例"></a>得到类的实例</h4><p>通过<code>Class</code>类的<code>newInstance()</code>方法可以得到<code>Class</code>对象所指类的实例。</p>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="comment">// 通过Class的对象得到Person类的实例，注意强制转型和异常处理</span></span><br><span class="line">Person person = (Person) clazz.newInstance();</span><br></pre></td></tr></table></figure>
+
+<p><strong>需要注意的是:</strong><code>clazz.newInstance()</code>会调用<code>Person</code>类的无参构造方法，当<code>Person</code>类不存在无参构造方法时，程序会抛出<code>InstantiationException</code>异常，所以当决定使用动态加载时，应当保留类中公有无参的构造器。</p>
+<h4 id="反射调用类中的方法"><a href="#反射调用类中的方法" class="headerlink" title="反射调用类中的方法"></a>反射调用类中的方法</h4><p>通过反射可以调用类中的各个方法，下面代码利用反射为<code>Person</code>对象的成员变量注入值：</p>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">ReflectTest</span> </span>&#123;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> <span class="keyword">throws</span> ClassNotFoundException, IllegalAccessException, InstantiationException, NoSuchMethodException, InvocationTargetException </span>&#123;</span><br><span class="line">        <span class="comment">// 得到类的Class对象</span></span><br><span class="line">        Class&lt;?&gt; clazz = Class.forName(<span class="string">"cn.glieen.pojo.Person"</span>);</span><br><span class="line"></span><br><span class="line">        <span class="comment">// 通过Class的对象得到Person类的实例，注意强制转型和异常处理</span></span><br><span class="line">        Person person = (Person) clazz.newInstance();</span><br><span class="line"></span><br><span class="line">        <span class="comment">// 得到类中的成员变量</span></span><br><span class="line">        Field[] fields = clazz.getDeclaredFields();</span><br><span class="line"></span><br><span class="line">        <span class="keyword">for</span> (Field field : fields) &#123;</span><br><span class="line">            String fieldName = field.getName();</span><br><span class="line">            <span class="comment">// 得到成员变量的setter方法</span></span><br><span class="line">            Method method = clazz.getMethod(<span class="string">"set"</span> + fieldName.substring(<span class="number">0</span>, <span class="number">1</span>).toUpperCase() + fieldName.substring(<span class="number">1</span>), field.getType());</span><br><span class="line">            <span class="keyword">if</span> (field.getGenericType().equals(String<span class="class">.<span class="keyword">class</span>)) </span>&#123;</span><br><span class="line">                <span class="comment">// 反射调用setter方法</span></span><br><span class="line">                method.invoke(person, <span class="string">"glieen"</span>);</span><br><span class="line">            &#125;</span><br><span class="line">            <span class="keyword">if</span> (field.getGenericType().equals(<span class="keyword">int</span><span class="class">.<span class="keyword">class</span>)) </span>&#123;</span><br><span class="line">                method.invoke(person, <span class="number">23</span>);</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        System.out.println(person);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>运行结果：</p>
+<p><img src="https://ws2.sinaimg.cn/large/005tkHc2gy1fzf5p4i6xrj30f801va9x.jpg" alt="image"></p>
+<p>反射不仅可以调用普通方法，私有方法，构造函数也是可以调用的，需要注意的是调用私有方法之前应当使用<code>method.setAccessible(true)</code>改变方法可见性，否则调用时会抛出异常。</p>
+<h3 id="java-lang-reflect"><a href="#java-lang-reflect" class="headerlink" title="java.lang.reflect"></a>java.lang.reflect</h3><p><code>java.lang.reflect</code>包提供了用于获取类和对象的反射信息的类和接口。反射API允许对程序访问有关加载类的字段，方法和构造函数的信息进行编程访问。它允许在安全限制内使用反射的字段，方法和构造函数对其底层对等进行操作。 </p>
+<p><code>java.lang.reflect</code>包下有几个比较重要的类，<code>java.lang.reflect.Field</code>，<code>java.lang.reflect.Method</code>，<code>java.lang.reflect.Type</code>，<code>java.lang.reflect.Constructor</code>，在反射的使用中是经常会用到的，这里我就不过多阐述了。</p>
+<h3 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h3><p>反射作为Java最核心机制之一，已经被普遍使用于各大框架和项目之中，理解并掌握反射将会使得编写和阅读代码更加高效。</p>
+<p><em>运行环境</em></p>
+<p><em>JDK：1.8</em></p>
+<p><em>IDE：IntelliJ IDEA 2017.3.5</em></p>
+<p><em>如有错误，还请指正</em></p>
+]]></content>
+      <categories>
+        <category>Java</category>
+      </categories>
+      <tags>
+        <tag>Java</tag>
+        <tag>基础知识</tag>
+      </tags>
+  </entry>
+</search>
