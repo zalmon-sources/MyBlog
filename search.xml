@@ -1,6 +1,228 @@
 <?xml version="1.0" encoding="utf-8"?>
 <search>
   <entry>
+    <title>Linux的修炼之路（四）常用命令</title>
+    <url>/2020/01/19/Linux%E7%9A%84%E4%BF%AE%E7%82%BC%E4%B9%8B%E8%B7%AF%EF%BC%88%E5%9B%9B%EF%BC%89%E5%B8%B8%E7%94%A8%E5%91%BD%E4%BB%A4/</url>
+    <content><![CDATA[<p>Linux是基于命令行的世界，想要熟练的使用，掌握和了解一些常用的命令是必不可少的，我简单记录下平时用到的一些命令或功能，方便拾遗，加强记忆。</p>
+<a id="more"></a>
+
+<p>这里推荐一个网站和一个工具，对不了解的命令可以很快的找到它的快捷用法，相对于man文档来说要方便的多。</p>
+<ul>
+<li><a href="https://wangchujiang.com/linux-command/" target="_blank" rel="noopener">Linux-Command</a>（可以很快捷的查询命令的用法，就不多做介绍了）</li>
+<li><a href="https://github.com/tldr-pages/tldr" target="_blank" rel="noopener">tldr</a><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment"># Ubuntu安装tldr</span></span><br><span class="line">sudo apt install tldr</span><br><span class="line"><span class="comment"># 其他系统安装tldr</span></span><br><span class="line">sudo npm install -g tldr</span><br><span class="line"><span class="comment"># 使用tldr xxx，xxx为具体要查询的命令</span></span><br><span class="line">tldr tar</span><br></pre></td></tr></table></figure>
+
+</li>
+</ul>
+<h3 id="常用命令"><a href="#常用命令" class="headerlink" title="常用命令"></a>常用命令</h3><h4 id="sudo"><a href="#sudo" class="headerlink" title="sudo"></a>sudo</h4><p>以管理员权限执行，配置位于<code>/etc/sudoers</code>，输入密码后有五分钟有效期。<br>示例：</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment"># 检查软件源更新</span></span><br><span class="line">sudo apt update</span><br></pre></td></tr></table></figure>
+<h4 id="su"><a href="#su" class="headerlink" title="su"></a>su</h4><p>用于切换当前用户身份到其他用户身份，需要输入切换用户的密码。<br>示例：</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment"># 切换到root用户</span></span><br><span class="line">su root</span><br></pre></td></tr></table></figure>
+<h4 id="cd"><a href="#cd" class="headerlink" title="cd"></a>cd</h4><p>进入某目录，<code>/</code>表示根目录，<code>~</code>表示当前用户的家目录，<code>.</code>表示当前所在目录，<code>..</code>表示上级目录。<br>示例：</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment"># 进入家目录</span></span><br><span class="line"><span class="built_in">cd</span> ~</span><br></pre></td></tr></table></figure>
+<h4 id="ls"><a href="#ls" class="headerlink" title="ls"></a>ls</h4><p>列出目录下的文件，默认为当前文件夹，文件名以<code>.</code>开头的被视为隐藏文件（夹）。<br>常用参数：</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">-a <span class="comment"># 列出所有文件</span></span><br><span class="line">-l <span class="comment"># 单列输出</span></span><br><span class="line">-h <span class="comment"># 转换成可读大小，文件大小默认是字节</span></span><br><span class="line">-R <span class="comment"># 递归子目录</span></span><br></pre></td></tr></table></figure>
+<p>示例：</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment"># 以单列输出列出家目录下的所有文件</span></span><br><span class="line">ls -alh ~</span><br></pre></td></tr></table></figure>
+<h4 id="mkdir"><a href="#mkdir" class="headerlink" title="mkdir"></a>mkdir</h4><p>新建文件夹。<br>示例：</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment"># 在家目录下创建文件夹test</span></span><br><span class="line">mkdir ~/<span class="built_in">test</span></span><br></pre></td></tr></table></figure>
+<h4 id="cp"><a href="#cp" class="headerlink" title="cp"></a>cp</h4><p>复制文件（夹），将源文件（夹）复制到目标位置。<br>常用参数：</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">-f <span class="comment"># 强制复制，存在即覆盖</span></span><br><span class="line">-R <span class="comment"># 递归复制子文件夹</span></span><br></pre></td></tr></table></figure>
+<p>示例：</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment"># 将家目录下的.bashrc文件复制到家目录下的test文件夹中</span></span><br><span class="line">cp ~/.bashrc ~/<span class="built_in">test</span>/</span><br></pre></td></tr></table></figure>
+<h4 id="touch"><a href="#touch" class="headerlink" title="touch"></a>touch</h4><p>创建新的空白文件。<br>示例：</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment"># 在家目录下创建空白文件test.txt</span></span><br><span class="line">touch ~/test.txt</span><br></pre></td></tr></table></figure>
+<h4 id="mv"><a href="#mv" class="headerlink" title="mv"></a>mv</h4><p>将源文件（夹）移动到目标位置，或者重命名文件（夹）。<br>常用参数：</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">-f <span class="comment"># 如果存在同名文件直接覆盖</span></span><br></pre></td></tr></table></figure>
+<p>示例：</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment"># 将a.txt重命名为b.txt</span></span><br><span class="line">mv a.txt b.txt</span><br></pre></td></tr></table></figure>
+<h4 id="rm"><a href="#rm" class="headerlink" title="rm"></a>rm</h4><p>删除文件（夹）。<br>常用参数：</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">-r <span class="comment"># 递归删除子目录下的文件</span></span><br><span class="line">-f <span class="comment"># 强制删除文件</span></span><br></pre></td></tr></table></figure>
+<p>示例：</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment"># 删除家目录下的a.txt</span></span><br><span class="line">rm ~/a.txt</span><br></pre></td></tr></table></figure>
+<h4 id="clear"><a href="#clear" class="headerlink" title="clear"></a>clear</h4><p>清除屏幕上的信息<br>示例：</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">clear</span><br></pre></td></tr></table></figure>
+<h4 id="dpkg"><a href="#dpkg" class="headerlink" title="dpkg"></a>dpkg</h4><p>Debian系Linux上的软件包管理工具，可以用来管理安装包，安装包后缀以<code>.deb</code>结尾，通常需要使用<code>root</code>权限执行。<br>常用参数：</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">-i <span class="comment"># 安装软件包</span></span><br><span class="line">-r <span class="comment"># 删除软件包</span></span><br><span class="line">-P <span class="comment"># 删除软件包的同时删除其配置文件</span></span><br><span class="line">-l <span class="comment"># 显示已安装软件包列表</span></span><br></pre></td></tr></table></figure>
+<p>示例：</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment"># 安装firefox</span></span><br><span class="line">sudo dpkg -i firefox.deb</span><br><span class="line"><span class="comment"># 卸载firefox</span></span><br><span class="line">sudo dpkg -r firefox</span><br><span class="line"><span class="comment"># 查找firefox安装包</span></span><br><span class="line">sudo dpkg -l | grep firefox</span><br></pre></td></tr></table></figure>
+<h4 id="alias"><a href="#alias" class="headerlink" title="alias"></a>alias</h4><p>为命令设置别名，仅限当前会话（session）有效。<br>示例：</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment"># 为ls设置别名l</span></span><br><span class="line"><span class="built_in">alias</span> l=<span class="string">'ls'</span></span><br></pre></td></tr></table></figure>
+<h4 id="grep"><a href="#grep" class="headerlink" title="grep"></a>grep</h4><p>文本检索工具，查找满足表达式的所有行并打印到终端。<br>常用参数：</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">-n <span class="comment"># 显示行号</span></span><br><span class="line">-i <span class="comment"># 忽略大小写</span></span><br></pre></td></tr></table></figure>
+<p>示例：</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment"># 查找test.txt中包含字符test的所有行并列出行号</span></span><br><span class="line">grep -n <span class="string">'test'</span> test.txt</span><br></pre></td></tr></table></figure>
+<h4 id="nano"><a href="#nano" class="headerlink" title="nano"></a>nano</h4><p>终端文本编辑器，比vim使用起来简单一些。<br>快捷键：<br>    搜索：<code>ctrl + w</code><br>    保存：<code>ctrl + o</code><br>    退出：<code>ctrl + x</code><br>示例：</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment"># 编辑家目录下的test.txt</span></span><br><span class="line">nano ~/test.txt</span><br></pre></td></tr></table></figure>
+<h4 id="echo"><a href="#echo" class="headerlink" title="echo"></a>echo</h4><p>输出指定的字符串或者变量，变量以<code>$</code>开头引用<br>常用参数：</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">-e <span class="comment"># 激活转义字符，如\n表示换行</span></span><br></pre></td></tr></table></figure>
+<p>示例：</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment"># 输出当前的PATH环境变量</span></span><br><span class="line"><span class="built_in">echo</span> <span class="variable">$PATH</span></span><br><span class="line"><span class="comment"># 打印Hello World</span></span><br><span class="line"><span class="built_in">echo</span> <span class="string">'Hello World'</span></span><br></pre></td></tr></table></figure>
+<h4 id="export"><a href="#export" class="headerlink" title="export"></a>export</h4><p>将SHELL变量导出到运行环境，在配置环境变量中尤为重要，多个环境变量的分隔符为<code>：</code>，引用其他环境变量使用<code>$</code>符号，通过终端设置的环境变量只对当前会话生效。<br>示例：</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment"># 列出当前运行环境的所有环境变量</span></span><br><span class="line"><span class="built_in">export</span></span><br><span class="line"><span class="comment"># 将/opt/jdk/bin添加到PATH变量中</span></span><br><span class="line"><span class="built_in">export</span> PATH=/opt/jdk/bin:<span class="variable">$PATH</span></span><br></pre></td></tr></table></figure>
+<h4 id="pwd"><a href="#pwd" class="headerlink" title="pwd"></a>pwd</h4><p>显示当前所在的工作目录。<br>示例：</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment"># 显示当前所在的工作目录。</span></span><br><span class="line"><span class="built_in">pwd</span></span><br></pre></td></tr></table></figure>
+<h4 id="exit"><a href="#exit" class="headerlink" title="exit"></a>exit</h4><p>退出当前的SHELL客户端。<br>示例：</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment"># 退出当前的SHELL客户端</span></span><br><span class="line"><span class="built_in">exit</span></span><br></pre></td></tr></table></figure>
+<h4 id="bg"><a href="#bg" class="headerlink" title="bg"></a>bg</h4><p>把当前执行的应用程序移动到后台执行，类似于在命令之后加<code>&amp;</code>。<br>SHELL快捷键（在终端中通常以<code>^</code>符号指代<code>ctrl</code>）：<br>​    中断程序：<code>ctrl + c</code><br>​    挂起程序并暂停执行：<code>ctrl + z</code><br>示例：</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment"># 终端睡眠60秒钟</span></span><br><span class="line">sleep 60</span><br><span class="line"><span class="comment"># 使用快捷键^ + z挂起当前进程</span></span><br><span class="line"><span class="comment"># 将当前挂起的进程移至到后台运行</span></span><br><span class="line"><span class="built_in">bg</span></span><br></pre></td></tr></table></figure>
+<h4 id="jobs"><a href="#jobs" class="headerlink" title="jobs"></a>jobs</h4><p>列出当前会话作业的状态。<br>示例：</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment"># 列出当前会话作业的状态。</span></span><br><span class="line"><span class="built_in">jobs</span></span><br></pre></td></tr></table></figure>
+<h4 id="fg"><a href="#fg" class="headerlink" title="fg"></a>fg</h4><p>将后台运行的进程切换到前台运行。<br>常用参数：</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">%n <span class="comment"># 作业编号</span></span><br></pre></td></tr></table></figure>
+<p>示例：</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment"># 将编号为1的作业切换到前台运行</span></span><br><span class="line"><span class="built_in">fg</span> %1</span><br></pre></td></tr></table></figure>
+<h4 id="kill"><a href="#kill" class="headerlink" title="kill"></a>kill</h4><p>发送信号到指定的进程。<br>常用参数：</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">-l <span class="comment"># 列出所有信号量</span></span><br><span class="line">-n <span class="comment"># 指定发送的信号量</span></span><br><span class="line">PID <span class="comment"># 指定进程号（一个或多个）</span></span><br><span class="line">%n <span class="comment"># 指定作业号（一个或多个）</span></span><br></pre></td></tr></table></figure>
+<p>示例：</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment"># 强制中止进程号为12345的进程</span></span><br><span class="line"><span class="built_in">kill</span> -n 9 12345</span><br><span class="line"><span class="comment"># 强制中止进程号为12345的进程</span></span><br><span class="line"><span class="built_in">kill</span> -9 12345</span><br><span class="line"><span class="comment"># 默认向进程号为12345的进程发送终止信号</span></span><br><span class="line"><span class="built_in">kill</span> 12345</span><br><span class="line"><span class="comment"># 过滤出zalmonlinux用户进程</span></span><br><span class="line"><span class="built_in">kill</span> -9 $(ps -ef | grep zalmonlinux)  </span><br><span class="line"><span class="built_in">kill</span> -u zalmonlinux</span><br></pre></td></tr></table></figure>
+<h4 id="find"><a href="#find" class="headerlink" title="find"></a>find</h4><p>在指定目录下查找满足条件的文件。<br>常用参数：</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">-name <span class="comment"># 指定查找文件名（可以使用通配符）</span></span><br><span class="line">-iname <span class="comment"># 指定查找文件名，忽略大小写</span></span><br><span class="line">-regex <span class="comment"># 使用正则表达式匹配文件路径</span></span><br></pre></td></tr></table></figure>
+<p>示例：</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment"># 列出当前目录及子目录下的所有文件</span></span><br><span class="line">find .</span><br><span class="line"><span class="comment"># 在家目录下查找文件名为test的文件</span></span><br><span class="line">find ~ -name <span class="string">'test'</span></span><br></pre></td></tr></table></figure>
+<h4 id="less"><a href="#less" class="headerlink" title="less"></a>less</h4><p>对指定的文件进行上下分页输出。<br>快捷键：<br>​    向上翻页：<code>PageUp</code><br>​    向下翻页：<code>PageDown</code><br>​    退出：<code>q</code><br>常用参数：</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">-e <span class="comment"># 文件内容显示完毕后，自动退出</span></span><br><span class="line">-N <span class="comment"># 行首显示行号</span></span><br></pre></td></tr></table></figure>
+<p>示例：</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment"># 上下分页输出文件家目录下的a.txt</span></span><br><span class="line">less -N ~/a.txt</span><br></pre></td></tr></table></figure>
+<h4 id="env-printenv"><a href="#env-printenv" class="headerlink" title="env/printenv"></a>env/printenv</h4><p>查看全局环境变量。<br>示例：</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment"># 查看全局环境变量</span></span><br><span class="line">printenv</span><br><span class="line"><span class="comment"># 查看HOME环境变量(查看单个环境变量时，只能使用printenv)</span></span><br><span class="line">printenv HOME</span><br></pre></td></tr></table></figure>
+<h4 id="uname"><a href="#uname" class="headerlink" title="uname"></a>uname</h4><p>打印当前系统相关信息。<br>常用参数：</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">-a <span class="comment"># 显示所有信息</span></span><br><span class="line">-v <span class="comment"># 显示操作系统版本</span></span><br><span class="line">-s <span class="comment"># 显示操作系统名称</span></span><br></pre></td></tr></table></figure>
+<p>示例：</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment"># 显示系统所有信息</span></span><br><span class="line">uname -a</span><br></pre></td></tr></table></figure>
+<h4 id="netstat"><a href="#netstat" class="headerlink" title="netstat"></a>netstat</h4><p>显示各种网络相关信息，如网络连接，路由表，接口状态 ，多播成员等 。<br>常用参数：</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">-a <span class="comment"># 显示所有选项，默认不显示LISTEN相关</span></span><br><span class="line">-t <span class="comment"># 显示tcp相关选项</span></span><br><span class="line">-u <span class="comment"># 显示udp相关选项</span></span><br><span class="line">-n <span class="comment"># 直接使用ip地址，而不通过域名服务器</span></span><br><span class="line">-p <span class="comment"># 显示正在使用Socket的程序识别码和程序名称；</span></span><br><span class="line">-l <span class="comment"># 列出所有处于监听状态的 Sockets</span></span><br></pre></td></tr></table></figure>
+<p>示例：</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment"># 列出所有端口</span></span><br><span class="line">netstat -a | more</span><br><span class="line"><span class="comment"># 列出所有监听的tcp端口</span></span><br><span class="line">netstat -lt</span><br></pre></td></tr></table></figure>
+<h4 id="man"><a href="#man" class="headerlink" title="man"></a>man</h4><p>查看Linux中的指令帮助、配置文件帮助和编程帮助等信息。<br>常用参数：</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">-a <span class="comment"># 在所有的man帮助手册中搜索</span></span><br><span class="line">-f <span class="comment"># 等价于whatis指令，显示给定关键字的简短描述信息</span></span><br><span class="line">-P <span class="comment"># 指定内容时使用分页程序</span></span><br></pre></td></tr></table></figure>
+<p>示例：</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment"># 查询ipconfig相关信息</span></span><br><span class="line">man ipconfig</span><br></pre></td></tr></table></figure>
+<h4 id="which"><a href="#which" class="headerlink" title="which"></a>which</h4><p>查找文件，在环境变量$PATH设置的目录里查找符合条件的文件。<br>示例：</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment"># 查看指令"bash"的绝对路径</span></span><br><span class="line"><span class="built_in">which</span> bash</span><br></pre></td></tr></table></figure>
+<h4 id="whereis"><a href="#whereis" class="headerlink" title="whereis"></a>whereis</h4><p>查找文件，只能用于查找二进制文件、源代码文件和man手册页。<br>示例：</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment"># 查看指令"bash"的位置</span></span><br><span class="line">whereis bash</span><br></pre></td></tr></table></figure>
+<h4 id="whoami"><a href="#whoami" class="headerlink" title="whoami"></a>whoami</h4><p>显示自身用户名称。<br>示例：</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment"># 显示自身的用户名称</span></span><br><span class="line">whoami</span><br></pre></td></tr></table></figure>
+<h4 id="ps"><a href="#ps" class="headerlink" title="ps"></a>ps</h4><p>显示当前进程 (process) 的状态。<br>常用参数：</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">-A <span class="comment"># 列出所有的进程</span></span><br><span class="line">-e <span class="comment"># 等同于-A</span></span><br><span class="line">-f <span class="comment"># 等价于whatis指令，显示给定关键字的简短描述信息</span></span><br><span class="line">-u <span class="comment"># 指定用户的所有进程</span></span><br></pre></td></tr></table></figure>
+<p>示例：</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment"># 显示root进程用户信息</span></span><br><span class="line">ps -u root</span><br><span class="line"><span class="comment"># 显示所有进程信息，连同命令行</span></span><br><span class="line">ps -ef</span><br></pre></td></tr></table></figure>
+<h4 id="top"><a href="#top" class="headerlink" title="top"></a>top</h4><p>显示当前系统正在执行的进程的相关信息，包括进程ID、内存占用率、CPU占用率等。<br>常用参数：</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">-u <span class="comment"># 指定用户名</span></span><br><span class="line">-p <span class="comment"># 指定进程</span></span><br></pre></td></tr></table></figure>
+<p>示例：</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment"># 显示root进程信息</span></span><br><span class="line">top -u root</span><br></pre></td></tr></table></figure>
+<h4 id="file"><a href="#file" class="headerlink" title="file"></a>file</h4><p>辨识文件类型。<br>示例：</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment"># 查询文件pom.xml的类型</span></span><br><span class="line">file pom.xml</span><br></pre></td></tr></table></figure>
+<h4 id="ln"><a href="#ln" class="headerlink" title="ln"></a>ln</h4><p>为某一个文件在另外一个位置建立一个同步的链接。当我们需要在不同的目录，用到相同的文件时，我们不需要在每一个需要的目录下都放一个必须相同的文件，我们只要在某个固定的目录，放上该文件，然后在其它的目录下用ln命令链接（link）它就可以，不必重复的占用磁盘空间。<br>链接又可分为两种 : 硬链接(hard link)与软链接(symbolic link)，硬链接的意思是一个档案可以有多个名称，而软链接的方式则是产生一个特殊的档案，该档案的内容是指向另一个档案的位置。硬链接是存在同一个文件系统中，而软链接却可以跨越不同的文件系统。<br>常用参数：</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">-s <span class="comment"># 软链接(符号链接)</span></span><br><span class="line">-b <span class="comment"># 删除，覆盖以前建立的链接</span></span><br><span class="line">-d <span class="comment"># 允许超级用户制作目录的硬链接</span></span><br><span class="line">-n <span class="comment"># 把符号链接视为一般目录</span></span><br></pre></td></tr></table></figure>
+<p>示例：</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment"># 给文件创建软链接，为log.log文件创建软链接link，如果log.log丢失，link将失效</span></span><br><span class="line">ln -s log.log link</span><br></pre></td></tr></table></figure>
+<h4 id="date"><a href="#date" class="headerlink" title="date"></a>date</h4><p>显示或设定系统的日期与时间。可以设定欲显示的格式，格式设定为一个加号后接数个标记<br>常用参数：</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">--<span class="built_in">help</span> <span class="comment"># 显示辅助讯息</span></span><br><span class="line">%D <span class="comment"># 直接显示日期 (mm/dd/yy)</span></span><br><span class="line">%T <span class="comment"># 直接显示时间 (24 小时制)</span></span><br><span class="line">%k <span class="comment"># 小时(0..23)</span></span><br><span class="line">%M <span class="comment"># 分钟(00..59)</span></span><br></pre></td></tr></table></figure>
+<p>示例：</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment"># 显示时间</span></span><br><span class="line">date <span class="string">'+%D %T'</span></span><br></pre></td></tr></table></figure>
+<h4 id="apt"><a href="#apt" class="headerlink" title="apt"></a>apt</h4><p>安装包管理工具，可以更新软件包列表索引、执行安装新软件包、升级现有软件包，还能够升级整个系统。(apt 是 Debian 系操作系统的包管理工具)<br>常用参数：</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">update  <span class="comment"># 更新软件源中的所有软件列表</span></span><br><span class="line">upgrade <span class="comment"># 升级软件包</span></span><br><span class="line">install &lt;软件包名&gt; <span class="comment"># 安装指定软件。此命令需管理员权限</span></span><br><span class="line">remove  &lt;软件包名&gt; <span class="comment"># 用来卸载指定软件</span></span><br><span class="line">show    &lt;软件包名&gt; <span class="comment"># 显示软件包具体信息</span></span><br><span class="line">autoremove  <span class="comment"># 用来自动清理不再使用的依赖和库文件</span></span><br><span class="line">purge <span class="comment"># 卸载软件包并删除配置文件</span></span><br></pre></td></tr></table></figure>
+<p>示例：</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment"># 修复依赖关系</span></span><br><span class="line">sudo apt install -f</span><br><span class="line"><span class="comment"># 安装git</span></span><br><span class="line">sudo apt install git</span><br></pre></td></tr></table></figure>
+<h4 id="cat"><a href="#cat" class="headerlink" title="cat"></a>cat</h4><p>连接文件并打印到标准输出设备上。<br>常用参数：</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">-n <span class="comment"># 由1开始对所有输出的行数编号</span></span><br><span class="line">-b <span class="comment"># 和 -n 相似，只不过对于空白行不编号</span></span><br><span class="line">-s <span class="comment"># 当遇到有连续两行以上的空白行，就代换为一行的空白行</span></span><br></pre></td></tr></table></figure>
+<p>示例：</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment"># 给log.txt加上行号后输出</span></span><br><span class="line">cat -n log.txt</span><br></pre></td></tr></table></figure>
+<h4 id="tar"><a href="#tar" class="headerlink" title="tar"></a>tar</h4><p>用来打包，压缩和解压文件。tar本身不具有压缩功能，它是调用压缩功能实现的 。<br>打包和压缩：打包是指将一大堆文件或目录变成一个总的文件；压缩则是将一个大的文件通过一些压缩算法变成一个小文件。<br>常用参数：</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">-z <span class="comment"># 支持gzip解压文件</span></span><br><span class="line">-j <span class="comment"># 支持bzip2解压文件</span></span><br><span class="line">-c <span class="comment"># 建立新的压缩文件</span></span><br><span class="line">-x <span class="comment"># 从压缩的文件中提取文件</span></span><br><span class="line">-f <span class="comment"># 指定压缩文件</span></span><br><span class="line">-v <span class="comment"># 显示操作过程</span></span><br><span class="line">-t <span class="comment"># 显示压缩文件的内容</span></span><br></pre></td></tr></table></figure>
+<p>示例：</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment"># 将log.txt打包为log.tar</span></span><br><span class="line">tar -cvf log.tar log.txt</span><br><span class="line"><span class="comment"># 将log.tar解包</span></span><br><span class="line">tar -xvf log.tar</span><br><span class="line"><span class="comment"># 查看log.tar.gz内容</span></span><br><span class="line">tar -ztvf log.tar.gz</span><br></pre></td></tr></table></figure>
+<h4 id="chmod"><a href="#chmod" class="headerlink" title="chmod"></a>chmod</h4><p>Linux/Unix 的文件调用权限分为三级 : 文件拥有者、群组、其他。利用 chmod 可以藉以控制文件如何被他人所调用。<br>参数说明：</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">-u <span class="comment"># 表示该文件的拥有者，g 表示与该文件的拥有者属于同一个群体(group)者，o 表示其他以外的人，a 表示这三者皆是</span></span><br><span class="line">+ <span class="comment"># 表示增加权限</span></span><br><span class="line">- <span class="comment"># 表示取消权限</span></span><br><span class="line">= <span class="comment"># 表示唯一设定权限</span></span><br><span class="line">-r <span class="comment"># 表示可读取</span></span><br><span class="line">-w <span class="comment"># 表示可写入</span></span><br><span class="line">-x <span class="comment"># 表示可执行</span></span><br><span class="line">-X <span class="comment"># 表示只有当该文件是个子目录或者该文件已经被设定过为可执行</span></span><br></pre></td></tr></table></figure>
+<p>补充：<br>chmod也可以用数字来表示权限如 :</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">chmod 777 file</span><br></pre></td></tr></table></figure>
+
+<p>分别表示User、Group、及Other的权限。r=4，w=2，x=1</p>
+<ul>
+<li>若要rwx属性则4+2+1=7；</li>
+<li>若要rw-属性则4+2=6；</li>
+<li>若要r-x属性则4+1=5。</li>
+</ul>
+<p>示例：</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment"># 将文件file1.txt设为所有人皆可读取</span></span><br><span class="line">chmod ugo+r file1.txt</span><br><span class="line"><span class="comment"># 将当前目录下的所有文件与子目录皆设为任何人可读取 </span></span><br><span class="line">chmod -R a+r *</span><br></pre></td></tr></table></figure>
+<h4 id="chown"><a href="#chown" class="headerlink" title="chown"></a>chown</h4><p>将指定文件的拥有者改为指定的用户或组，用户可以是用户名或者用户ID；组可以是组名或者组ID；文件是以空格分开的要改变权限的文件列表，支持通配符。<br>示例：</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment"># 将文件file1.txt的拥有者设为friend，群体的使用者friendGroup</span></span><br><span class="line">chown friend:friendGroup file1.txt</span><br></pre></td></tr></table></figure>
+<h4 id="df"><a href="#df" class="headerlink" title="df"></a>df</h4><p>显示目前在Linux系统上的文件系统的磁盘使用情况统计。<br>常用参数：</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">-h <span class="comment"># 使用人类可读的格式</span></span><br></pre></td></tr></table></figure>
+<p>示例：</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment"># 输出磁盘使用情况</span></span><br><span class="line">df -h</span><br></pre></td></tr></table></figure>
+<h4 id="more"><a href="#more" class="headerlink" title="more"></a>more</h4><p>以每次一屏的方式输出文本的内容。<br>快捷键：<br>    向下翻页：<code>Space</code><br>    向上翻页：<code>b</code><br>    退出：<code>q</code><br>常用参数：</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">-&lt;数字&gt; <span class="comment"># 每一屏的行数</span></span><br></pre></td></tr></table></figure>
+<p>示例：</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment"># 以每屏10行的方式查看文件家目录下的a.txt</span></span><br><span class="line">more -10 ~/a.txt</span><br></pre></td></tr></table></figure>
+<h4 id="tail"><a href="#tail" class="headerlink" title="tail"></a>tail</h4><p>在终端上输出文件末尾的若干行内容，查看正在执行程序的日志输出很方便。<br>常用参数：</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">-n <span class="comment"># 指定显示文件末尾的行数</span></span><br><span class="line">-f <span class="comment"># 动态监听文件末尾的内容变化</span></span><br><span class="line">-s <span class="comment"># 动态监听的秒数，和-f配合使用</span></span><br></pre></td></tr></table></figure>
+<p>示例：</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment"># 查看mail.log的最后20行内容并执行动态监听</span></span><br><span class="line">tail -n 20 -f mail.log</span><br></pre></td></tr></table></figure>
+<h4 id="logout"><a href="#logout" class="headerlink" title="logout"></a>logout</h4><p>退出当前登录的SHELL。<br>示例：</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment"># 退出当前登录的SHELL</span></span><br><span class="line"><span class="built_in">logout</span></span><br></pre></td></tr></table></figure>
+<h4 id="lsof"><a href="#lsof" class="headerlink" title="lsof"></a>lsof</h4><p>列出当前系统打开的文件列表，使用这个命令需要使用<code>root</code>权限。在Linux中，一切皆文件，如：进程、端口等，都被分配了文件标识符，可以通过<code>lsof</code>查看它们。<br>常用参数：</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">-i :port <span class="comment"># 查看打开指定端口的进程 </span></span><br><span class="line">-t <span class="comment"># 只查看打开进程的PID</span></span><br><span class="line">-u <span class="comment"># 查看指定用户打开的文件</span></span><br><span class="line">-c <span class="comment"># 查看指定命令打开的文件</span></span><br><span class="line">-p <span class="comment"># 查看指定进程号打开的文件</span></span><br><span class="line">-D <span class="comment"># 查看某目录下被打开的文件</span></span><br></pre></td></tr></table></figure>
+<p>示例：</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment"># 查看使用8080端口的进程</span></span><br><span class="line">sudo lsof -i :80</span><br><span class="line"><span class="comment"># 查看用户glieen打开的文件</span></span><br><span class="line">sudo lsof -u glieen</span><br><span class="line"><span class="comment"># 查看mysql打开的文件</span></span><br><span class="line">sudo lsof -c mysql</span><br><span class="line"><span class="comment"># 查看进程号为555打开的文件</span></span><br><span class="line">sudo lsof -p 555</span><br></pre></td></tr></table></figure>
+<h4 id="mount"><a href="#mount" class="headerlink" title="mount"></a>mount</h4><p>用于挂载Linux系统之外的文件，常用来挂载U盘，引导分区（EFi）等，通常需要使用<code>root</code>权限执行。<br>示例：</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment"># 将磁盘的第一个分区/dev/sda1挂载到/mnt/glieen/f目录下</span></span><br><span class="line">sudo mount /dev/sda1 /mnt/glieen/f</span><br></pre></td></tr></table></figure>
+<h4 id="umount"><a href="#umount" class="headerlink" title="umount"></a>umount</h4><p>用于卸载已经挂载的文件系统。<br>示例：</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment"># 卸载磁盘的第一个分区/dev/sda1</span></span><br><span class="line">sudo umount /dev/sda1</span><br></pre></td></tr></table></figure>
+<h4 id="sftp"><a href="#sftp" class="headerlink" title="sftp"></a>sftp</h4><p>交互式的FTP文件传输程序，默认使用ssh协议连接，可以方便的上传和下载文件。<br>交互式命令：</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment"># 可以远程执行程序命令，本地命令需要在命令前加l，表示local</span></span><br><span class="line">put <span class="comment"># 上传文件</span></span><br><span class="line">get <span class="comment"># 下载文件</span></span><br></pre></td></tr></table></figure>
+<p>示例：</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment"># 以用户glieen的身份登录主机192.168.1.3的sftp交互客户端，需要输入用户glieen的密码</span></span><br><span class="line">sftp glieen@192.168.1.3</span><br><span class="line"><span class="comment"># 获取mail.log文件并重命名为a.txt</span></span><br><span class="line">&gt; get mail.log a.txt</span><br><span class="line"><span class="comment"># 上传test.txt文件</span></span><br><span class="line">&gt; put test.txt</span><br><span class="line"><span class="comment"># 退出sftp交互程序</span></span><br><span class="line">&gt; <span class="built_in">exit</span></span><br></pre></td></tr></table></figure>
+<h4 id="passwd"><a href="#passwd" class="headerlink" title="passwd"></a>passwd</h4><p>修改用户密码的工具，用户信息存放在<code>/etc/passwd</code>中。<br>常用参数：</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">-S <span class="comment"># 查看当前登录用户的密码状态</span></span><br><span class="line">-d <span class="comment"># 清除密码</span></span><br></pre></td></tr></table></figure>
+<p>示例：</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment"># 修改当前登录用户的密码为1234</span></span><br><span class="line">passwd 1234</span><br><span class="line"><span class="comment"># 修改用户zalmon的密码为1234</span></span><br><span class="line">passwd zalmon 1234</span><br><span class="line"><span class="comment"># 清除用户zalmon的密码</span></span><br><span class="line">passwd -d zalmon</span><br></pre></td></tr></table></figure>
+<h4 id="ping"><a href="#ping" class="headerlink" title="ping"></a>ping</h4><p>测试主机网络连通性的工具。<br>常用参数：</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">-c <span class="comment"># 指定测试连接的次数</span></span><br></pre></td></tr></table></figure>
+<p>示例：</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment"># 发送10次测试连接到主机8.8.8.8</span></span><br><span class="line">ping -n 10 8.8.8.8</span><br></pre></td></tr></table></figure>
+<h4 id="poweroff"><a href="#poweroff" class="headerlink" title="poweroff"></a>poweroff</h4><p>关闭当前的Linux系统。<br>常用参数：</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">-f <span class="comment"># 强制关机</span></span><br></pre></td></tr></table></figure>
+<p>示例：</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment"># 强制关机</span></span><br><span class="line">sudo poweroff -f</span><br></pre></td></tr></table></figure>
+<h4 id="shutdown"><a href="#shutdown" class="headerlink" title="shutdown"></a>shutdown</h4><p>执行Linux系统的关机命令。<br>常用参数：</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">-t <span class="comment"># 设定关机之前的延迟时间，单位为秒</span></span><br><span class="line">-f <span class="comment"># 强制关机</span></span><br><span class="line">-r <span class="comment"># 关机之后重启系统</span></span><br></pre></td></tr></table></figure>
+<p>示例：</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment"># 立即关机</span></span><br><span class="line">shutdown -t now</span><br><span class="line"><span class="comment"># 一分钟之后关机</span></span><br><span class="line">shutdown -t 60</span><br><span class="line"><span class="comment"># 重启Linux操作系统，等价于reboot</span></span><br><span class="line">shutdown -r</span><br></pre></td></tr></table></figure>
+<h4 id="reboot"><a href="#reboot" class="headerlink" title="reboot"></a>reboot</h4><p>重启Linux系统。<br>常用参数：</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">-f <span class="comment"># 强制重启</span></span><br></pre></td></tr></table></figure>
+<p>示例：</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment"># 强制重启Linux操作系统</span></span><br><span class="line">reboot -f</span><br></pre></td></tr></table></figure>
+<h4 id="scp"><a href="#scp" class="headerlink" title="scp"></a>scp</h4><p>在远程主机和本机之间进行文件复制，将源文件复制到目标位置。<br>常用参数：</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">-r <span class="comment"># 递归复制子文件夹下的文件</span></span><br></pre></td></tr></table></figure>
+<p>示例：</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment"># 将主机192.168.1.3上glieen用户家目录下的文件夹test复制到当前目录，需要输入glieen用户的密码</span></span><br><span class="line">scp -r glieen@192.168.1.3:~/<span class="built_in">test</span>/ .</span><br></pre></td></tr></table></figure>
+<h4 id="ssh"><a href="#ssh" class="headerlink" title="ssh"></a>ssh</h4><p>SHELL客户端远程连接工具，可以远程登录Linux主机。<br>常用参数：</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">-p <span class="comment"># 指定端口号</span></span><br></pre></td></tr></table></figure>
+<p>示例：</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment"># 使用端口2333以用户glieen登录远程主机192.168.1.3，需要输入glieen用户的密码</span></span><br><span class="line">ssh glieen@192.168.1.3 -p 2333</span><br></pre></td></tr></table></figure>
+<h4 id="unzip"><a href="#unzip" class="headerlink" title="unzip"></a>unzip</h4><p>用于解压缩zip命令压缩的压缩文件。<br>常用参数：</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">-v <span class="comment"># 执行时显示详细信息</span></span><br><span class="line">-o <span class="comment"># 覆盖已有文件</span></span><br><span class="line">-d <span class="comment"># 指定解压缩后的存放目录</span></span><br><span class="line">-P <span class="comment"># 解压缩密码</span></span><br><span class="line">-l <span class="comment"># 查看压缩包内的文件内容而不解压缩</span></span><br></pre></td></tr></table></figure>
+<p>示例：</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment"># 解压缩test.zip压缩包到家目录下</span></span><br><span class="line">unzip -v test.zip -d ~</span><br><span class="line"><span class="comment"># 查看test.zip压缩包内的文件</span></span><br><span class="line">unzip -l test.zip</span><br></pre></td></tr></table></figure>
+<h4 id="ifconfig"><a href="#ifconfig" class="headerlink" title="ifconfig"></a>ifconfig</h4><p>配置和查看Linux系统中的网络配置。<br>常用参数：</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">-a <span class="comment"># 查看所有已配置的网络接口</span></span><br></pre></td></tr></table></figure>
+<p>示例：</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment"># 查看所有已配置的网络接口</span></span><br><span class="line">ifconfig -a</span><br></pre></td></tr></table></figure>
+<h4 id="fdisk"><a href="#fdisk" class="headerlink" title="fdisk"></a>fdisk</h4><p>查看磁盘的使用情况和磁盘分区。<br>常用参数：</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">-l <span class="comment"># 查看所有磁盘及分区情况</span></span><br></pre></td></tr></table></figure>
+<p>示例：</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment"># 查看所有磁盘及分区情况</span></span><br><span class="line">fdisk -l</span><br><span class="line"><span class="comment"># 对磁盘/dev/sda进行交互式分区操作</span></span><br><span class="line">fdisk /dev/sda</span><br></pre></td></tr></table></figure>]]></content>
+      <categories>
+        <category>Linux</category>
+      </categories>
+      <tags>
+        <tag>Linux</tag>
+        <tag>Ubuntu</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>电脑重装系统后恢复hexo博客部署</title>
     <url>/2020/01/11/%E7%94%B5%E8%84%91%E9%87%8D%E8%A3%85%E7%B3%BB%E7%BB%9F%E5%90%8E%E6%81%A2%E5%A4%8Dhexo%E5%8D%9A%E5%AE%A2%E9%83%A8%E7%BD%B2/</url>
     <content><![CDATA[<h3 id="部署流程"><a href="#部署流程" class="headerlink" title="部署流程"></a>部署流程</h3><p>装系统之前先备份一下自己的hexo博客文件夹，现在就是借助这些文件恢复部署一下就好了。具体方法如下：</p>
