@@ -318,10 +318,16 @@
                 <i class="fa fa-calendar-o"></i>
               </span>
               <span class="post-meta-item-text">发表于</span>
-              
 
-              <time title="创建时间：2020-02-12 16:50:33 / 修改时间：16:50:35" itemprop="dateCreated datePublished" datetime="2020-02-12T16:50:33+08:00">2020-02-12</time>
+              <time title="创建时间：2020-02-12 16:50:33" itemprop="dateCreated datePublished" datetime="2020-02-12T16:50:33+08:00">2020-02-12</time>
             </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2020-03-05 19:13:27" itemprop="dateModified" datetime="2020-03-05T19:13:27+08:00">2020-03-05</time>
+              </span>
 
           
 
@@ -340,47 +346,14 @@
 <li>系统工作：有些重要的工作必须周而复始地执行。如病毒扫描等</li>
 <li>个别用户工作：个别用户可能希望执行某些程序，比如对 mysql 数据库的备份。</li>
 </ol>
-<h3 id="基本语法"><a href="#基本语法" class="headerlink" title="基本语法"></a>基本语法</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">$ crontab [-u user] file </span><br><span class="line">$ crontab [-u user] [ -e | -l | -r ]</span><br><span class="line">$ service crond restart	// 重启任务调度</span><br></pre></td></tr></table></figure>
-
-<p>选项:</p>
-<ol>
-<li>-e : 编辑 crontab 定时任务</li>
-<li>-l  : 查询 crontab 任务</li>
-<li>-r : 删除当前用户的所有 crontab 任务</li>
-<li>-u: -u user 是指设定指定 user 的定时任务，前提是你必须要有其权限(比如说是 root)才能够指定他人的定时任务。如果不使用 -u user 的话，就是表示设定自己的时程表。</li>
-<li>file：file是命令文件的名字,表示将file做为crontab的任务列表文件并载入crontab。如果在命令行中没有指定这个文件，crontab命令将接受标准输入（键盘）上键入的命令，并将它们载入crontab。</li>
-</ol>
-<p>举例:</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">$ crontab -e // 进入 vim 界面</span><br><span class="line"></span><br><span class="line">// 添加定时任务,每分钟将home目录下的ls信息追加到tmp目录下的home.log文件中,保存退出后定时任务自动生效</span><br><span class="line">*/1 * * * * ls /home&gt;&gt;/tmp/home.log</span><br><span class="line"></span><br><span class="line">// 显示当前存在的定时任务</span><br><span class="line">$ crontab -l</span><br></pre></td></tr></table></figure>
-
-<p><strong>时间格式</strong>如下:</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">*    *    *    *    *</span><br><span class="line">-    -    -    -    -</span><br><span class="line">|    |    |    |    |</span><br><span class="line">|    |    |    |    +----- 星期中星期几 (0 - 7) (星期天 为0和7)</span><br><span class="line">|    |    |    +---------- 月份 (1 - 12) </span><br><span class="line">|    |    +--------------- 一个月中的第几天 (1 - 31)</span><br><span class="line">|    +-------------------- 小时 (0 - 23)</span><br><span class="line">+------------------------- 分钟 (0 - 59)</span><br></pre></td></tr></table></figure>
-
-<h3 id="实例"><a href="#实例" class="headerlink" title="实例"></a>实例</h3><p>每月每天每小时的第 0 分钟执行一次 /bin/ls</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">0 * * * * &#x2F;bin&#x2F;ls</span><br></pre></td></tr></table></figure>
-
-<p>在 12 月内, 每天的早上 6 点到 12 点，每隔 3 个小时 0 分钟执行一次 /usr/bin/backup</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">0 6-12&#x2F;3 * 12 * &#x2F;usr&#x2F;bin&#x2F;backup</span><br></pre></td></tr></table></figure>
-
-<p>周一到周五每天下午 5:00 寄一封信给 <a href="mailto:alex@domain.name">alex@domain.name</a></p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">0 17 * * 1-5 mail -s &quot;hi&quot; alex@domain.name &lt; &#x2F;tmp&#x2F;maildata</span><br></pre></td></tr></table></figure>
-
-<p>每月每天的午夜 0 点 20 分, 2 点 20 分, 4 点 20 分….执行 echo “haha”</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">20 0-23&#x2F;2 * * * echo &quot;haha&quot;</span><br></pre></td></tr></table></figure>
-
-<h3 id="数据库备份操作"><a href="#数据库备份操作" class="headerlink" title="数据库备份操作"></a><strong>数据库备份操作</strong></h3><ol>
-<li><h4 id="新建并编辑脚本文件-mysqlBackup-sh"><a href="#新建并编辑脚本文件-mysqlBackup-sh" class="headerlink" title="新建并编辑脚本文件 mysqlBackup.sh"></a>新建并编辑脚本文件 mysqlBackup.sh</h4><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 文件名中加入当前时间</span></span><br><span class="line">BACKUP_TIME=$(date +%Y-%m-%d_%H%M%S)</span><br><span class="line"><span class="comment"># 主机</span></span><br><span class="line">HOST=localhost</span><br><span class="line"><span class="comment"># 用户名</span></span><br><span class="line">USER=root</span><br><span class="line"><span class="comment"># 密码</span></span><br><span class="line">PASSWD=root</span><br><span class="line"><span class="comment"># 数据库名称</span></span><br><span class="line">DATABASE=mysql</span><br><span class="line"></span><br><span class="line"><span class="built_in">echo</span> <span class="string">"============开始备份数据库==========="</span></span><br><span class="line"><span class="built_in">echo</span> <span class="string">"数据库名称: <span class="variable">$DATABASE</span>"</span></span><br><span class="line"><span class="built_in">echo</span> <span class="string">"数据库备份路径: <span class="variable">$BACKUP_PATH</span>"</span></span><br><span class="line"><span class="comment"># 创建备份数据库的路径,存在就使用,不存在就创建</span></span><br><span class="line">[ ! -d <span class="string">"<span class="variable">$BACKUP_PATH</span>"</span> ] &amp;&amp; mkdir -p <span class="string">"<span class="variable">$BACKUP_PATH</span>"</span></span><br><span class="line"><span class="comment"># 执行mysql的备份数据库指令</span></span><br><span class="line">mysqldump -u<span class="variable">$&#123;USER&#125;</span> -p<span class="variable">$&#123;PASSWD&#125;</span> --host=<span class="variable">$HOST</span>  <span class="variable">$DATABASE</span> | gzip &gt; <span class="variable">$BACKUP_PATH</span>/mysql_<span class="variable">$BACKUP_TIME</span>.sql.gz</span><br><span class="line"><span class="comment"># 打包备份文件</span></span><br><span class="line"><span class="built_in">cd</span> <span class="variable">$BACKUP_PATH</span></span><br><span class="line">tar -zcvf mysql_<span class="variable">$BACKUP_TIME</span>.tar.gz mysql_<span class="variable">$BACKUP_TIME</span>.sql.gz</span><br><span class="line"><span class="comment"># 删除临时文件</span></span><br><span class="line">rm -rf mysql_<span class="variable">$BACKUP_TIME</span>.sql.gz</span><br><span class="line"></span><br><span class="line"><span class="comment"># 删除十天之前备份的数据</span></span><br><span class="line">find <span class="variable">$BACKUP_PATH</span> -mtime +10 -name <span class="string">"*.tar.gz"</span> -<span class="built_in">exec</span> rm -rf &#123;&#125; \;</span><br><span class="line"><span class="built_in">echo</span> <span class="string">"============数据备份成功=============="</span></span><br></pre></td></tr></table></figure>
-
-<ol start="2">
-<li><h4 id="给-mysqlBackup-sh-可执行权限"><a href="#给-mysqlBackup-sh-可执行权限" class="headerlink" title="给 mysqlBackup.sh 可执行权限"></a>给 mysqlBackup.sh 可执行权限</h4><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ chmod 744 mysqlBackup.sh</span><br></pre></td></tr></table></figure>
-</li>
-</ol>
-</li>
-<li><h4 id="将脚本放入定时任务列表中后-定时备份任务生效"><a href="#将脚本放入定时任务列表中后-定时备份任务生效" class="headerlink" title="将脚本放入定时任务列表中后,定时备份任务生效"></a>将脚本放入定时任务列表中后,定时备份任务生效</h4><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">$ crontab -e</span><br><span class="line"></span><br><span class="line">0 0 * * * /home/zalmon/mysqlBackup.sh</span><br></pre></td></tr></table></figure>
-
-</li>
-</ol>
-
+          <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/2020/02/12/Linux%E8%AE%BE%E7%BD%AEcrontab%E5%AE%9A%E6%97%B6%E4%BB%BB%E5%8A%A1/#more" rel="contents">
+                阅读全文 &raquo;
+              </a>
+            </div>
+          <!--/noindex-->
+        
       
     </div>
 

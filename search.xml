@@ -9,6 +9,8 @@
 <li>系统工作：有些重要的工作必须周而复始地执行。如病毒扫描等</li>
 <li>个别用户工作：个别用户可能希望执行某些程序，比如对 mysql 数据库的备份。</li>
 </ol>
+<a id="more"></a>
+
 <h3 id="基本语法"><a href="#基本语法" class="headerlink" title="基本语法"></a>基本语法</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ crontab [-u user] file </span><br><span class="line">$ crontab [-u user] [ -e | -l | -r ]</span><br><span class="line">$ service crond restart	// 重启任务调度</span><br></pre></td></tr></table></figure>
 
 <p>选项:</p>
